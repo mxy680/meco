@@ -1,13 +1,18 @@
 [tool.poetry]
-name = "optimizer"
+name = "meco"
 version = "0.1.0"
 description = ""
 authors = ["Mark Shteyn <markshteyn1@gmail.com>"]
 readme = "README.md"
-packages = [{include = "optimizer"}]  # Make sure this is included!
+package-mode = false
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.14"
+fastapi = "^0.115.8"
+optimizer = {path = "packages/optimizer/dist/optimizer-0.1.0-py3-none-any.whl"}
+requests = "^2.32.3"
+uvicorn = "^0.34.0"
+pydantic = "^2.10.6"
 
 
 [build-system]
