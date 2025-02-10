@@ -5,12 +5,20 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": ["dist/**"]
     },
     "dev": {
       "dependsOn": ["^dev"],
       "cache": false,
       "persistent": true
+    },
+    "test": {
+      "dependsOn": ["^test"]
+    },
+    "install": {
+      "dependsOn": ["^install"],
+      "inputs": ["$TURBO_DEFAULT$"],
+      "outputs": ["poetry.lock", "node_modules/**", ".venv/**"]
     }
   }
 }

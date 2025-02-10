@@ -1,0 +1,13 @@
+{
+  "name": "optimizer",
+  "version": "1.0.0",
+  "description": "MECO Optimizer package for function optimization",
+  "scripts": {
+    "install": "poetry install",
+    "build": "poetry build",
+    "test": "poetry run pytest"
+  },
+  "dependencies": {
+    "requests": "^0.3.0"
+  }
+}

@@ -102,6 +102,20 @@ files = [
 all = ["flake8 (>=7.1.1)", "mypy (>=1.11.2)", "pytest (>=8.3.2)", "ruff (>=0.6.2)"]
 
 [[package]]
+name = "optimizer"
+version = "0.1.0"
+description = ""
+optional = false
+python-versions = ">=3.13,<4.0"
+files = [
+    {file = "optimizer-0.1.0-py3-none-any.whl", hash = "sha256:4856a5883f2026ecce1add92fadf69d4ce7a8f8316899c830fceb56aa15bab00"},
+]
+
+[package.source]
+type = "file"
+url = "../../packages/optimizer/dist/optimizer-0.1.0-py3-none-any.whl"
+
+[[package]]
 name = "pydantic"
 version = "2.10.6"
 description = "Data validation using Python type hints"
@@ -293,4 +307,4 @@ standard = ["colorama (>=0.4)", "httptools (>=0.6.3)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.13"
-content-hash = "4518ae9845da7f0f8abad02791e11a80f3ac35cacc7b09373fb8998daab3865a"
+content-hash = "737608eeb7b3af942bda257f5d00c702da4d7830e2ab871e30224d1588fd601f"

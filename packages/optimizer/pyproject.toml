@@ -1,16 +1,13 @@
 [tool.poetry]
-name = "api"
+name = "optimizer"
 version = "0.1.0"
 description = ""
 authors = ["Mark Shteyn <markshteyn1@gmail.com>"]
 readme = "README.md"
+packages = [{include = "optimizer"}]  # Make sure this is included!
 
 [tool.poetry.dependencies]
 python = "^3.13"
-fastapi = "^0.115.8"
-uvicorn = "^0.34.0"
-pydantic = "^2.10.6"
-optimizer = {path = "../../packages/optimizer/dist/optimizer-0.1.0-py3-none-any.whl"}
 
 
 [build-system]
