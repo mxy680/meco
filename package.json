@@ -2,6 +2,7 @@
   "name": "meco",
   "private": true,
   "scripts": {
+    "install": "turbo run install --parallel",
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
