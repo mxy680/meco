@@ -21,6 +21,13 @@
         "command": "turbo",
         "args": ["install"],
         "problemMatcher": [],
+      },
+      {
+        "label": "Test",
+        "type": "shell",
+        "command": "bash",
+        "args": ["scripts/send.sh"],
+        "problemMatcher": [],
       }
     ]
   }

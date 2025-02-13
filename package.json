@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "install": "turbo run install --parallel",
+    "test": "turbo run test",
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",

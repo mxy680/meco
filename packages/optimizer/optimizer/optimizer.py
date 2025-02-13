@@ -1,57 +1,31 @@
-import requests
+from optimizer.query.ollama import query_ollama
+from optimizer.prompts import get_prompt
+from optimizer.parser import parse
 
-OLLAMA_URL = "http://your-ec2-ip:11434/api/generate"
 
-def query_ollama(prompt: str) -> str:
+def optimize_function(
+    function_code: str,
+    language: str,
+    models: list[str],
+    generations: int = 0,
+    stream: bool = False,
+) -> dict:
     """
-    Calls the Ollama API to optimize a function.
+    Runs evolutionary optimization on a function using multiple LLMs.
     """
-    payload = {
-        "model": "codellama",
-        "prompt": prompt,
-        "stream": False
-    }
+    solutions = {}
 
-    try:
-        response = requests.post(OLLAMA_URL, json=payload, timeout=60)
-        response.raise_for_status()
-        return response.json().get("response", "").strip()
-    except requests.RequestException as e:
-        print(f"Ollama API error: {e}")
-        return ""  # Return empty to indicate failure
+    for model in models:
+        prompt = get_prompt(function_code, language, generations)
 
-def optimize_function(function_code: str, language: str, generations: int = 0) -> str:
-    """
-    Runs evolutionary optimization on a function using Ollama.
-    """
-    # First Round: Initial Optimization
-    first_prompt = f"""
-    Optimize the following {language} function for performance while keeping it functionally correct.
-    
-    ```{language}
-    {function_code}
-    ```
+        response = ""
+        if stream:
+            for text_chunk in query_ollama(prompt, model=model, stream=True):
+                print(text_chunk, end="", flush=True)
+                response += text_chunk
+        else:
+            response = query_ollama(prompt, model=model)
 
-    Return only the optimized function code.
-    """
-    best_function = query_ollama(first_prompt)
+        solutions[model] = parse(response)
 
-    # Secondary Evolutions: Further Refinements
-    for _ in range(generations):
-        evolution_prompt = f"""
-        Improve the following {language} function further while maintaining correctness.
-        Focus on efficiency and performance optimizations.
-
-        ```{language}
-        {best_function}
-        ```
-
-        Return only the improved function code.
-        """
-        evolved_function = query_ollama(evolution_prompt)
-
-        # Ensure Ollama returned something valid
-        if evolved_function:
-            best_function = evolved_function
-
-    return best_function
+    return solutions

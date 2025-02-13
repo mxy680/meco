@@ -1,13 +1,14 @@
 [tool.poetry]
-name = "optimizer"
+name = "runner"
 version = "0.1.0"
 description = ""
 authors = ["Mark Shteyn <markshteyn1@gmail.com>"]
 readme = "README.md"
-packages = [{include = "optimizer"}]  
+packages = [{include = "runner"}]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.14"
+
 
 [build-system]
 requires = ["poetry-core"]
