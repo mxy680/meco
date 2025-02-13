@@ -2,12 +2,11 @@
   "name": "meco",
   "private": true,
   "scripts": {
-    "install": "turbo run install --parallel",
+    "dev": "turbo run dev",
     "test": "turbo run test",
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "format": "turbo run format"
   },
   "devDependencies": {
     "prettier": "^3.5.0",

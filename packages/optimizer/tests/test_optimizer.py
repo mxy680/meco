@@ -2,6 +2,7 @@ import pytest
 from optimizer.optimizer import optimize_function
 from optimizer.query.ollama import query_ollama
 
+
 def test_optimize_function():
     """Test if optimize_function returns a valid optimized function."""
     function_code = "def add_one(x): return x + 1"

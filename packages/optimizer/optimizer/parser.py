@@ -1,5 +1,6 @@
 import re
 
+
 def parse(response: str) -> str:
     """
     Extracts the code snippet from an LLM response.

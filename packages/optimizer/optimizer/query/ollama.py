@@ -17,11 +17,11 @@ def query_ollama(prompt: str, model: str, stream: bool = False):
     Yields chunks of the response in real-time.
     """
     payload = {
-        "model": model,  
+        "model": model,
         "prompt": prompt,
-        "stream": stream,  
+        "stream": stream,
     }
-        
+
     try:
         if not stream:
             response = requests.post(OLLAMA_URL, json=payload, timeout=60)
@@ -35,10 +35,8 @@ def query_ollama(prompt: str, model: str, stream: bool = False):
                 for chunk in response.iter_lines(decode_unicode=True):
                     if chunk:
                         try:
-                            data = json.loads(chunk) 
-                            yield data.get(
-                                "response", ""
-                            )  
+                            data = json.loads(chunk)
+                            yield data.get("response", "")
                         except json.JSONDecodeError:
                             continue  # Skip malformed chunks
     except requests.RequestException as e:

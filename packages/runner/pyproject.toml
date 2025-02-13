@@ -8,6 +8,7 @@ packages = [{include = "runner"}]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.14"
+docker = "^7.1.0"
 
 
 [build-system]

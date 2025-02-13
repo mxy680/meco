@@ -13,14 +13,12 @@
       "persistent": true
     },
     "test": {
+      "dependsOn": ["build"],
       "inputs": ["$TURBO_DEFAULT$"],
-      "outputs": [".venv/**"], 
       "cache": false
     },
-    "install": {
-      "dependsOn": ["^install"],
-      "inputs": ["$TURBO_DEFAULT$", "pyproject.toml", "poetry.lock"],
-      "outputs": ["poetry.lock", "node_modules/**", ".venv/**"]
+    "format": {
+      "cache": false
     }
   }
 }
