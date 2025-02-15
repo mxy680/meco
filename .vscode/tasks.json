@@ -25,8 +25,8 @@
       {
         "label": "Test",
         "type": "shell",
-        "command": "bash",
-        "args": ["scripts/send.sh"],
+        "command": "turbo",
+        "args": ["test"],
         "problemMatcher": [],
       }
     ]
