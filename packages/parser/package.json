@@ -1,0 +1,10 @@
+{
+    "name": "parser",
+    "version": "1.0.0",
+    "scripts": {
+      "format": "poetry run black .",
+      "build": "poetry build",
+      "test": "poetry run pytest -s -v"
+    }
+  }
+  

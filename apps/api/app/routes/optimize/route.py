@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from app.models import OptimizationRequest
 from optimizer.optimizer import optimize_function
-from runner.execution import run_code_in_docker
+import requests
 
 router = APIRouter()
 
@@ -27,11 +27,20 @@ SAMPLE_RESPONSE = {
     },
 }
 
+
 @router.post("/optimize")
 async def optimize(request: OptimizationRequest):
     # solutions = optimize_function(
     #     request.function_code, request.language, MODELS, stream=True
     # )
     # run_code_in_docker(request.function_code, request.language, request.test_cases)
-    run_code_in_docker("print('Hello, world!')", "python", [])
+    # Call the endpoint
+    response = requests.post(
+        "http://localhost:9000/api/python/run",
+        json={
+            "function_code": request.function_code,
+            "language": "python",
+            "test_cases": request.test_cases,
+        },
+    )
     return {"optimized_function": request.function_code}

@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routes.optimize import router as optimize_router
+from app.routes.optimize import optimize_router
 
 app = FastAPI()
 
