@@ -10,6 +10,7 @@ class Runner:
             raise ValueError(f"Unsupported language: {language}")
 
         self.client = docker.from_env()
+        self.language = language
         self.config = LANGUAGE_CONFIGS[language]
         self.container_workdir = "/code"
         self.script_name = f"script{self.config['file_extension']}"
@@ -24,7 +25,7 @@ class Runner:
 
     def run(self, code: str):
         return CodeExecutor.run_code(
-            self.container, code, self.script_name, self.config["run_command"]
+            self.container, code, self.language, self.script_name, self.config["run_command"]
         )
 
     def stop_container(self):

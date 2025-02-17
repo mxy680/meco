@@ -6,9 +6,6 @@ class CodeExecutor:
                 "Container is not running. Call start_container() first."
             )
 
-        if not CodeExecutor.validate_fn(code, language):
-            raise RuntimeError("Function code is invalid.")
-
         # Construct the command to write `code` into script_name and run it.
         command = (
             f'echo "{code}" > {script_name} && '
