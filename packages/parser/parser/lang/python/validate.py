@@ -23,4 +23,13 @@ def validate_fn(code: str):
     if len(root.children) > 1:
         return SingleFunctionOnlyException()
 
+    try:
+        fn = tree.root_node.children[0]
+        fn.child_by_field_name("name").text.decode("utf8")
+        fn.child_by_field_name("parameters").text.decode("utf8")[1:-1].split(", ")
+        fn.child_by_field_name("body").text.decode("utf8")
+    except Exception as e:
+        print(e)
+        return False
+
     return True

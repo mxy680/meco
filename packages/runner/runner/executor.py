@@ -1,11 +1,16 @@
 class CodeExecutor:
     @staticmethod
-    def run_code(container, code, language, script_name, run_command, workdir="/code"):
+    def run_code_python(container, code, fn: dict, test_cases, script_name, run_command, workdir="/code"):
         if container.container is None:
             raise RuntimeError(
                 "Container is not running. Call start_container() first."
             )
-
+            
+        # Append the test cases to the code
+        fn_name = fn['name']
+        test_cases_str = "\n".join([f"print({fn_name}({tc}))" for tc in test_cases])
+        code += f"\n{test_cases_str}"
+        
         # Construct the command to write `code` into script_name and run it.
         command = (
             f'echo "{code}" > {script_name} && '

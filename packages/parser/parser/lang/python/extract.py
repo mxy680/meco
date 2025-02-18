@@ -17,8 +17,13 @@ def extract_fn(code: str) -> ExtractionResult:
     if not validate_fn(code):
         raise InvalidFunctionException()
 
-    fn = tree.root_node.children[0]
-    name = fn.child_by_field_name("name").text.decode("utf8")
-    params = fn.child_by_field_name("parameters").text.decode("utf8")[1:-1].split(", ")
-    body = fn.child_by_field_name("body").text.decode("utf8")
-    return name, params, body
+    try:
+        fn = tree.root_node.children[0]
+        name = fn.child_by_field_name("name").text.decode("utf8")
+        params = (
+            fn.child_by_field_name("parameters").text.decode("utf8")[1:-1].split(", ")
+        )
+        body = fn.child_by_field_name("body").text.decode("utf8")
+    except Exception:
+        raise InvalidFunctionException()
+    return {"name": name, "params": params, "body": body}

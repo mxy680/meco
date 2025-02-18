@@ -23,13 +23,13 @@ class ContainerManager:
             print(f"Starting container: {self.container_name}")
             self._ensure_image_exists()
             self.container = self.client.containers.run(
-                self.image, 
-                command="tail -f /dev/null", 
-                name=self.container_name, 
-                remove=True, 
-                stdin_open=True, 
-                network_disabled=True, 
-                detach=True
+                self.image,
+                command="tail -f /dev/null",
+                name=self.container_name,
+                remove=True,
+                stdin_open=True,
+                network_disabled=True,
+                detach=True,
             )
             print(f"Container {self.container_name} started.")
 

@@ -23,10 +23,19 @@ class Runner:
         """Start a persistent container to execute multiple snippets."""
         self.container.start()
 
-    def run(self, code: str):
-        return CodeExecutor.run_code(
-            self.container, code, self.language, self.script_name, self.config["run_command"]
-        )
+    def run(self, code: str, fn: dict, test_cases: list[str]):
+        match self.language:
+            case "python":
+                return CodeExecutor.run_code_python(
+                    self.container,
+                    code,
+                    fn,
+                    test_cases,
+                    self.script_name,
+                    self.config["run_command"],
+                )
+            case _:
+                raise ValueError(f"Unsupported language: {self.language}")
 
     def stop_container(self):
         """Stops the container after the evolution process is complete."""

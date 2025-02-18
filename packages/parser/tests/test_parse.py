@@ -8,4 +8,3 @@ def test_extract_python_fn():
             print(message)
     """
     extract_python_fn(fn)
-    

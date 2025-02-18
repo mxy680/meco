@@ -1,5 +1,6 @@
 from parser.lang.python import validate_python_fn
 
+
 def test_validate_python_fn():
     fn = """
     def print_message(message):

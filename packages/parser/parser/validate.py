@@ -1,5 +1,8 @@
-
+from parser.lang.python import validate_python_fn
 
 def validate_fn(code: str, lang: str) -> bool:
-    return True
-    
+    match lang:
+        case "python":
+            return validate_python_fn(code)
+        case _:
+            return False
