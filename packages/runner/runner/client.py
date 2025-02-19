@@ -23,13 +23,12 @@ class Runner:
         """Start a persistent container to execute multiple snippets."""
         self.container.start()
 
-    def run(self, code: str, fn: dict, test_cases: list[str]):
+    def run(self, code: str, test_cases: list[str]):
         match self.language:
             case "python":
                 return CodeExecutor.run_code_python(
                     self.container,
                     code,
-                    fn,
                     test_cases,
                     self.script_name,
                     self.config["run_command"],

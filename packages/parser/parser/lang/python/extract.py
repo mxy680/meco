@@ -1,29 +1,66 @@
 import tree_sitter_python as tspython
 from tree_sitter import Language, Parser
-from parser.exceptions import InvalidFunctionException
-from .validate import validate_fn
-from typing import List, Tuple
+from typing import Dict
 
 PY_LANGUAGE = Language(tspython.language())
 parser = Parser(PY_LANGUAGE)
 
-type ExtractionResult = Tuple[str, List[str], str]
+
+def extract_fn(code: str) -> Dict[str, str]:
+    """Extracts function name, parameters, and body using Tree-sitter"""
+    tree = parser.parse(bytes(code, "utf8"))
+    root = tree.root_node
+
+    fn_node = root.children[0]  # The function definition
+    name = fn_node.child_by_field_name("name").text.decode("utf8")
+    params = fn_node.child_by_field_name("parameters").text.decode("utf8")[
+        1:-1
+    ]  # Remove parentheses
+
+    # Extract and reformat function body
+    body_node = fn_node.child_by_field_name("body")
+    body = extract_body_statements(body_node)
+
+    # Wrap extracted function in a run() function that times execution
+    script = f"""
+import time
+
+def {name}({params}):
+{body}
+
+def run(n: int):
+    start = time.time()
+    result = {name}(n)
+    end = time.time()
+    return {{
+        "stdout": result,
+        "runtime": end - start
+    }}
+"""
+
+    return {"name": name, "params": params, "body": body, "script": script}
 
 
-def extract_fn(code: str) -> ExtractionResult:
-    code_bytes = bytes(code, "utf8")
-    tree = parser.parse(code_bytes, encoding="utf8")
+def extract_body_statements(body_node):
+    """Extracts function body while preserving correct indentation"""
+    cursor = body_node.walk()
+    cursor.goto_first_child()
 
-    if not validate_fn(code):
-        raise InvalidFunctionException()
+    statements = []
+    base_indent = None
 
-    try:
-        fn = tree.root_node.children[0]
-        name = fn.child_by_field_name("name").text.decode("utf8")
-        params = (
-            fn.child_by_field_name("parameters").text.decode("utf8")[1:-1].split(", ")
-        )
-        body = fn.child_by_field_name("body").text.decode("utf8")
-    except Exception:
-        raise InvalidFunctionException()
-    return {"name": name, "params": params, "body": body}
+    while True:
+        node_text = cursor.node.text.decode("utf8")
+        if node_text.strip():
+            current_indent = len(node_text) - len(node_text.lstrip())
+
+            if base_indent is None:
+                base_indent = current_indent
+
+            adjusted_text = "    " + node_text[base_indent:]  # Normalize indentation
+            statements.append(adjusted_text)
+
+        if not cursor.goto_next_sibling():
+            break
+
+    return "\n".join(statements)

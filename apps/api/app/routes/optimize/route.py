@@ -15,17 +15,19 @@ async def optimize(request: OptimizationRequest):
         return {"error": "Invalid function code."}
 
     # Get the function properties
-    fn_props: dict = extract_fn(request.function_code, request.language)
+    full_script = extract_fn(request.function_code, request.language)
     
     # Run the original function
     runner = Runner(request.language)
     runner.start_container()
     
-    result = runner.run(request.function_code, fn_props, request.test_cases)
+    result = runner.run(full_script, request.test_cases)
     cpu_percent = result.get("cpu_percent", 0)
     memory_usage = result.get("memory_usage", 0)
-    print(request.function_code)
+    output = result.get("stdout", "")
+    print(f"\nOriginal Function:\n{full_script}\n")
     print(f"\nCPU Percent: {cpu_percent}, Memory Usage: {memory_usage}")
+    print(f"\nOutput:", output)
     print("-" * 50)
 
     solutions = optimize_function(
@@ -38,13 +40,14 @@ async def optimize(request: OptimizationRequest):
             print(f"Invalid optimized function for {model}")
             continue
         
-        fn_props = extract_fn(value["code"], request.language)
+        full_script = extract_fn(value["code"], request.language)
         
         # Run the optimized function
-        result = runner.run(value["code"], fn_props, request.test_cases)
+        result = runner.run(full_script, request.test_cases)
         cpu_percent = result.get("cpu_percent", 0)
         memory_usage = result.get("memory_usage", 0)
         output = result.get("stdout", "")
         print(f"\nCPU Percent: {cpu_percent}, Memory Usage: {memory_usage}")
+        print(f"\nOutput:", output)
         print("-" * 50)
         
