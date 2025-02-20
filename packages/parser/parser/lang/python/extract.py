@@ -21,24 +21,7 @@ def extract_fn(code: str) -> Dict[str, str]:
     body_node = fn_node.child_by_field_name("body")
     body = extract_body_statements(body_node)
 
-    # Wrap extracted function in a run() function that times execution
-    script = f"""
-import time
-
-def {name}({params}):
-{body}
-
-def run(n: int):
-    start = time.time()
-    result = {name}(n)
-    end = time.time()
-    return {{
-        "stdout": result,
-        "runtime": end - start
-    }}
-"""
-
-    return {"name": name, "params": params, "body": body, "script": script}
+    return {"name": name, "params": params, "body": body}
 
 
 def extract_body_statements(body_node):

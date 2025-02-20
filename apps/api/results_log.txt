@@ -1,0 +1,41 @@
+Test: test_function_fibonacci_unoptimal
+{
+    "cpu_percent": 1.5152378709373526,
+    "memory_usage": 729088,
+    "runtime": 3.8583006244152784e-05
+}
+
+Test: test_function_fibonacci_optimal
+{
+    "cpu_percent": 1.5204928909952609,
+    "memory_usage": 733184,
+    "runtime": 4.169996827840805e-07
+}
+
+Test: test_function_bubble_sort_unoptimal
+{
+    "cpu_percent": 1.3603359818388194,
+    "memory_usage": 720896,
+    "runtime": 2.4579931050539017e-06
+}
+
+Test: test_function_bubble_sort_optimal
+{
+    "cpu_percent": 1.4105422685294815,
+    "memory_usage": 720896,
+    "runtime": 1.2500095181167126e-06
+}
+
+Test: test_function_prime_check_unoptimal
+{
+    "cpu_percent": 1.363291492329149,
+    "memory_usage": 720896,
+    "runtime": 5.41971530765295e-07
+}
+
+Test: test_function_prime_check_optimal
+{
+    "cpu_percent": 1.616276318902295,
+    "memory_usage": 733184,
+    "runtime": 3.3300602808594704e-07
+}

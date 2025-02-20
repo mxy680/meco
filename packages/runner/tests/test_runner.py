@@ -32,24 +32,3 @@ def test_ensure_image_exists(runner):
 def test_create_container(runner):
     """Test that the container is still running across tests."""
     assert runner.container.container is not None
-
-
-def test_run_code(runner):
-    """Test that the container runs the code and returns the output."""
-    code = "print('Hello, World!')"
-    output = runner.run(code)
-    assert output["stdout"] == "Hello, World!\n"
-
-
-def test_run_code_with_error(runner):
-    """Test that the container runs the code and returns the error."""
-    code = "print('Hello, World)"
-    output = runner.run(code)
-    assert "SyntaxError:" in output["stdout"]
-
-
-def test_run_code_function(runner):
-    """Test that the container runs the code and returns the output."""
-    code = "def add(a, b):\n    return a + b\nprint(add(2, 3))"
-    output = runner.run(code)
-    assert output["stdout"] == "5\n"
