@@ -45,4 +45,4 @@ __pycache__/
 .venv/
 
 # Testing
-/tests/
+**/tests/
