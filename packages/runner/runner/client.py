@@ -2,6 +2,7 @@ import docker
 from .configs import LANGUAGE_CONFIGS
 from .container import ContainerManager
 from .execution import run_code_python
+from typing import Union
 
 
 class Runner:
@@ -41,3 +42,16 @@ class Runner:
     def stop_container(self):
         """Stops the container after the evolution process is complete."""
         self.container.stop()
+
+    @staticmethod
+    def verify(test_cases: dict, output: dict) -> Union[True, Exception]:
+        for test_case in test_cases:
+            predicted_output = output[
+                ", ".join([f"{k}={v}" for k, v in test_case.inputs.items()])
+            ]
+            if test_case.expected_output != predicted_output:
+                return Exception(
+                    f"Output mismatch for {test_case.inputs}: {predicted_output}"
+                )
+
+        return True

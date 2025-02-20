@@ -10,37 +10,37 @@ from app.controllers.optimization import optimize_function
 from app.models import OptimizationRequest, FunctionTestCase
 
 
-# @pytest.mark.asyncio
-# async def test_function_fibonacci():
-#     function_code = """def fibonacci(n):
-#     if n <= 1:
-#         return n
+@pytest.mark.asyncio
+async def test_function_fibonacci():
+    function_code = """def fibonacci(n):
+    if n <= 1:
+        return n
 
-#     fib_list = [0, 1]
-#     for i in range(2, n + 1):
-#         fib_list.append(fib_list[i - 1] + fib_list[i - 2])
-#     return fib_list[-1]
-# """
-#     models = ["codellama"]
-#     test_cases = [
-#         FunctionTestCase(inputs={"n": 0}, expected_output=0, expected_type="int"),
-#         FunctionTestCase(inputs={"n": 1}, expected_output=1, expected_type="int"),
-#         FunctionTestCase(inputs={"n": 2}, expected_output=1, expected_type="int"),
-#         FunctionTestCase(inputs={"n": 3}, expected_output=2, expected_type="int"),
-#         FunctionTestCase(inputs={"n": 4}, expected_output=3, expected_type="int"),
-#         FunctionTestCase(inputs={"n": 5}, expected_output=5, expected_type="int"),
-#         FunctionTestCase(inputs={"n": 6}, expected_output=8, expected_type="int"),
-#         FunctionTestCase(inputs={"n": 7}, expected_output=13, expected_type="int"),
-#         FunctionTestCase(inputs={"n": 8}, expected_output=21, expected_type="int"),
-#     ]
+    fib_list = [0, 1]
+    for i in range(2, n + 1):
+        fib_list.append(fib_list[i - 1] + fib_list[i - 2])
+    return fib_list[-1]
+"""
+    models = ["codellama"]
+    test_cases = [
+        FunctionTestCase(inputs={"n": 0}, expected_output=0, expected_type="int"),
+        FunctionTestCase(inputs={"n": 1}, expected_output=1, expected_type="int"),
+        FunctionTestCase(inputs={"n": 2}, expected_output=1, expected_type="int"),
+        FunctionTestCase(inputs={"n": 3}, expected_output=2, expected_type="int"),
+        FunctionTestCase(inputs={"n": 4}, expected_output=3, expected_type="int"),
+        FunctionTestCase(inputs={"n": 5}, expected_output=5, expected_type="int"),
+        FunctionTestCase(inputs={"n": 6}, expected_output=8, expected_type="int"),
+        FunctionTestCase(inputs={"n": 7}, expected_output=13, expected_type="int"),
+        FunctionTestCase(inputs={"n": 8}, expected_output=21, expected_type="int"),
+    ]
 
-#     request = OptimizationRequest(
-#         function_code=function_code,
-#         models=models,
-#         test_cases=test_cases,
-#     )
-#     result = await optimize_function(request, "python")
-#     print(result)
+    request = OptimizationRequest(
+        function_code=function_code,
+        models=models,
+        test_cases=test_cases,
+    )
+    result = await optimize_function(request, "python")
+    print(result)
 
 
 @pytest.mark.asyncio

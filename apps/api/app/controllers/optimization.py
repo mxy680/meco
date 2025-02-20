@@ -31,12 +31,17 @@ async def optimize_function(request: OptimizationRequest, language: str):
     cpu_percent = result.get("cpu_percent", 0)
     memory_usage = result.get("memory_usage", 0)
     output = result.get("stdout", "")
-    print(f"\nOriginal Function:\n{request.function_code}\n")
-    print(f"Runtime:", runtime)
-    print(f"\nCPU Percent: {cpu_percent}")
-    print(f"Memory Usage: {memory_usage}")
-    print(f"\nOutput:\n{output}")
-    print("-" * 50)
+    # print(f"\nOriginal Function:\n{request.function_code}\n")
+    # print(f"Runtime:", runtime)
+    # print(f"\nCPU Percent: {cpu_percent}")
+    # print(f"Memory Usage: {memory_usage}")
+    # print(f"\nOutput:\n{output}")
+    # print("-" * 50)
+
+    # Verify the output matches the expected output
+    is_verified = runner.verify(request.test_cases, output)
+    if isinstance(is_verified, Exception):
+        return is_verified
 
     # return {
     #     "cpu_percent": cpu_percent,
