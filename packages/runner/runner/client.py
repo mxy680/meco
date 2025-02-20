@@ -23,17 +23,17 @@ class Runner:
         """Start a persistent container to execute multiple snippets."""
         self.container.start()
 
-    def run(self, code: str, fn: dict, test_cases: list[str], iterations: int = 100):
+    def run(self, code: str, fn: dict, test_code: str, iterations: int = 100):
         match self.language:
             case "python":
                 return run_code_python(
                     self.container,
                     code,
                     fn,
-                    test_cases,
+                    test_code,
                     self.script_name,
                     self.config["run_command"],
-                    iterations
+                    iterations,
                 )
             case _:
                 raise ValueError(f"Unsupported language: {self.language}")

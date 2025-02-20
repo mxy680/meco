@@ -7,234 +7,81 @@ base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, base_path)
 
 from app.controllers.optimization import optimize_function
-from app.models import OptimizationRequest
+from app.models import OptimizationRequest, FunctionTestCase
 
-# Helper function to log results to a file
-def log_results(test_name, results):
-    log_file = os.path.join(base_path, "results_log.txt")
-    with open(log_file, "a") as f:
-        f.write(f"Test: {test_name}\n")
-        f.write(json.dumps(results, indent=4))
-        f.write("\n\n")
+
+# @pytest.mark.asyncio
+# async def test_function_fibonacci():
+#     function_code = """def fibonacci(n):
+#     if n <= 1:
+#         return n
+
+#     fib_list = [0, 1]
+#     for i in range(2, n + 1):
+#         fib_list.append(fib_list[i - 1] + fib_list[i - 2])
+#     return fib_list[-1]
+# """
+#     models = ["codellama"]
+#     test_cases = [
+#         FunctionTestCase(inputs={"n": 0}, expected_output=0, expected_type="int"),
+#         FunctionTestCase(inputs={"n": 1}, expected_output=1, expected_type="int"),
+#         FunctionTestCase(inputs={"n": 2}, expected_output=1, expected_type="int"),
+#         FunctionTestCase(inputs={"n": 3}, expected_output=2, expected_type="int"),
+#         FunctionTestCase(inputs={"n": 4}, expected_output=3, expected_type="int"),
+#         FunctionTestCase(inputs={"n": 5}, expected_output=5, expected_type="int"),
+#         FunctionTestCase(inputs={"n": 6}, expected_output=8, expected_type="int"),
+#         FunctionTestCase(inputs={"n": 7}, expected_output=13, expected_type="int"),
+#         FunctionTestCase(inputs={"n": 8}, expected_output=21, expected_type="int"),
+#     ]
+
+#     request = OptimizationRequest(
+#         function_code=function_code,
+#         models=models,
+#         test_cases=test_cases,
+#     )
+#     result = await optimize_function(request, "python")
+#     print(result)
 
 
 @pytest.mark.asyncio
-async def test_function_fibonacci_unoptimal():
-    function_code = """def fibonacci(n):
-    if n <= 1:
-        return n
-
-    fib_list = [0, 1]
-    for i in range(2, n + 1):
-        fib_list.append(fib_list[i - 1] + fib_list[i - 2])
-    return fib_list[-1]
+async def test_function_gcd_unoptimal():
+    function_code = """def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
 """
-    language = "python"
     models = ["codellama"]
     test_cases = [
-        {"n": 0},
-        {"n": 1},
-        {"n": 5},
-        {"n": 55},
-        {"n": 610},
+        FunctionTestCase(
+            inputs={"a": 48, "b": 18}, expected_output=6, expected_type="int"
+        ),
+        FunctionTestCase(
+            inputs={"a": 101, "b": 103}, expected_output=1, expected_type="int"
+        ),
+        FunctionTestCase(
+            inputs={"a": 56, "b": 98}, expected_output=14, expected_type="int"
+        ),
+        FunctionTestCase(
+            inputs={"a": 270, "b": 192}, expected_output=6, expected_type="int"
+        ),
+        FunctionTestCase(
+            inputs={"a": 10, "b": 0}, expected_output=10, expected_type="int"
+        ),
+        FunctionTestCase(
+            inputs={"a": 0, "b": 10}, expected_output=10, expected_type="int"
+        ),
+        FunctionTestCase(
+            inputs={"a": 7, "b": 13}, expected_output=1, expected_type="int"
+        ),
+        FunctionTestCase(
+            inputs={"a": 144, "b": 89}, expected_output=1, expected_type="int"
+        ),
     ]
 
     request = OptimizationRequest(
         function_code=function_code,
-        language=language,
         models=models,
         test_cases=test_cases,
     )
-    results = await optimize_function(request)
-    log_results("test_function_fibonacci_unoptimal", results)
-
-
-@pytest.mark.asyncio
-async def test_function_fibonacci_optimal():
-    function_code = """def fibonacci(n, memo={}):
-    if n in memo:
-        return memo[n]
-    if n <= 1:
-        return n
-    memo[n] = fibonacci(n - 1, memo) + fibonacci(n - 2, memo)
-    return memo[n]
-"""
-    language = "python"
-    models = ["codellama"]
-    test_cases = [
-        {"n": 0},
-        {"n": 1},
-        {"n": 5},
-        {"n": 55},
-        {"n": 610},
-    ]
-
-    request = OptimizationRequest(
-        function_code=function_code,
-        language=language,
-        models=models,
-        test_cases=test_cases,
-    )
-    results = await optimize_function(request)
-    log_results("test_function_fibonacci_optimal", results)
-
-
-@pytest.mark.asyncio
-async def test_function_bubble_sort_unoptimal():
-    function_code = """def bubble_sort(arr):
-    n = len(arr)
-    for i in range(n):
-        for j in range(n - 1): 
-            if arr[j] > arr[j + 1]:
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]
-    return arr
-"""
-    language = "python"
-    models = ["codellama"]
-    test_cases = [
-        {"arr": [3, 1, 4, 1, 5]},
-        {"arr": [1, 1, 3, 4, 5]},
-    ]
-
-    request = OptimizationRequest(
-        function_code=function_code,
-        language=language,
-        models=models,
-        test_cases=test_cases,
-    )
-    results = await optimize_function(request)
-    log_results("test_function_bubble_sort_unoptimal", results)
-
-
-@pytest.mark.asyncio
-async def test_function_bubble_sort_optimal():
-    function_code = """def bubble_sort(arr):
-    n = len(arr)
-    for i in range(n):
-        swapped = False
-        for j in range(n - i - 1):
-            if arr[j] > arr[j + 1]:
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]
-                swapped = True
-        if not swapped:
-            break
-    return arr
-"""
-    language = "python"
-    models = ["codellama"]
-    test_cases = [
-        {"arr": [3, 1, 4, 1, 5]},
-        {"arr": [1, 1, 3, 4, 5]},
-    ]
-
-    request = OptimizationRequest(
-        function_code=function_code,
-        language=language,
-        models=models,
-        test_cases=test_cases,
-    )
-    results = await optimize_function(request)
-    log_results("test_function_bubble_sort_optimal", results)
-
-
-@pytest.mark.asyncio
-async def test_function_prime_check_unoptimal():
-    function_code = """def is_prime(n):
-    if n <= 1:
-        return False
-    for i in range(2, n):  # Too many unnecessary checks
-        if n % i == 0:
-            return False
-    return True
-"""
-    language = "python"
-    models = ["codellama"]
-    test_cases = [
-        {"n": 10},
-        {"n": 17},
-    ]
-
-    request = OptimizationRequest(
-        function_code=function_code,
-        language=language,
-        models=models,
-        test_cases=test_cases,
-    )
-    results = await optimize_function(request)
-    log_results("test_function_prime_check_unoptimal", results)
-
-
-@pytest.mark.asyncio
-async def test_function_prime_check_optimal():
-    function_code = """def is_prime(n):
-    if n <= 1:
-        return False
-    if n in {2, 3}:
-        return True
-    if n % 2 == 0 or n % 3 == 0:
-        return False
-    for i in range(5, int(n**0.5) + 1, 2):  # Check odd numbers only
-        if n % i == 0:
-            return False
-    return True
-"""
-    language = "python"
-    models = ["codellama"]
-    test_cases = [
-        {"n": 10},
-        {"n": 17},
-    ]
-
-    request = OptimizationRequest(
-        function_code=function_code,
-        language=language,
-        models=models,
-        test_cases=test_cases,
-    )
-    results = await optimize_function(request)
-    log_results("test_function_prime_check_optimal", results)
-
-
-@pytest.mark.asyncio
-async def test_function_string_reverse_unoptimal():
-    function_code = """def reverse_string(s):
-    result = ""
-    for char in s:  # Appending to string in loop (slow)
-        result = char + result
-    return result
-"""
-    language = "python"
-    models = ["codellama"]
-    test_cases = [
-        {"s": "hello"},
-        {"s": "world"},
-    ]
-    request = OptimizationRequest(
-        function_code=function_code,
-        language=language,
-        models=models,
-        test_cases=test_cases,
-    )
-    results = await optimize_function(request)
-    log_results("test_function_string_reverse_unoptimal", results)
-
-
-@pytest.mark.asyncio
-async def test_function_string_reverse_optimal():
-    function_code = """def reverse_string(s):
-    return s[::-1]
-"""
-    language = "python"
-    models = ["codellama"]
-    test_cases = [
-        {"s": "hello"},
-        {"s": "world"},
-    ]
-    request = OptimizationRequest(
-        function_code=function_code,
-        language=language,
-        models=models,
-        test_cases=test_cases,
-    )
-    results = await optimize_function(request)
-    log_results("test_function_string_reverse_optimal", results)
+    result = await optimize_function(request, "python")
+    print(result)

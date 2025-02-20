@@ -6,6 +6,6 @@ from app.controllers.optimization import optimize_function
 router = APIRouter()
 
 
-@router.post("/optimize")
+@router.post("/optimize/python")
 async def optimize(request: OptimizationRequest):
-    return optimize_function(request)
+    return optimize_function(request, "python")

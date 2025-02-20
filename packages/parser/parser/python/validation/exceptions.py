@@ -25,10 +25,17 @@ class SingleFunctionOnlyException(Exception):
         super().__init__(self.message)
 
 
-# Parser
 class InvalidFunctionException(Exception):
     """Raised when the parsed code does not contain a valid function."""
 
     def __init__(self, message="The parsed code does not contain a valid function."):
+        self.message = message
+        super().__init__(self.message)
+
+
+class InvalidTestCasesException(Exception):
+    """Raised when the test cases are invalid."""
+
+    def __init__(self, message="The test cases are invalid"):
         self.message = message
         super().__init__(self.message)

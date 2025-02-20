@@ -1,9 +1,10 @@
 import tree_sitter_python as tspython
 from tree_sitter import Language, Parser
-from parser.exceptions import (
+from .exceptions import (
     ModuleNotRootException,
     ImportNotSupportedException,
     SingleFunctionOnlyException,
+    InvalidFunctionException,
 )
 
 PY_LANGUAGE = Language(tspython.language())
@@ -25,9 +26,15 @@ def validate_fn(code: str):
 
     try:
         fn = tree.root_node.children[0]
-        fn.child_by_field_name("name").text.decode("utf8")
-        fn.child_by_field_name("parameters").text.decode("utf8")[1:-1].split(", ")
-        fn.child_by_field_name("body").text.decode("utf8")
+        name = fn.child_by_field_name("name").text.decode("utf8")
+        params = (
+            fn.child_by_field_name("parameters").text.decode("utf8")[1:-1].split(", ")
+        )
+
+        body = fn.child_by_field_name("body").text.decode("utf8")
+
+        if not name and params and body:
+            return InvalidFunctionException()
     except Exception as e:
         print(e)
         return False

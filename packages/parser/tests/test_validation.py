@@ -1,4 +1,5 @@
-from parser.lang.python import validate_python_fn
+from parser.python import validate_python_fn
+from parser.python import validate_python_test_cases
 
 
 def test_validate_python_fn():
