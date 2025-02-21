@@ -1,4 +1,7 @@
-from parser.python import validate_python_fn, validate_python_test_cases
+from parser.python import (
+    validate_python_fn,
+    validate_python_signature,
+)
 
 
 def validate_fn(code: str, lang: str) -> bool:
@@ -9,9 +12,9 @@ def validate_fn(code: str, lang: str) -> bool:
             return False
 
 
-def validate_test_cases(fn: dict, test_cases: list, lang: str) -> bool:
+def validate_signature(signature: str, test_cases: list, lang: str) -> bool:
     match lang:
         case "python":
-            return validate_python_test_cases(fn, test_cases)
+            return validate_python_signature(signature, test_cases)
         case _:
             return False

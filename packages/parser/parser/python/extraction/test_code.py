@@ -1,17 +1,5 @@
 from typing import Any, Dict, List
-
-# Type mapping dictionary
-TYPE_MAP = {
-    "int": int,
-    "float": float,
-    "str": str,
-    "bool": bool,
-    "list": list,
-    "dict": dict,
-    "tuple": tuple,
-    "set": set,
-    "NoneType": type(None),
-}
+from ..types import TYPE_MAP
 
 
 def extract_test_code(fn: dict, test_cases: List[Dict[str, Any]]) -> str:

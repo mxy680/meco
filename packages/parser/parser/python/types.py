@@ -7,5 +7,5 @@ TYPE_MAP = {
     "dict": dict,
     "tuple": tuple,
     "set": set,
-    "NoneType": type(None),  # Handles None
+    "None": type(None),  # Handles None
 }

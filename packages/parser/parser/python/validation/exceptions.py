@@ -33,9 +33,9 @@ class InvalidFunctionException(Exception):
         super().__init__(self.message)
 
 
-class InvalidTestCasesException(Exception):
-    """Raised when the test cases are invalid."""
+class InvalidSignatureException(Exception):
+    """Raised when the function signature is invalid."""
 
-    def __init__(self, message="The test cases are invalid"):
+    def __init__(self, message="The function signature is invalid"):
         self.message = message
         super().__init__(self.message)
