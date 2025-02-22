@@ -6,12 +6,12 @@ from ..run_utils import run_code
 def run_code_python(
     container,
     code: str,
-    fn: dict,
     test_code: str,
     script_name: str,
     run_command: str,
     iterations: int,
-    workdir="/code",
+    workdir: str = "/code",
+    verbose: bool = False,
 ):
     if container.container is None:
         raise RuntimeError("Container is not running. Call start_container() first.")

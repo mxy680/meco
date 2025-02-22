@@ -1,11 +1,13 @@
 from app.models import OptimizationRequest
 from runner.client import Runner
 from parser.validate import validate_fn, validate_signature
-from parser.extract import extract_fn, extract_test_code, extract_signature
-import json
+from parser.extract import extract_test_code, extract_signature
+from optimizer.ollama import OllamaOptimizer
 
 
 async def optimize(request: OptimizationRequest, language: str):
+    print()
+    print()
     # Validate and extract the original function
     validate_signature(request.signature, request.test_cases, language)
 
@@ -15,29 +17,28 @@ async def optimize(request: OptimizationRequest, language: str):
     # Extract the test cases as an aggregated string
     test_code = extract_test_code(fn, request.test_cases, language)
 
-    # Run the original function
+    optimizer = OllamaOptimizer(request.signature, language, request.models, test_code)
+    response = optimizer.base()
+
+    # Validate the base function
+    if not validate_fn(response["function"], language):
+        raise Exception("Invalid base function")
+
+    print("Base Function Validated!")
+
+    # Run the base function
     runner = Runner(language)
     runner.start_container()
 
-    # solutions = optimize_signature(
-    #     request.signature, language, request.models, stream=True
-    # )
+    result = runner.run(response["function"], test_code)
+    output = result.get("stdout", "")
 
-    # print(solutions)
+    if isinstance(output, str):
+        raise Exception(f"Invalid output format: \n{output}")
 
-    # for model, value in solutions.items():
-    #     # Validate and extract the optimized function
-    #     if not validate_fn(value["code"], language):
-    #         print(f"Invalid optimized function for {model}")
-    #         continue
+    for case in request.test_cases:
+        args = ", ".join([f"{k}={v}" for k, v in case.inputs.items()])
+        if not output[args] == case.expected_output:
+            raise Exception(f"Invalid output for case: {case}")
 
-    #     fn = extract_fn(value["code"], language)
-
-    #     # Run the optimized function
-    #     result = runner.run(fn['script'], request.test_cases)
-    #     cpu_percent = result.get("cpu_percent", 0)
-    #     memory_usage = result.get("memory_usage", 0)
-    #     output = result.get("stdout", "")
-    #     print(f"\nCPU Percent: {cpu_percent}, Memory Usage: {memory_usage}")
-    #     print(f"\nOutput:", output)
-    #     print("-" * 50)
+    print("All test cases passed!")
