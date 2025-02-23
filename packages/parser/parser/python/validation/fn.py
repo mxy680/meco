@@ -33,10 +33,9 @@ def validate_fn(code: str):
 
         body = fn.child_by_field_name("body").text.decode("utf8")
 
-        if not name and params and body:
+        if not name or not params or not body:
             return InvalidFunctionException()
     except Exception as e:
-        print(e)
         return False
 
     return True

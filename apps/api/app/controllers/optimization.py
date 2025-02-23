@@ -6,8 +6,6 @@ from optimizer.ollama import OllamaOptimizer
 
 
 async def optimize(request: OptimizationRequest, language: str):
-    print()
-    print()
     # Validate and extract the original function
     validate_signature(request.signature, request.test_cases, language)
 
@@ -21,16 +19,14 @@ async def optimize(request: OptimizationRequest, language: str):
     response = optimizer.base()
 
     # Validate the base function
-    if not validate_fn(response["function"], language):
+    if not validate_fn(response["function_implementation"], language):
         raise Exception("Invalid base function")
-
-    print("Base Function Validated!")
 
     # Run the base function
     runner = Runner(language)
     runner.start_container()
 
-    result = runner.run(response["function"], test_code)
+    result = runner.run(response["function_implementation"], test_code)
     output = result.get("stdout", "")
 
     if isinstance(output, str):
@@ -40,5 +36,3 @@ async def optimize(request: OptimizationRequest, language: str):
         args = ", ".join([f"{k}={v}" for k, v in case.inputs.items()])
         if not output[args] == case.expected_output:
             raise Exception(f"Invalid output for case: {case}")
-
-    print("All test cases passed!")

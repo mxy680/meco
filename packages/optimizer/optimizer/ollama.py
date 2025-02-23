@@ -29,7 +29,7 @@ class OllamaOptimizer:
         if not self.ollama_url:
             raise ValueError("OLLAMA_URL environment variable is not set.")
 
-    def base(self, stream: bool = False):
+    def base(self):
         """Create a base function for optimization given the function signature/description"""
         prompt: str = self._get_base_prompt(
             self.signature, self.language, self.test_code
@@ -37,14 +37,8 @@ class OllamaOptimizer:
         response: str = ""
         model: str = self.models[0]
         payload: dict = self._get_base_payload(model, prompt)
-        if stream:
-            for text_chunk in self._query_ollama_stream(payload):
-                print(text_chunk, end="", flush=True)
-                response += text_chunk
-        else:
-            response = self._query_ollama(payload)
 
-        response = json.loads(response)
+        response = json.loads(self._query_ollama(payload))
         response["prompt"] = prompt
         return response
 
@@ -57,24 +51,6 @@ class OllamaOptimizer:
         except requests.RequestException as e:
             print(f"Ollama API error: {e}")
             return ""  # Return empty string to indicate failure
-
-    def _query_ollama_stream(self, payload: dict):
-        """Calls the Ollama API with streaming and yields response chunks."""
-        try:
-            with requests.post(
-                OLLAMA_URL, json=payload, stream=True, timeout=60
-            ) as response:
-                response.raise_for_status()
-                for chunk in response.iter_lines(decode_unicode=True):
-                    if chunk:
-                        try:
-                            data = json.loads(chunk)
-                            yield data.get("response", "")
-                        except json.JSONDecodeError:
-                            continue  # Skip malformed chunks
-        except requests.RequestException as e:
-            print(f"Ollama API error: {e}")
-            yield ""  # Return empty string to indicate failure
 
     def _get_base_prompt(self, code: str, language: str, test_code: str):
         return f"""
@@ -103,10 +79,10 @@ class OllamaOptimizer:
         payload["format"] = {
             "type": "object",
             "properties": {
-                "function": {"type": "string"},
+                "function_implementation": {"type": "string"},
                 "description": {"type": "string"},
             },
-            "required": ["function", "description"],
+            "required": ["function_implementation", "description"],
         }
 
         return payload
