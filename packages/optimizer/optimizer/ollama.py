@@ -2,6 +2,8 @@ import os
 import json
 import requests
 from dotenv import load_dotenv
+from .prompts.baseline import get_baseline_payload
+from .prompts.exploration import get_exploration_payload
 
 # Load environment variables
 load_dotenv()
@@ -19,7 +21,7 @@ class OllamaOptimizer:
         test_code: str,
         ollama_url: str = None,
     ):
-        """Initialize the optimizer with the Ollama API URL."""
+        """baselineialize the optimizer with the Ollama API URL."""
         self.signature = signature
         self.language = language
         self.models = models
@@ -29,20 +31,27 @@ class OllamaOptimizer:
         if not self.ollama_url:
             raise ValueError("OLLAMA_URL environment variable is not set.")
 
-    def base(self):
-        """Create a base function for optimization given the function signature/description"""
-        prompt: str = self._get_base_prompt(
-            self.signature, self.language, self.test_code
+    def baseline(self):
+        """Create an baseline function for optimization given the function signature/description"""
+        payload, prompt = get_baseline_payload(
+            self.models[0], self.signature, self.language, self.test_code
         )
-        response: str = ""
-        model: str = self.models[0]
-        payload: dict = self._get_base_payload(model, prompt)
 
-        response = json.loads(self._query_ollama(payload))
+        response = json.loads(self._query(payload))
         response["prompt"] = prompt
         return response
 
-    def _query_ollama(self, payload: dict):
+    def explore(self, model: str, function: str):
+        """Create an exploration function for optimization given the function signature/description"""
+        payload, prompt = get_exploration_payload(
+            model, function, self.language, self.test_code
+        )
+
+        response = json.loads(self._query(payload))
+        response["prompt"] = prompt
+        return response
+
+    def _query(self, payload: dict):
         """Calls the Ollama API synchronously and returns the response as a string."""
         try:
             response = requests.post(OLLAMA_URL, json=payload, timeout=60)
@@ -51,38 +60,3 @@ class OllamaOptimizer:
         except requests.RequestException as e:
             print(f"Ollama API error: {e}")
             return ""  # Return empty string to indicate failure
-
-    def _get_base_prompt(self, code: str, language: str, test_code: str):
-        return f"""
-    You are given the {language} function signature and a set of test cases.
-    
-    Your goal is to implement the function in a way that guarantees it passes all test cases. 
-    Follow these rules:
-    
-    - Do NOT use any non-native libraries or modules.
-    - Your response must ONLY contain:
-    1. The function implementation.
-    2. A brief description of what the function does.
-    - Ensure that the function handles edge cases and passes all provided test cases.
-    
-    Function signature:
-    {code}
-    
-    Test cases the function must pass:
-    {test_code}
-        """
-
-    def _get_base_payload(
-        self, model: str, prompt: str, stream: bool = False, gen: int = 0
-    ):
-        payload = {"model": model, "prompt": prompt, "stream": stream}
-        payload["format"] = {
-            "type": "object",
-            "properties": {
-                "function_implementation": {"type": "string"},
-                "description": {"type": "string"},
-            },
-            "required": ["function_implementation", "description"],
-        }
-
-        return payload

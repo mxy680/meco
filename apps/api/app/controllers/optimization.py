@@ -15,24 +15,41 @@ async def optimize(request: OptimizationRequest, language: str):
     # Extract the test cases as an aggregated string
     test_code = extract_test_code(fn, request.test_cases, language)
 
+    # # baselineialize the optimizer
     optimizer = OllamaOptimizer(request.signature, language, request.models, test_code)
-    response = optimizer.base()
+    # response = optimizer.baseline()
 
-    # Validate the base function
-    if not validate_fn(response["function_implementation"], language):
-        raise Exception("Invalid base function")
+    # # Validate the baseline function
+    # baseline_function = response["function_implementation"]
+    baseline_function = """
+def fibonacci(n: int) -> int:
+    if n <= 1:
+        return n
+    else:
+        return fibonacci(n-1) + fibonacci(n-2)
+        """
+    if not validate_fn(baseline_function, language):
+        raise Exception("Invalid baseline function")
 
-    # Run the base function
+    # Run the baseline function
     runner = Runner(language)
     runner.start_container()
-
-    result = runner.run(response["function_implementation"], test_code)
+    result = runner.run(baseline_function, test_code)
     output = result.get("stdout", "")
 
     if isinstance(output, str):
         raise Exception(f"Invalid output format: \n{output}")
 
-    for case in request.test_cases:
-        args = ", ".join([f"{k}={v}" for k, v in case.inputs.items()])
-        if not output[args] == case.expected_output:
-            raise Exception(f"Invalid output for case: {case}")
+    runner.verify_tests(request.test_cases, output)
+
+    for model in request.models:
+        function = baseline_function
+        while True:
+            response = optimizer.explore(model, function)
+            print()
+            print(response["optimized_function"])
+            print(response["changes"])
+            print()
+            function = response["optimized_function"]
+            if not validate_fn(function, language):
+                raise Exception("Invalid optimized function")

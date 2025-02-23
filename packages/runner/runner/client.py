@@ -54,3 +54,11 @@ class Runner:
                 )
 
         return True
+
+
+    @staticmethod 
+    def verify_tests(test_cases: dict, output: dict) -> Union[True, Exception]:
+        for case in test_cases:
+            args = ", ".join([f"{k}={v}" for k, v in case.inputs.items()])
+            if not output[args] == case.expected_output:
+                raise Exception(f"Invalid output for case: {case}")

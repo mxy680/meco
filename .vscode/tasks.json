@@ -23,11 +23,11 @@
         "problemMatcher": [],
       },
       {
-        "label": "Test",
+        "label": "Test", 
         "type": "shell",
-        "command": "turbo",
+        "command": "pnpm",
         "args": ["test"],
-        "problemMatcher": [],
+        "problemMatcher": []
       }
     ]
   }

@@ -5,11 +5,10 @@ import json
 import gc
 import os
 
-# Pin CPU to core 0 (Handled OS exceptions)
 try:
     os.sched_setaffinity(0, {{0}}) 
 except AttributeError:
-    pass  # Ignore if not supported
+    pass 
 
 {code}
 
@@ -20,7 +19,7 @@ def run():
     results = {{}}
 
     runtimes = []
-    for _ in range({iterations}): 
+    for _ in range({iterations}):
         start = time.perf_counter()
 {test_code}  
         end = time.perf_counter()
