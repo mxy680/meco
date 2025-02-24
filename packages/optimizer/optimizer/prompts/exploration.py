@@ -1,43 +1,49 @@
-def get_exploration_prompt(function: str, language: str, test_code: str):
+def get_exploration_prompt(
+    function: str, language: str, test_code: str, n: int, gen: int
+):
     return f"""
+You are a creative software engineer trying to discover new algorithms.
 You are given the {language} function and a set of test cases.
 
-Your goal is to optimize the function using unconventional approaches that would be considered "novel" code. 
-Optimization is not limited to improving the time complexity of the function, but also other metrics such as memory usage and cpu usage.
-If you think it's already optimized, assume its not and you must write some code that you have never seen before and no one has ever thought of.
-My goal for you is to discover new algorithms and programming techniques that are more efficient than the existing ones.
-Value the metrics of the function more than the code readability and whether it passes the test cases.
+Your goal is to optimize the function using unconventional approaches that have yet to be discovered.
+By optimization, I mean decreasing runtime, memory usage, or increasing cpu percent.
+Note that you are on the generation 100 of optimization. The higher the generation, the more unconventional your approach should be.
+Again, please brainstorm approaches that may not work, as the goal is to explore new ways to optimize the function.
+Brainstorm as many ways as possible to optimize the function.
 
 Follow these rules:
-
-- Do NOT use any non-native libraries or modules. Remember to import any necessary modules inside the function, not outside.
+- You cannot use non-native libraries.
+- You cannot use another language.
 - Your response must ONLY contain:
-1. The optimized function. 
-- Do NOT include the original function or any other code. 
-- Your function must be named exactly as the original function.
-- Do not convert the function into a ternary operator.
-- Make sure your optimized function is different from the original function.
-2. A brief description of the changes you made.
-- Ensure that the function handles edge cases and passes all provided test cases.
+1. For each approach, return:
+    1. The name of the approach you will use to optimize the function. (name)
+    2. The description of the approach. (description)
 
 Function signature:
 {function}
 
 Test cases the function must pass:
 {test_code}
-        """
+"""
 
 
-def get_exploration_payload(model: str, signature: str, language: str, test_code: str):
-    prompt = get_exploration_prompt(signature, language, test_code)
+def get_exploration_payload(
+    model: str, signature: str, language: str, test_code: str, n: int, gen: int
+):
+    prompt = get_exploration_prompt(signature, language, test_code, n, gen)
     payload = {"model": model, "prompt": prompt, "stream": False}
+    properties = {
+        f"approaches": {
+            "type": "array",
+            "name": {"type": "string"},
+            "description": {"type": "string"},
+            "required": ["name", "description"],
+        }
+    }
     payload["format"] = {
         "type": "object",
-        "properties": {
-            "optimized_function": {"type": "string"},
-            "changes": {"type": "string"},
-        },
-        "required": ["optimized_function", "changes"],
+        "properties": properties,
+        "required": ["approaches"],
     }
 
     return payload, prompt

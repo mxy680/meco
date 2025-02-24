@@ -25,31 +25,46 @@ async def optimize(request: OptimizationRequest, language: str):
     )
 
     print("\n🔎 Generating Baseline Implementation...")
-    response = optimizer.baseline()
+    # response = optimizer.baseline()
 
-    # Validate the baseline function
-    function = response["function_implementation"]
-    print("\n📝 Baseline Function Generated:\n", function)
+    # # Validate the baseline function
+    # function = response["function_implementation"]
+    function = """
+def matrix_multiply(A: list, B: list) -> list:
+    rows_a, cols_a = len(A), len(A[0])
+    rows_b, cols_b = len(B), len(B[0])
+
+    if cols_a != rows_b:
+        raise ValueError('Invalid matrix dimensions for multiplication')
+
+    result = [[0 for _ in range(cols_b)] for _ in range(rows_a)]
+
+    for i in range(rows_a):
+        for j in range(cols_b):
+            for k in range(cols_a):
+                result[i][j] += A[i][k] * B[k][j]
+
+    return result
+    """
+    # print("\n📝 Baseline Function Generated:\n", function)
+    # print("\n📄 Baseline Function Description:\n", response["description"])
 
     # Initialize the runner
     runner = Runner(language)
     runner.start_container()
 
-    # Persist the baseline function
-    result = optimizer.persist(function, validate=validate_fn, runner=runner)
+    # # Persist the baseline function
+    # result = optimizer.persist(function, validate=validate_fn, runner=runner)
 
-    # Get the baseline metrics
-    runner.display_metrics(result)
+    # # Get the baseline metrics
+    # runner.display_metrics(result)
 
     # Exploration phase
     print("\n🔍 Starting Exploration Phase...")
     for model in request.models:
-        response = optimizer.explore(model, function)
-        function = response["optimized_function"]
-        print("\n🚀 Exploration Function Generated:\n", function)
-
-        # Persist the exploration function
-        result = optimizer.persist(function, validate=validate_fn, runner=runner)
-
-        # Get the baseline metrics
-        runner.display_metrics(result)
+        response = optimizer.explore(model, function, n=10, gen=1)
+        print("\n📈 Exploration Results:")
+        for approach in response["approaches"]:
+            print("🚀 Approach:", approach["name"].strip())
+            print("📄 Description:", approach["description"].strip())
+            print()

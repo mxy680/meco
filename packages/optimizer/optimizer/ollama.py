@@ -96,10 +96,10 @@ class OllamaOptimizer:
 
         return result
 
-    def explore(self, model: str, function: str):
+    def explore(self, model: str, function: str, n: int, gen: int):
         """Create an exploration function for optimization given the function signature/description"""
         payload, prompt = get_exploration_payload(
-            model, function, self.language, self.test_code
+            model, function, self.language, self.test_code, n=n, gen=gen
         )
 
         response = json.loads(self._query(payload))
