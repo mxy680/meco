@@ -6,7 +6,10 @@ from optimizer.ollama import OllamaOptimizer
 
 
 async def optimize(request: OptimizationRequest, language: str):
+    print("\n🚀 Starting Optimization Process...")
+
     # Validate and extract the original function
+    print("\n✅ Validating function signature...")
     validate_signature(request.signature, request.test_cases, language)
 
     # Get the signature properties
@@ -15,41 +18,38 @@ async def optimize(request: OptimizationRequest, language: str):
     # Extract the test cases as an aggregated string
     test_code = extract_test_code(fn, request.test_cases, language)
 
-    # # baselineialize the optimizer
-    optimizer = OllamaOptimizer(request.signature, language, request.models, test_code)
-    # response = optimizer.baseline()
+    # Initialize the optimizer
+    print("\n⚙️ Initializing the optimizer...")
+    optimizer = OllamaOptimizer(
+        request.signature, language, request.models, request.test_cases, test_code
+    )
 
-    # # Validate the baseline function
-    # baseline_function = response["function_implementation"]
-    baseline_function = """
-def fibonacci(n: int) -> int:
-    if n <= 1:
-        return n
-    else:
-        return fibonacci(n-1) + fibonacci(n-2)
-        """
-    if not validate_fn(baseline_function, language):
-        raise Exception("Invalid baseline function")
+    print("\n🔎 Generating Baseline Implementation...")
+    response = optimizer.baseline()
 
-    # Run the baseline function
+    # Validate the baseline function
+    function = response["function_implementation"]
+    print("\n📝 Baseline Function Generated:\n", function)
+
+    # Initialize the runner
     runner = Runner(language)
     runner.start_container()
-    result = runner.run(baseline_function, test_code)
-    output = result.get("stdout", "")
 
-    if isinstance(output, str):
-        raise Exception(f"Invalid output format: \n{output}")
+    # Persist the baseline function
+    result = optimizer.persist(function, validate=validate_fn, runner=runner)
 
-    runner.verify_tests(request.test_cases, output)
+    # Get the baseline metrics
+    runner.display_metrics(result)
 
+    # Exploration phase
+    print("\n🔍 Starting Exploration Phase...")
     for model in request.models:
-        function = baseline_function
-        while True:
-            response = optimizer.explore(model, function)
-            print()
-            print(response["optimized_function"])
-            print(response["changes"])
-            print()
-            function = response["optimized_function"]
-            if not validate_fn(function, language):
-                raise Exception("Invalid optimized function")
+        response = optimizer.explore(model, function)
+        function = response["optimized_function"]
+        print("\n🚀 Exploration Function Generated:\n", function)
+
+        # Persist the exploration function
+        result = optimizer.persist(function, validate=validate_fn, runner=runner)
+
+        # Get the baseline metrics
+        runner.display_metrics(result)

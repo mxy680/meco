@@ -4,7 +4,7 @@ from parser.python import (
 )
 
 
-def validate_fn(code: str, lang: str) -> bool:
+def validate_fn(code: str, lang: str):
     match lang:
         case "python":
             return validate_python_fn(code)
@@ -12,7 +12,7 @@ def validate_fn(code: str, lang: str) -> bool:
             return False
 
 
-def validate_signature(signature: str, test_cases: list, lang: str) -> bool:
+def validate_signature(signature: str, test_cases: list, lang: str):
     match lang:
         case "python":
             return validate_python_signature(signature, test_cases)

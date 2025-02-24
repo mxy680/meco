@@ -3,6 +3,7 @@ from .configs import LANGUAGE_CONFIGS
 from .container import ContainerManager
 from .execution import run_code_python
 from typing import Union
+import hashlib
 
 
 class Runner:
@@ -24,7 +25,7 @@ class Runner:
         """Start a persistent container to execute multiple snippets."""
         self.container.start()
 
-    def run(self, code: str, test_code: str, iterations: int = 10):
+    def run(self, code: str, test_code: str, iterations: int = 100):
         match self.language:
             case "python":
                 return run_code_python(
@@ -43,22 +44,18 @@ class Runner:
         self.container.stop()
 
     @staticmethod
-    def verify(test_cases: dict, output: dict) -> Union[True, Exception]:
-        for test_case in test_cases:
-            predicted_output = output[
-                ", ".join([f"{k}={v}" for k, v in test_case.inputs.items()])
-            ]
-            if test_case.expected_output != predicted_output:
-                return Exception(
-                    f"Output mismatch for {test_case.inputs}: {predicted_output}"
-                )
-
-        return True
-
-
-    @staticmethod 
-    def verify_tests(test_cases: dict, output: dict) -> Union[True, Exception]:
+    def verify_tests(test_cases: dict, output: dict) -> Union[True, str]:
         for case in test_cases:
             args = ", ".join([f"{k}={v}" for k, v in case.inputs.items()])
-            if not output[args] == case.expected_output:
-                raise Exception(f"Invalid output for case: {case}")
+            args_hash = hashlib.md5(args.encode()).hexdigest()
+            if not output[args_hash] == case.expected_output:
+                return f"Invalid output for case: {case}"
+
+    @staticmethod
+    def display_metrics(metrics: dict):
+        print(
+            "\n📊 Metrics:"
+            f"\nRuntime: {round(metrics['runtime'], 10)}ms"
+            f"\nMemory Usage: {round(metrics['memory_usage'], 5)}MB"
+            f"\nCPU Usage: {round(metrics['cpu_percent'], 5)}%"
+        )

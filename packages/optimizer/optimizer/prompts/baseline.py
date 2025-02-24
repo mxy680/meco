@@ -3,9 +3,10 @@ def get_baseline_prompt(signature: str, language: str, test_code: str):
 You are given the {language} function signature and a set of test cases.
 
 Your goal is to implement the function in a way that guarantees it passes all test cases. 
+Use the most simple and conventional approach to solve the problem.
 Follow these rules:
 
-- Do NOT use any non-native libraries or modules.
+- Do NOT use any non-native libraries or modules. If you use native libraries, ensure they are imported inside the function.
 - Your response must ONLY contain:
 1. The function implementation.
 2. A brief description of what the function does.

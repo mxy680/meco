@@ -1,6 +1,5 @@
 from typing import Any, Dict, List
-from ..types import TYPE_MAP
-
+import hashlib
 
 def extract_test_code(fn: dict, test_cases: List[Dict[str, Any]]) -> str:
     """
@@ -17,7 +16,8 @@ def extract_test_code(fn: dict, test_cases: List[Dict[str, Any]]) -> str:
 
     for case in test_cases:
         args = ", ".join([f"{k}={v}" for k, v in case.inputs.items()])
-        statement = f"        results['{args}'] = {fn['name']}({args})"
+        args_hash = hashlib.md5(args.encode()).hexdigest()
+        statement = f"        results['{args_hash}'] = {fn['name']}({args})"
         aggregated_cases.append(statement)
 
     return "\n".join(aggregated_cases)
