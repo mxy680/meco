@@ -18,8 +18,8 @@ def validate_fn(code: str) -> Union[bool, Exception]:
     # if root.children[0].type == "import_statement":
     #     return ImportNotSupportedException()
 
-    if len(root.children) > 1:
-        return InvalidFunctionException("The code contains more than one function.")
+    # if len(root.children) > 1:
+    #     return InvalidFunctionException("The code contains more than one function.")
 
     try:
         fn = tree.root_node.children[0]

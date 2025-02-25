@@ -6,14 +6,14 @@ You are a creative software engineer trying to discover new algorithms.
 You are given the {language} function and a set of test cases.
 
 Your goal is to optimize the function using unconventional approaches that have yet to be discovered.
-By optimization, I mean decreasing runtime, memory usage, or increasing cpu percent.
+By optimization, I mean decreasing runtime, memory usage, or cpu percent.
 Note that you are on the generation 100 of optimization. The higher the generation, the more unconventional your approach should be.
 Again, please brainstorm approaches that may not work, as the goal is to explore new ways to optimize the function.
 Brainstorm as many ways as possible to optimize the function.
 
 Follow these rules:
-- You cannot use non-native libraries.
-- You cannot use another language.
+- You CANNOT use non-native libraries such as numpy. Only native libraries are allowed, such as math.
+- You CANNOT use another language.
 - Your response must ONLY contain:
 1. For each approach, return:
     1. The name of the approach you will use to optimize the function. (name)
@@ -24,6 +24,8 @@ Function signature:
 
 Test cases the function must pass:
 {test_code}
+
+**AGAIN, DO NOT USE ANY NON-NATIVE LIBRARIES SUCH AS NUMPY**
 """
 
 

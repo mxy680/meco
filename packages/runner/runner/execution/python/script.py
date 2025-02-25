@@ -5,11 +5,6 @@ import json
 import gc
 import os
 
-try:
-    os.sched_setaffinity(0, {{0}}) 
-except AttributeError:
-    pass 
-
 {code}
 
 def run():
