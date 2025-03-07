@@ -8,6 +8,9 @@ packages = [{include = "optimizer"}]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.14"
+openai = "^1.64.0"
+pydantic = "^2.10.6"
+redis = "^5.2.1"
 
 [build-system]
 requires = ["poetry-core"]

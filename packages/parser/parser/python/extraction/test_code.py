@@ -1,7 +1,8 @@
 from typing import Any, Dict, List
-import hashlib
+from .utils import generate_args_hash
 
-def extract_test_code(fn: dict, test_cases: List[Dict[str, Any]]) -> str:
+
+def extract_test_code(fn: dict, test_cases: list[dict]) -> str:
     """
     Converts and validates test cases for a given function.
 
@@ -15,8 +16,7 @@ def extract_test_code(fn: dict, test_cases: List[Dict[str, Any]]) -> str:
     aggregated_cases = []
 
     for case in test_cases:
-        args = ", ".join([f"{k}={v}" for k, v in case.inputs.items()])
-        args_hash = hashlib.md5(args.encode()).hexdigest()
+        args, args_hash = generate_args_hash(case)
         statement = f"        results['{args_hash}'] = {fn['name']}({args})"
         aggregated_cases.append(statement)
 

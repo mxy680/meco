@@ -1,11 +1,18 @@
 import tree_sitter_python as tspython
 from tree_sitter import Language, Parser
-from .exceptions import InvalidFunctionException
 
 from typing import Union
 
 PY_LANGUAGE = Language(tspython.language())
 parser = Parser(PY_LANGUAGE)
+
+
+class InvalidFunctionException(Exception):
+    """Raised when the function is invalid."""
+
+    def __init__(self, message="The function is invalid"):
+        self.message = message
+        super().__init__(self.message)
 
 
 def validate_fn(code: str) -> Union[bool, Exception]:
@@ -14,12 +21,6 @@ def validate_fn(code: str) -> Union[bool, Exception]:
     root = tree.root_node
     if not root.type == "module":
         return InvalidFunctionException("The code is not a valid Python function.")
-
-    # if root.children[0].type == "import_statement":
-    #     return ImportNotSupportedException()
-
-    # if len(root.children) > 1:
-    #     return InvalidFunctionException("The code contains more than one function.")
 
     try:
         fn = tree.root_node.children[0]

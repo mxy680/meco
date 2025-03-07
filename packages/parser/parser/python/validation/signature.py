@@ -1,9 +1,19 @@
-from .exceptions import InvalidSignatureException
 from ..types import TYPE_MAP
 from ..extraction.fn import extract_fn
+from typing import Union
 
 
-def validate_signature(signature: str, test_cases: list):
+class InvalidSignatureException(Exception):
+    """Raised when the function signature is invalid."""
+
+    def __init__(self, message="The function signature is invalid"):
+        self.message = message
+        super().__init__(self.message)
+
+
+def validate_signature(
+    signature: str, test_cases: list
+) -> Union[True, InvalidSignatureException]:
     """
     Validate the function signature given the test cases.
     """
@@ -16,7 +26,7 @@ def validate_signature(signature: str, test_cases: list):
 
     # Check return type validity
     if TYPE_MAP.get(fn["return_type"], "None") == "None":
-        raise InvalidSignatureException("Return type not found in TYPE_MAP")
+        raise InvalidSignatureException("Please declare a valid return type")
 
     for arg in args:
         # Check if argument is optional
@@ -37,19 +47,20 @@ def validate_signature(signature: str, test_cases: list):
             if arg_name not in case.inputs:
                 if not optional:
                     raise InvalidSignatureException(
-                        f"Argument {arg_name} not found in test case"
+                        f"Argument {arg_name} not found in test case: {case.inputs}"
                     )
                 continue
 
             # Check if argument type is correct
-            if arg_type:
-                if arg_type != case.input_types[arg_name]:
-                    raise InvalidSignatureException(
-                        f"Argument {arg_name} type does not match test case"
-                    )
+            if arg_type and arg_type != case.input_types[arg_name]:
+                raise InvalidSignatureException(
+                    f"Argument {arg_name} type does not match test case: {case.inputs}"
+                )
 
             # Check if argument type is valid
             if fn["return_type"] != test_cases[0].expected_output_type:
-                raise InvalidSignatureException("Return type does not match test case")
+                raise InvalidSignatureException(
+                    "Return type does not match test case: {case.inputs}"
+                )
 
     return True

@@ -36,10 +36,9 @@ class Runner:
         )
         # Allow time for the container to initialize.
         time.sleep(2)
-        print(f"Container started with ID: {self.container.id}")
         return self.container
 
-    def run_code(self, code: str):
+    def run_script(self, code: str):
         if self.container is None:
             raise RuntimeError(
                 "Container is not running. Call start_container() first."

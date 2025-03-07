@@ -20,45 +20,18 @@ importers:
 
   apps/api: {}
 
-  packages/optimizer:
-    dependencies:
-      requests:
-        specifier: ^0.3.0
-        version: 0.3.0
+  packages/optimizer: {}
+
+  packages/parser: {}
+
+  packages/runner: {}
 
 packages:
-
-  axo@0.0.2:
-    resolution: {integrity: sha512-8CC4Mb+OhK97UEng0PgiqUDNZjzVcWDsV+G2vLYCQn1jEL7y6VqiRVlZlRu+aA/ckSznmNzW6X1I6nj2As/haQ==}
-
-  eventemitter3@4.0.7:
-    resolution: {integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==}
-
-  extendible@0.1.1:
-    resolution: {integrity: sha512-AglckQA0TJV8/ZmhQcNmaaFcFFPXFIoZbfuoQOlGDK7Jh/roWotYzJ7ik1FBBCHBr8n7CgTR8lXXPAN8Rfb7rw==}
-
-  failure@1.1.1:
-    resolution: {integrity: sha512-lzrrk0NUfjVeU3jLmfU01zP5bfg4XVFxHREYGvgJowaCqHLSQtqIGENH/CU+oSs6yfYObdSM7b9UY/3p2VJOSg==}
-
-  hang@1.0.0:
-    resolution: {integrity: sha512-vtBz98Bt/Tbm03cZO5Ymc7ZL8ead/jIx9T5Wg/xuz+9BXPAJNJSdGQW63LoaesogUQKTpHyal339hxTaTf/APg==}
-
-  loads@0.0.4:
-    resolution: {integrity: sha512-XjPzzYIHkuMNqYyvh6AECQAHi682nyKO9TMdMYnaz7QbPDI/KIeSIjRhAlXIbRMPYAgtLUYgPlD3mtKZ4Q8SYA==}
-
-  node-http-xhr@1.3.4:
-    resolution: {integrity: sha512-0bA08/2RKWxw6pMkOVd3KP+0F5+ifQLMMTDxrCgxlgkoU1N8DhCbCSAYEqpgaVYM2smvbVVewiXjW+8AyoLfxQ==}
-
-  one-time@0.0.4:
-    resolution: {integrity: sha512-qAMrwuk2xLEutlASoiPiAMW3EN3K96Ka/ilSXYr6qR1zSVXw2j7+yDSqGTC4T9apfLYxM3tLLjKvgPdAUK7kYQ==}
 
   prettier@3.5.0:
     resolution: {integrity: sha512-quyMrVt6svPS7CjQ9gKb3GLEX/rl3BCL2oa/QkNcXv4YNVBC9olt3s+H7ukto06q7B1Qz46PbrKLO34PR6vXcA==}
     engines: {node: '>=14'}
     hasBin: true
-
-  requests@0.3.0:
-    resolution: {integrity: sha512-1B6nkiHjC1O1cSgFhEwkc+xd8vuj04h7xSmCg5yI8nmhCIKbPkX47od8erQ2pokBt5qxUO7dwP4jplXD6k6ISA==}
 
   turbo-darwin-64@2.4.0:
     resolution: {integrity: sha512-kVMScnPUa3R4n7woNmkR15kOY0aUwCLJcUyH5UC59ggKqr5HIHwweKYK8N1pwBQso0LQF4I9i93hIzfJguCcwQ==}
@@ -99,49 +72,9 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  xhr-response@1.0.1:
-    resolution: {integrity: sha512-m2FlVRCl3VqDcpc8UaWZJpwuHpFR2vYeXv6ipXU2Uuu4vNKFYVEFI0emuJN370Fge+JCbiAnS+JJmSoWVmWrjQ==}
-
-  xhr-send@1.0.0:
-    resolution: {integrity: sha512-789EG4qW6Z0nPvG74AV3WWQCnBG5HxJXNiBsnEivZ8OpbvVA0amH0+g+MNT99o5kt/XLdRezm5KS1wJzcGJztw==}
-
-  xhr-status@1.0.1:
-    resolution: {integrity: sha512-VF0WSqtmkf56OmF26LCWsWvRb1a+WYGdHDoQnPPCVUQTM8CVUAOBcUDsm7nP7SQcgEEdrvF4DmhEADuXdGieyw==}
-
 snapshots:
 
-  axo@0.0.2: {}
-
-  eventemitter3@4.0.7: {}
-
-  extendible@0.1.1: {}
-
-  failure@1.1.1: {}
-
-  hang@1.0.0: {}
-
-  loads@0.0.4:
-    dependencies:
-      failure: 1.1.1
-      one-time: 0.0.4
-      xhr-response: 1.0.1
-      xhr-status: 1.0.1
-
-  node-http-xhr@1.3.4: {}
-
-  one-time@0.0.4: {}
-
   prettier@3.5.0: {}
-
-  requests@0.3.0:
-    dependencies:
-      axo: 0.0.2
-      eventemitter3: 4.0.7
-      extendible: 0.1.1
-      hang: 1.0.0
-      loads: 0.0.4
-      node-http-xhr: 1.3.4
-      xhr-send: 1.0.0
 
   turbo-darwin-64@2.4.0:
     optional: true
@@ -171,9 +104,3 @@ snapshots:
       turbo-windows-arm64: 2.4.0
 
   typescript@5.7.3: {}
-
-  xhr-response@1.0.1: {}
-
-  xhr-send@1.0.0: {}
-
-  xhr-status@1.0.1: {}

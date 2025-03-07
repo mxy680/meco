@@ -18,6 +18,7 @@ requests = "^2.32.3"
 pydantic = "^2.10.6"
 python-dotenv = "^1.0.1"
 pytest-asyncio = "^0.25.3"
+redis = "^5.2.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^25.1.0"
