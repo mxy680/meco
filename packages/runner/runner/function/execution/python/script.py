@@ -1,4 +1,5 @@
 def generate_script(code: str, iterations: int, test_code: str) -> str:
+    code = code.replace('"', "'")
     return f"""
 import time
 import json

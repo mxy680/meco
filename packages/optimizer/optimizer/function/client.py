@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
+from typing import Union
+from parser.utils import generate_args_hash
 import json
-
 
 class FunctionOptimizer(ABC):
     def __init__(
@@ -22,6 +23,16 @@ class FunctionOptimizer(ABC):
         prompt = self.get_baseline_prompt(self.signature, self.test_code)
         payload = self.get_payload(prompt, self.model)
         return self._query(payload)
+
+    @staticmethod
+    def verify(test_cases: dict, output: dict) -> tuple[bool, str]:
+        for case in test_cases:
+            _, args_hash = generate_args_hash(case)
+            if args_hash not in output:
+                return (False, "Test case not found in output: " + json.dumps(case.inputs))
+            if output[args_hash] != case.expected_output:
+                return (False, "Test case failed: " + json.dumps(case.inputs) + " -> " + json.dumps(case.expected_output))
+        return (True, "All test cases passed.")
 
     @abstractmethod
     def _query(self, payload: dict) -> dict:

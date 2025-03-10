@@ -1,5 +1,5 @@
 from typing import Any, Dict, List
-from .utils import generate_args_hash
+from parser.utils import generate_args_hash
 
 
 def extract_test_code(fn: dict, test_cases: list[dict]) -> str:

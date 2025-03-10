@@ -1,4 +1,4 @@
-from runner.execution.utils.cpu import calculate_cpu_percent
+from runner.utils.cpu import calculate_cpu_percent
 from .script import generate_script
 import json
 import uuid
@@ -12,7 +12,7 @@ def run_code(container, function, test_code, iterations=1):
     command = (
         f'echo "{script}" > /tmp/{script_name} && poetry run python /tmp/{script_name}'
     )
-    
+
     try:
         # Get initial container metrics
         stats_before = container.stats(stream=False)
