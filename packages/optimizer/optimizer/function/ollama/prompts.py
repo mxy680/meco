@@ -1,4 +1,4 @@
-def get_baseline_prompt(signature: str, test_code: str):
+def get_baseline_prompt(signature: str, test_code: str) -> str:
     return f"""
 You are an expert Python programmer. Your task is to implement the function described by the following signature and ensure that it correctly passes all given test cases.
 
@@ -40,19 +40,3 @@ Correct (Uses examplelib and returns install command)
 }}
 ```
 """
-
-
-def get_baseline_payload(model: str, signature: str, test_code: str):
-    prompt = get_baseline_prompt(signature, test_code)
-    payload = {"model": model, "prompt": prompt, "stream": False}
-    payload["format"] = {
-        "type": "object",
-        "properties": {
-            "terminal_command": {"type": "string"},
-            "function_implementation": {"type": "string"},
-            "description": {"type": "string"},
-        },
-        "required": ["terminal_command", "function_implementation", "description"],
-    }
-
-    return payload

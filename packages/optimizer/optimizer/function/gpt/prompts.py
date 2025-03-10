@@ -1,6 +1,3 @@
-from optimizer.common.structured_outputs import FunctionOutput
-
-
 def get_baseline_prompt(signature: str, test_code: str) -> list[dict]:
     return [
         {
@@ -29,9 +26,3 @@ def get_baseline_prompt(signature: str, test_code: str) -> list[dict]:
             ),
         },
     ]
-
-
-def get_baseline_payload(model: str, signature: str, test_code: str):
-    messages = get_baseline_prompt(signature, test_code)
-    payload = {"model": model, "messages": messages, "response_format": FunctionOutput}
-    return payload

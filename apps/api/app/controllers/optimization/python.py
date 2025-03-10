@@ -2,8 +2,7 @@ from app.models import OptimizationRequest
 from runner.client import Runner
 from parser.validate import validate_fn, validate_signature
 from parser.extract import extract_test_code, extract_signature
-from optimizer.ollama.python.client import OllamaPythonOptimizer
-from optimizer.openai.python.client import OpenAIOptimizer
+from optimizer.function.gpt.client import OpenAIOptimizer
 
 language = "python"
 

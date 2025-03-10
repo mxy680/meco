@@ -1,9 +1,11 @@
 import os
 from dotenv import load_dotenv
-from .prompts.baseline import get_baseline_payload
 from openai import OpenAI
 import json
 from optimizer.redis.client import RedisClient
+from ..client import FunctionOptimizer
+from ..models import FunctionOutput
+from .prompts import get_baseline_prompt
 
 # Load environment variables
 load_dotenv()
@@ -12,34 +14,19 @@ load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 
-class OpenAIOptimizer:
+class OpenAIOptimizer(FunctionOptimizer):
     def __init__(
-        self,
-        signature: str,
-        models: list[str],
-        test_cases: list[dict],
-        test_code: str,
+        self, signature: str, language: str, models: list[str], test_code: str
     ):
         """Initialize the OpenAI Optimizer with the function signature, models, test cases, and test code."""
+        super().__init__(signature, language, test_code, models, get_baseline_prompt)
+
         if not OPENAI_API_KEY:
             raise ValueError(
                 "Please set the OPENAI_API_KEY environment variable to use the OpenAI API."
             )
-
-        self.signature = signature
-        self.language = "python"
-        self.models = models
-        self.test_cases = test_cases
-        self.test_code = test_code
         self.openai = OpenAI(api_key=OPENAI_API_KEY)
         self.redis = RedisClient("localhost", 6379, 0)
-        self.cache = {}
-
-    def baseline(self):
-        """Create an baseline function for optimization given the function signature/description"""
-        payload = get_baseline_payload(self.models[0], self.signature, self.test_code)
-        response = self._query(payload)
-        return response
 
     def _query(self, payload: dict):
         """Query the OpenAI API with the given payload."""
@@ -62,3 +49,11 @@ class OpenAIOptimizer:
         self.redis.set(key, output)
 
         return output
+
+    @staticmethod
+    def get_payload(messages: list[dict], model: str) -> dict:
+        return {
+            "model": model,
+            "messages": messages,
+            "response_format": FunctionOutput,
+        }

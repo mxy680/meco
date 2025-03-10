@@ -2,7 +2,9 @@ import os
 import json
 import requests
 from dotenv import load_dotenv
-from .prompts.baseline import get_baseline_payload
+from ..client import FunctionOptimizer
+from ..models import FunctionOutput
+from .prompts import get_baseline_prompt
 
 # Load environment variables
 load_dotenv()
@@ -11,31 +13,21 @@ load_dotenv()
 OLLAMA_URL = os.getenv("OLLAMA_URL", "")
 
 
-class OllamaPythonOptimizer:
+class OllamaPythonOptimizer(FunctionOptimizer):
     def __init__(
         self,
         signature: str,
+        language: str,
         models: list[str],
-        test_cases: list[dict],
         test_code: str,
         ollama_url: str = None,
     ):
         """Initialize the optimizer with the Ollama API URL."""
-        self.signature = signature
-        self.language = "python"
-        self.models = models
-        self.test_cases = test_cases
-        self.test_code = test_code
+        super().__init__(signature, language, test_code, models, get_baseline_prompt)
         self.ollama_url = ollama_url or os.getenv("OLLAMA_URL", "")
 
         if not self.ollama_url:
             raise ValueError("OLLAMA_URL environment variable is not set.")
-
-    def baseline(self):
-        """Create an baseline function for optimization given the function signature/description"""
-        payload = get_baseline_payload(self.models[0], self.signature, self.test_code)
-        response = self._query(payload)
-        return response
 
     def _query(self, payload: dict):
         """Calls the Ollama API synchronously and returns the response as a string."""
@@ -52,3 +44,18 @@ class OllamaPythonOptimizer:
             else:
                 print(f"Ollama API error: {e}")
             return {}  # Return empty dict to indicate failure
+
+    @staticmethod
+    def get_payload(prompt: str, model: str) -> dict:
+        payload = {"model": model, "prompt": prompt, "stream": False}
+        payload["format"] = {
+            "type": "object",
+            "properties": {
+                "terminal_command": {"type": "string"},
+                "function_implementation": {"type": "string"},
+                "description": {"type": "string"},
+            },
+            "required": ["terminal_command", "function_implementation", "description"],
+        }
+
+        return payload
