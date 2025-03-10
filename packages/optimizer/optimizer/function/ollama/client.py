@@ -3,7 +3,6 @@ import json
 import requests
 from dotenv import load_dotenv
 from ..client import FunctionOptimizer
-from ..models import FunctionOutput
 from .prompts import get_baseline_prompt
 
 # Load environment variables
@@ -18,12 +17,12 @@ class OllamaPythonOptimizer(FunctionOptimizer):
         self,
         signature: str,
         language: str,
-        models: list[str],
+        model: str,
         test_code: str,
         ollama_url: str = None,
     ):
         """Initialize the optimizer with the Ollama API URL."""
-        super().__init__(signature, language, test_code, models, get_baseline_prompt)
+        super().__init__(signature, language, test_code, model, get_baseline_prompt)
         self.ollama_url = ollama_url or os.getenv("OLLAMA_URL", "")
 
         if not self.ollama_url:

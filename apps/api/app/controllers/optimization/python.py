@@ -3,6 +3,7 @@ from runner.client import Runner
 from parser.validate import validate_fn, validate_signature
 from parser.extract import extract_test_code, extract_signature
 from optimizer.function.gpt.client import OpenAIOptimizer
+import json
 
 language = "python"
 
@@ -19,9 +20,8 @@ async def optimize_python(request: OptimizationRequest):
     test_code = extract_test_code(fn, request.test_cases, language)
     print("✅ Test case extraction passed.")
 
-    # Declare optimizer and get baseline function
-    optimizer = OpenAIOptimizer(
-        request.signature, request.models, request.test_cases, test_code
-    )
-    response = optimizer.baseline()
-    print(response)
+    for model in request.models:
+        # Declare optimizer and get baseline function
+        optimizer = OpenAIOptimizer(request.signature, language, model, test_code)
+        response = optimizer.baseline()
+        print(response['function_implementation'])

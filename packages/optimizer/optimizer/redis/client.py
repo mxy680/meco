@@ -19,6 +19,6 @@ class RedisClient:
         self.redis.flushdb()
 
     @staticmethod
-    def generate_cache_key(messages: list[str]) -> str:
+    def generate_cache_key(model: str, messages: list[str]) -> str:
         """Generate a cache key for the given messages."""
-        return generate_cache_key(messages)
+        return generate_cache_key(model, messages)

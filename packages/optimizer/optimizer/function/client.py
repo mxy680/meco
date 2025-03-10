@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import json
 
 
 class FunctionOptimizer(ABC):
@@ -6,25 +7,24 @@ class FunctionOptimizer(ABC):
         self,
         signature: str,
         language: str,
+        model: str,
         test_code: str,
-        models: list[str],
         get_baseline_prompt: callable,
     ):
         self.signature = signature
         self.language = language
+        self.model = model
         self.test_code = test_code
-        self.models = models
         self.get_baseline_prompt = get_baseline_prompt
 
-    def baseline(self):
+    def baseline(self) -> dict:
         """Create an baseline function for optimization given the function signature/description"""
         prompt = self.get_baseline_prompt(self.signature, self.test_code)
-        payload = self.get_payload(prompt, self.models[0])
-        response = self._query(payload)
-        return response
+        payload = self.get_payload(prompt, self.model)
+        return self._query(payload)
 
     @abstractmethod
-    def _query(self, payload: dict):
+    def _query(self, payload: dict) -> dict:
         pass
 
     @staticmethod
