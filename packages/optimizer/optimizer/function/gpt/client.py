@@ -5,7 +5,7 @@ import json
 from optimizer.redis.client import RedisClient
 from ..client import FunctionOptimizer
 from .models import FunctionOutput
-from .prompts import get_baseline_prompt
+from .prompts import get_baseline_prompt, get_fix_prompt
 
 # Load environment variables
 load_dotenv()
@@ -17,7 +17,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 class OpenAIOptimizer(FunctionOptimizer):
     def __init__(self, signature: str, language: str, model: str, test_code: str):
         """Initialize the OpenAI Optimizer with the function signature, models, test cases, and test code."""
-        super().__init__(signature, language, model, test_code, get_baseline_prompt)
+        super().__init__(signature, language, model, test_code, get_baseline_prompt, get_fix_prompt)
 
         if not OPENAI_API_KEY:
             raise ValueError(

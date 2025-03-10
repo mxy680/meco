@@ -3,6 +3,7 @@ from typing import Union
 from parser.utils import generate_args_hash
 import json
 
+
 class FunctionOptimizer(ABC):
     def __init__(
         self,
@@ -11,27 +12,45 @@ class FunctionOptimizer(ABC):
         model: str,
         test_code: str,
         get_baseline_prompt: callable,
+        get_fix_prompt: callable,
     ):
         self.signature = signature
         self.language = language
         self.model = model
         self.test_code = test_code
         self.get_baseline_prompt = get_baseline_prompt
+        self.get_fix_prompt = get_fix_prompt
+
+    def call(self, prompt: str) -> dict:
+        payload = self.get_payload(prompt, self.model)
+        return self._query(payload)
 
     def baseline(self) -> dict:
         """Create an baseline function for optimization given the function signature/description"""
         prompt = self.get_baseline_prompt(self.signature, self.test_code)
-        payload = self.get_payload(prompt, self.model)
-        return self._query(payload)
+        return self.call(prompt)
+
+    def fix(self, function: str, error: str) -> dict:
+        prompt = self.get_fix_prompt(function, error)
+        return self.call(prompt)
 
     @staticmethod
     def verify(test_cases: dict, output: dict) -> tuple[bool, str]:
         for case in test_cases:
             _, args_hash = generate_args_hash(case)
             if args_hash not in output:
-                return (False, "Test case not found in output: " + json.dumps(case.inputs))
+                return (
+                    False,
+                    "Test case not found in output: " + json.dumps(case.inputs),
+                )
             if output[args_hash] != case.expected_output:
-                return (False, "Test case failed: " + json.dumps(case.inputs) + " -> " + json.dumps(case.expected_output))
+                return (
+                    False,
+                    "Test case failed: "
+                    + json.dumps(case.inputs)
+                    + " -> "
+                    + json.dumps(case.expected_output),
+                )
         return (True, "All test cases passed.")
 
     @abstractmethod

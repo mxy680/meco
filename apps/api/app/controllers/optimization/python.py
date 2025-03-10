@@ -29,15 +29,35 @@ async def optimize_python(request: OptimizationRequest):
         optimizer = OpenAIOptimizer(request.signature, language, model, test_code)
         response = optimizer.baseline()
         function = response["function_implementation"]
-        
+        function = """
+def factorial(n: int) -> int:
+    if n == 0:
+        return 2
+    return n * factorial(n - 1)
+        """
+
         # Validate the function
         validate_fn(function, language)
 
         # Run the baseline function
-        result = runner.run_script(response["function_implementation"])
+        result = runner.run_script(function)
         output = result.get("stdout", "")
 
         # Verify the output
-        valid, message = optimizer.verify(request.test_cases, output) 
-        if not valid:
+        valid, message = optimizer.verify(request.test_cases, output)
+        while not valid:
             print(f"❌ Model {model} failed: {message}")
+            response = optimizer.fix(function, message)
+            function = response["function_implementation"]
+
+            # Validate the function
+            validate_fn(function, language)
+
+            # Run the fixed function
+            result = runner.run_script(response["function_implementation"])
+            output = result.get("stdout", "")
+
+            # Verify the output
+            valid, message = optimizer.verify(request.test_cases, output)
+            
+        break
