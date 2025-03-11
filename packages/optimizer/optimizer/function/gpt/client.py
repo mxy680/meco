@@ -4,8 +4,7 @@ from openai import OpenAI
 import json
 from optimizer.redis.client import RedisClient
 from ..client import FunctionOptimizer
-from .models import FunctionOutput
-from .prompts import get_baseline_prompt, get_fix_prompt
+from .models import FunctionOutput, ApproachOutput
 
 # Load environment variables
 load_dotenv()
@@ -15,9 +14,32 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 
 class OpenAIOptimizer(FunctionOptimizer):
-    def __init__(self, signature: str, language: str, model: str, test_code: str):
+    def __init__(
+        self,
+        signature: str,
+        description: str,
+        language: str,
+        model: str,
+        test_code: str,
+    ):
         """Initialize the OpenAI Optimizer with the function signature, models, test cases, and test code."""
-        super().__init__(signature, language, model, test_code, get_baseline_prompt, get_fix_prompt)
+        if language == "python":
+            from .prompts.python import (
+                get_baseline_prompt,
+                get_fix_prompt,
+                get_approach_prompt,
+            )
+
+        super().__init__(
+            signature,
+            description,
+            language,
+            model,
+            test_code,
+            get_baseline_prompt,
+            get_fix_prompt,
+            get_approach_prompt,
+        )
 
         if not OPENAI_API_KEY:
             raise ValueError(
@@ -52,9 +74,9 @@ class OpenAIOptimizer(FunctionOptimizer):
         return json.loads(json.loads(output))
 
     @staticmethod
-    def get_payload(messages: list[dict], model: str) -> dict:
+    def get_payload(messages: list[dict], model: str, is_code_output: bool) -> dict:
         return {
             "model": model,
             "messages": messages,
-            "response_format": FunctionOutput,
+            "response_format": FunctionOutput if is_code_output else ApproachOutput,
         }

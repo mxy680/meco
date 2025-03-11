@@ -8,31 +8,41 @@ class FunctionOptimizer(ABC):
     def __init__(
         self,
         signature: str,
+        description: str,
         language: str,
         model: str,
         test_code: str,
         get_baseline_prompt: callable,
         get_fix_prompt: callable,
+        get_approach_prompt: callable,
     ):
         self.signature = signature
+        self.description = description
         self.language = language
         self.model = model
         self.test_code = test_code
         self.get_baseline_prompt = get_baseline_prompt
         self.get_fix_prompt = get_fix_prompt
+        self.get_approach_prompt = get_approach_prompt
 
-    def call(self, prompt: str) -> dict:
-        payload = self.get_payload(prompt, self.model)
+    def call(self, prompt: str, is_code_output: bool = True) -> dict:
+        payload = self.get_payload(prompt, self.model, is_code_output)
         return self._query(payload)
 
     def baseline(self) -> dict:
         """Create an baseline function for optimization given the function signature/description"""
-        prompt = self.get_baseline_prompt(self.signature, self.test_code)
+        prompt = self.get_baseline_prompt(
+            self.signature, self.description, self.test_code
+        )
         return self.call(prompt)
 
     def fix(self, function: str, error: str) -> dict:
         prompt = self.get_fix_prompt(function, error)
         return self.call(prompt)
+
+    def approach(self, function: str, n: int = 3) -> dict:
+        prompt = self.get_approach_prompt(function, self.description, n)
+        return self.call(prompt, is_code_output=False)
 
     @staticmethod
     def verify(test_cases: dict, output: dict) -> tuple[bool, str]:

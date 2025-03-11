@@ -26,15 +26,9 @@ async def optimize_python(request: OptimizationRequest):
 
     for model in request.models:
         # Declare optimizer and get baseline function
-        optimizer = OpenAIOptimizer(request.signature, language, model, test_code)
+        optimizer = OpenAIOptimizer(request.signature, request.description, language, model, test_code)
         response = optimizer.baseline()
         function = response["function_implementation"]
-        function = """
-def factorial(n: int) -> int:
-    if n == 0:
-        return 2
-    return n * factorial(n - 1)
-        """
 
         # Validate the function
         validate_fn(function, language)
@@ -59,5 +53,9 @@ def factorial(n: int) -> int:
 
             # Verify the output
             valid, message = optimizer.verify(request.test_cases, output)
-            
-        break
+        
+        print(f"✅ Model {model} passed!")
+
+        # Generate n approaches
+        response = optimizer.approach(function)
+        print(response)
