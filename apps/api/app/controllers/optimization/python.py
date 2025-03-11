@@ -8,15 +8,60 @@ from typing import Tuple
 language = "python"
 
 
+def normalize_metric(value: float, min_value: float, max_value: float) -> float:
+    # Avoid division by zero if min and max are the same.
+    if max_value == min_value:
+        return 0.0
+    return (value - min_value) / (max_value - min_value)
+
+
+def compute_composite_scores(
+    scores: list,
+    runtime_weight: float = 0.7,
+    cpu_weight: float = 0.1,
+    memory_weight: float = 0.2,
+) -> list:
+    """
+    Given a list of solutions with raw metrics, compute a composite score for each.
+    Each solution in 'scores' is a dictionary with keys: 'runtime', 'cpu_percent', 'memory_usage',
+    and other fields.
+    Returns the same list with an extra key 'composite_score' for each solution.
+    """
+    # Find min and max for each metric.
+    min_runtime = min(s["runtime"] for s in scores)
+    max_runtime = max(s["runtime"] for s in scores)
+
+    min_cpu = min(s["cpu_percent"] for s in scores)
+    max_cpu = max(s["cpu_percent"] for s in scores)
+
+    min_memory = min(s["memory_usage"] for s in scores)
+    max_memory = max(s["memory_usage"] for s in scores)
+
+    for s in scores:
+        norm_runtime = normalize_metric(s["runtime"], min_runtime, max_runtime)
+        norm_cpu = normalize_metric(s["cpu_percent"], min_cpu, max_cpu)
+        norm_memory = normalize_metric(s["memory_usage"], min_memory, max_memory)
+
+        # The composite score is a weighted sum of the normalized metrics.
+        # Lower composite scores are better.
+        s["composite_score"] = (
+            runtime_weight * norm_runtime
+            + cpu_weight * norm_cpu
+            + memory_weight * norm_memory
+        )
+
+    return scores
+
+
 async def optimize_python(request: OptimizationRequest):
     def print_function(title: str, function_code: str):
         print(f"\n🔢 {title}")
         print(function_code)
 
     def print_metrics(result: dict):
-        runtime = result.get("runtime", 0)
-        cpu_percent = result.get("cpu_percent", 0)
-        memory_usage = result.get("memory_usage", 0)
+        runtime = result.get("runtime", float("inf"))
+        cpu_percent = result.get("cpu_percent", float("inf"))
+        memory_usage = result.get("memory_usage", float("inf"))
         print(f"⏱ Runtime: {runtime} sec")
         print(f"📈 CPU Usage: {cpu_percent}%")
         print(f"💾 Memory Usage: {memory_usage} MB")
@@ -107,7 +152,7 @@ async def optimize_python(request: OptimizationRequest):
         print_metrics(result)
 
         approach_response = optimizer.approach(function)
-        print("💡 Generated theoretical approaches.")
+        scores = []
         for approach_obj in approach_response["approaches"]:
             approach = approach_obj["description"]
             print(f"\n🛠 Generating solution for approach: {approach}")
@@ -135,9 +180,28 @@ async def optimize_python(request: OptimizationRequest):
             valid_exec, exec_message, result = execute_and_verify(
                 function, command, optimizer, request.test_cases
             )
-            print("📤 Generated solution output obtained.")
             if valid_exec:
                 print("✅ Generated solution passed all test cases.")
                 print_metrics(result)
+                scores.append(
+                    {
+                        "approach": approach,
+                        "solution": function,
+                        "runtime": result.get("runtime", float("inf")),
+                        "cpu_percent": result.get("cpu_percent", float("inf")),
+                        "memory_usage": result.get("memory_usage", float("inf")),
+                    }
+                )
             else:
                 print(f"❌ Generated solution failed verification: {exec_message}")
+
+        # Normalize and compute composite scores.
+        scored_solutions = compute_composite_scores(scores)
+
+        # Find the best solution (lowest composite_score).
+        best_solution = min(scored_solutions, key=lambda s: s["composite_score"])
+
+        print("\n\n🏆 Best Approach Found:")
+        print(f"Approach Description: {best_solution['approach']}")
+        print("Solution Function Code:")
+        print(best_solution["solution"])
