@@ -26,7 +26,9 @@ async def optimize_python(request: OptimizationRequest):
 
     for model in request.models:
         # Declare optimizer and get baseline function
-        optimizer = OpenAIOptimizer(request.signature, request.description, language, model, test_code)
+        optimizer = OpenAIOptimizer(
+            request.signature, request.description, language, model, test_code
+        )
         response = optimizer.baseline()
         function = response["function_implementation"]
 
@@ -34,7 +36,7 @@ async def optimize_python(request: OptimizationRequest):
         validate_fn(function, language)
 
         # Run the baseline function
-        result = runner.run_script(function)
+        result = runner.run(function)
         output = result.get("stdout", "")
 
         # Verify the output
@@ -48,21 +50,19 @@ async def optimize_python(request: OptimizationRequest):
             validate_fn(function, language)
 
             # Run the fixed function
-            result = runner.run_script(response["function_implementation"])
+            result = runner.run(response["function_implementation"])
             output = result.get("stdout", "")
 
             # Verify the output
             valid, message = optimizer.verify(request.test_cases, output)
-        
+
         print(f"✅ Model {model} passed!")
 
         # Generate n approaches
         response = optimizer.approach(function)
-        for approach in response['approaches']:
+        for approach in response["approaches"]:
             # Generate a solution for each approach
             response = optimizer.solution(function, approach)
-            print(f"🚀 Approach: {approach['description']}")
-            print()
-            print(f"💡 Solution: \n")
-            print("Terminal Command: ", response["terminal_command"])
-            print("Function Implementation: \n", response["function_implementation"])
+            terminal_response = runner.terminal(response["terminal_command"])
+            if terminal_response['exit_code'] != 0:
+                print(f"❌ Approach failed: {terminal_response['output']}")
