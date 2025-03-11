@@ -58,4 +58,11 @@ async def optimize_python(request: OptimizationRequest):
 
         # Generate n approaches
         response = optimizer.approach(function)
-        print(response)
+        for approach in response['approaches']:
+            # Generate a solution for each approach
+            response = optimizer.solution(function, approach)
+            print(f"🚀 Approach: {approach['description']}")
+            print()
+            print(f"💡 Solution: \n")
+            print("Terminal Command: ", response["terminal_command"])
+            print("Function Implementation: \n", response["function_implementation"])

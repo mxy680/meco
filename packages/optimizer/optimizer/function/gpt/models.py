@@ -4,7 +4,6 @@ from typing import List
 class FunctionOutput(BaseModel):
     terminal_command: str
     function_implementation: str
-    description: str
 
 
 class TheoreticalApproach(BaseModel):

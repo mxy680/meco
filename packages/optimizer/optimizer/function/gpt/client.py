@@ -28,6 +28,7 @@ class OpenAIOptimizer(FunctionOptimizer):
                 get_baseline_prompt,
                 get_fix_prompt,
                 get_approach_prompt,
+                get_solution_prompt,
             )
 
         super().__init__(
@@ -39,6 +40,7 @@ class OpenAIOptimizer(FunctionOptimizer):
             get_baseline_prompt,
             get_fix_prompt,
             get_approach_prompt,
+            get_solution_prompt,
         )
 
         if not OPENAI_API_KEY:

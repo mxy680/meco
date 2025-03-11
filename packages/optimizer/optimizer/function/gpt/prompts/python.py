@@ -5,18 +5,9 @@ def get_baseline_prompt(signature: str, description: str, test_code: str) -> lis
             "content": (
                 "You are an expert Python programmer. Implement the function so it passes all test cases.\n\n"
                 "Description: " + description + "\n\n"
-                "Execution: Your function will run in a Docker container using `poetry run python script.py`. Install any third-party libraries via Poetry.\n\n"
-                "Instructions: Ensure correctness, handle edge cases, and write efficient, readable code. Do not include extra comments.\n\n"
-                "Third-Party Libraries: If used, return a valid install command in the format: `poetry add <library-name>`. Native libraries should not be included.\n\n"
-                "Output: Return a JSON object with keys: terminal_command, function_implementation, and description.\n\n"
-                "Example:\n"
-                "```json\n"
-                "{\n"
-                '  "command": "poetry add examplelib",\n'
-                '  "function_implementation": "def process_data(data: list) -> list: import examplelib; return examplelib.process(data)",\n'
-                '  "description": "Processes a list using examplelib."\n'
-                "}\n"
-                "```"
+                "Execution: Your function will be injected into a script in a Docker container and ran using `poetry run python script.py`. Install any third-party libraries via Poetry.\n\n"
+                "Instructions: Ensure correctness, handle edge cases, and write efficient, readable code. DO NOT INCLUDE ANY COMMENTS. Do not write code outside of the functions. If necessary, you may use nested functions.\n\n"
+                "Third-Party Libraries: If absolutely necessary, you may use a third party library, and if used, return a valid install command in the format: `poetry add <library-name>`. Native libraries should not be included.\n\n"
             ),
         },
         {
@@ -70,6 +61,28 @@ def get_approach_prompt(
                 f"Problem Description:\n{problem_description}\n\n"
                 f"Please provide {n} theoretical approaches, each as a JSON object with only a 'description' field. "
                 "Ensure that your approach can be implemented in a Python script"
+            ),
+        },
+    ]
+
+
+def get_solution_prompt(function: str, approach: str) -> list[dict]:
+    return [
+        {
+            "role": "system",
+            "content": (
+                "You are an expert Python programmer. Your task is to implement the given approach as a Python function that improves upon the provided base function. "
+                "Ensure that the solution is efficient, handles edge cases, and adheres to best coding practices. "
+                "Execution: Your function will be injected into a script in a Docker container and ran using `poetry run python script.py`. Install any third-party libraries via Poetry.\n\n"
+                "Instructions: Ensure correctness, handle edge cases, and write efficient, readable code. DO NOT INCLUDE ANY COMMENTS. Do not write code outside of the functions. If necessary, you may use nested functions.\n\n"
+                "Third-Party Libraries: If absolutely necessary, you may use a third party library, and if used, return a valid install command in the format: `poetry add <library-name>`. Native libraries should not be included. If no third-party libraries are used, return an empty string.\n\n"
+            ),
+        },
+        {
+            "role": "user",
+            "content": (
+                f"Base Function:\n{function}\n\n"
+                f"Approach Description:\n{approach}\n\n"
             ),
         },
     ]

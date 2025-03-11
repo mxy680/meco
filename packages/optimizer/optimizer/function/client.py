@@ -15,6 +15,7 @@ class FunctionOptimizer(ABC):
         get_baseline_prompt: callable,
         get_fix_prompt: callable,
         get_approach_prompt: callable,
+        get_solution_prompt: callable,
     ):
         self.signature = signature
         self.description = description
@@ -24,6 +25,7 @@ class FunctionOptimizer(ABC):
         self.get_baseline_prompt = get_baseline_prompt
         self.get_fix_prompt = get_fix_prompt
         self.get_approach_prompt = get_approach_prompt
+        self.get_solution_prompt = get_solution_prompt
 
     def call(self, prompt: str, is_code_output: bool = True) -> dict:
         payload = self.get_payload(prompt, self.model, is_code_output)
@@ -43,6 +45,10 @@ class FunctionOptimizer(ABC):
     def approach(self, function: str, n: int = 3) -> dict:
         prompt = self.get_approach_prompt(function, self.description, n)
         return self.call(prompt, is_code_output=False)
+
+    def solution(self, function: str, approach: str) -> dict:
+        prompt = self.get_solution_prompt(function, approach)
+        return self.call(prompt)
 
     @staticmethod
     def verify(test_cases: dict, output: dict) -> tuple[bool, str]:
