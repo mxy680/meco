@@ -5,8 +5,8 @@ def get_baseline_prompt(signature: str, description: str, test_code: str) -> lis
             "content": (
                 "You are an expert Python programmer. Implement the function so it passes all test cases.\n\n"
                 "Description: " + description + "\n\n"
-                "Execution: Your function will be injected into a script in a Docker container and ran using `poetry run python script.py`. Install any third-party libraries via Poetry.\n\n"
-                "Instructions: Ensure correctness, handle edge cases, and write efficient, readable code. DO NOT INCLUDE ANY COMMENTS. Do not write code outside of the functions. If necessary, you may use nested functions.\n\n"
+                "Execution: Your function will be injected into a script in a Docker container and ran using `poetry run python script.py`. Install any third-party libraries via Poetry. DO NOT POETRY ADD ANY NATIVE LIBRARIES!\n\n"
+                "Instructions: Ensure correctness, handle edge cases, and write efficient, readable code. DO NOT INCLUDE ANY COMMENTS. Do not write code outside of the functions. If necessary, you may use nested functions. Make sure the function signature is exactly the same as provided.\n\n"
                 "Third-Party Libraries: If absolutely necessary, you may use a third party library, and if used, return a valid install command in the format: `poetry add <library-name>`. Native libraries should not be included.\n\n"
             ),
         },
@@ -73,8 +73,8 @@ def get_solution_prompt(function: str, approach: str) -> list[dict]:
             "content": (
                 "You are an expert Python programmer. Your task is to implement the given approach as a Python function that improves upon the provided base function. "
                 "Ensure that the solution is efficient, handles edge cases, and adheres to best coding practices. "
-                "Execution: Your function will be injected into a script in a Docker container and ran using `poetry run python script.py`. Install any third-party libraries via Poetry.\n\n"
-                "Instructions: Ensure correctness, handle edge cases, and write efficient, readable code. DO NOT INCLUDE ANY COMMENTS. Do not write code outside of the functions. If necessary, you may use nested functions.\n\n"
+                "Execution: Your function will be injected into a script in a Docker container and ran using `poetry run python script.py`. Install any third-party libraries via Poetry. DO NOT POETRY ADD ANY NATIVE LIBRARIES!\n\n"
+                "Instructions: Ensure correctness, handle edge cases, and write efficient, readable code. DO NOT INCLUDE ANY COMMENTS. Do not write code outside of the functions. If necessary, you may use nested functions. Make sure the function signature is exactly the same as provided.\n\n"
                 "Third-Party Libraries: If absolutely necessary, you may use a third party library, and if used, return a valid install command in the format: `poetry add <library-name>`. Native libraries should not be included. If no third-party libraries are used, return an empty string.\n\n"
             ),
         },

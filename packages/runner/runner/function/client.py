@@ -47,11 +47,11 @@ class Runner:
             exec_result = self.container.exec_run(cmd=["bash", "-c", command], stdout=True, stderr=True)
             output = exec_result.output.decode("utf-8").strip()
             return {
-                "output": output,
+                "stdout": output,
                 "exit_code": exec_result.exit_code,
             }
         except Exception as e:
-            return {"error": str(e)}
+            return {"stdout": str(e)}
 
 
     def run(self, code: str):
