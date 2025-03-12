@@ -50,8 +50,11 @@ class FunctionOptimizer(ABC):
         prompt = self.get_solution_prompt(function, approach)
         return self.call(prompt)
 
+    def evolve(self):
+        pass
+
     @staticmethod
-    def verify(test_cases: dict, output: dict) -> tuple[bool, str]:
+    def verify(test_cases: list[dict], output: dict) -> tuple[bool, str]:
         for case in test_cases:
             _, args_hash = generate_args_hash(case)
             if args_hash not in output:

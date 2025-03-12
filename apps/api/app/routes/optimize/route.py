@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from app.models import OptimizationRequest
-from app.controllers.optimization.python import optimize_python
+from app.controllers.optimization.function.python import optimize_python
 
 router = APIRouter()
 
