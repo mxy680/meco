@@ -1,7 +1,7 @@
 from app.models import OptimizationRequest
 from runner.function.client import Runner
 from runner.utils.score import compute_score
-from parser.validate import validate_fn, validate_signature
+from parser.validate import validate_fn, validate_signature, validate_command
 from parser.extract import extract_test_code, extract_signature
 from optimizer.function.gpt.client import OpenAIOptimizer
 from app.src.evolution.function.evo import EvolutionManager
@@ -37,8 +37,10 @@ async def optimize_python(request: OptimizationRequest):
             optimizer,
             runner,
             validate_fn,
+            validate_command
         )
 
         await evo_manager.baseline()
 
+        await evo_manager.evolve()
         await evo_manager.evolve()

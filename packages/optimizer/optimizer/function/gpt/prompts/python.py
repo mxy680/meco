@@ -25,8 +25,9 @@ def get_fix_prompt(function_code: str, error_message: str) -> list[dict]:
         {
             "role": "system",
             "content": (
-                "You are an expert Python programmer. Your task is to analyze the provided function and the associated error, then fix the function so that it no longer produces the error. "
+                "You are an expert Python programmer. Your task is to analyze the provided command/function and the associated error, then fix the command/function so that it no longer produces the error. "
                 "Ensure that your corrected version is efficient, handles edge cases, and follows best coding practices. Do not include extra comments in the function."
+                "Do not return any terminal command other than an empty string or 'poetry add <package-name>'"
             ),
         },
         {
@@ -34,7 +35,6 @@ def get_fix_prompt(function_code: str, error_message: str) -> list[dict]:
             "content": (
                 f"Function:\n{function_code}\n\n"
                 f"Error:\n{error_message}\n\n"
-                "Please provide the corrected version of the function that resolves the error."
             ),
         },
     ]

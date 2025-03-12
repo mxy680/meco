@@ -1,6 +1,7 @@
 from parser.python import (
     validate_python_fn,
     validate_python_signature,
+    validate_python_command,
 )
 
 from typing import Tuple
@@ -10,6 +11,14 @@ def validate_fn(code: str, lang: str) -> Tuple[bool, str]:
     match lang:
         case "python":
             return validate_python_fn(code)
+        case _:
+            return False
+
+
+def validate_command(command: str, lang: str) -> Tuple[bool, str]:
+    match lang:
+        case "python":
+            return validate_python_command(command)
         case _:
             return False
 

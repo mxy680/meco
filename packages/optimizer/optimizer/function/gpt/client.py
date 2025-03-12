@@ -60,7 +60,7 @@ class OpenAIOptimizer(FunctionOptimizer):
             # Decode the cached JSON string and return a dict
             response = json.loads(json.loads(cached_response.decode("utf-8")))
             return response
-
+        
         completion = self.openai.beta.chat.completions.parse(
             model=payload["model"],
             messages=payload["messages"],
