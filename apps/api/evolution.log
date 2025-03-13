@@ -1,0 +1,3240 @@
+2025-03-12 20:38:47,766 - INFO - Generating baseline solution.
+2025-03-12 20:38:47,767 - INFO - Baseline solution generated.
+2025-03-12 20:38:47,767 - INFO - Baseline function: 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+2025-03-12 20:38:47,767 - INFO - Baseline command: 
+2025-03-12 20:40:23,966 - INFO - Generating baseline solution.
+2025-03-12 20:40:23,967 - INFO - Baseline solution generated.
+2025-03-12 20:40:23,967 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+2025-03-12 20:47:11,825 - INFO - 
+Generating baseline solution.
+2025-03-12 20:47:11,827 - INFO - Baseline solution generated.
+2025-03-12 20:47:11,827 - DEBUG - 
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+2025-03-12 20:47:11,827 - INFO - 
+Executing and verifying the function.
+2025-03-12 20:47:15,823 - INFO - Function execution successful.
+2025-03-12 20:47:15,823 - INFO - Performance metrics:
+2025-03-12 20:47:15,824 - INFO - Runtime: 2.3749998945277184e-06
+2025-03-12 20:47:15,824 - INFO - CPU Percent: 6.940814332247558
+2025-03-12 20:47:15,824 - INFO - Memory Usage: 2457600
+2025-03-12 20:47:15,825 - INFO - 
+Executing and verifying the function.
+2025-03-12 20:53:30,613 - INFO - Logger initialized.
+2025-03-12 20:53:30,614 - INFO - Generating baseline solution.
+2025-03-12 20:53:30,615 - INFO - Baseline solution generated.
+2025-03-12 20:53:30,615 - DEBUG - 
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+2025-03-12 20:53:30,615 - INFO - Executing and verifying the function.
+2025-03-12 20:53:33,669 - INFO - Function execution successful.
+2025-03-12 20:53:33,669 - DEBUG - 
+
+Performance metrics:
+2025-03-12 20:53:33,669 - DEBUG - 
+
+Runtime: 3.0000010156072676e-06
+2025-03-12 20:53:33,669 - DEBUG - 
+
+CPU Percent: 7.008138771683075
+2025-03-12 20:53:33,669 - DEBUG - 
+
+Memory Usage: 2453504
+2025-03-12 20:53:33,669 - INFO - Generation 1
+2025-03-12 20:53:33,669 - INFO - Generating approaches.
+2025-03-12 20:53:33,670 - INFO - Approaches generated.
+2025-03-12 20:53:33,670 - DEBUG - 
+
+Approach 0: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 20:53:33,670 - INFO - Generating solution.
+2025-03-12 20:53:33,670 - INFO - Solution generated.
+2025-03-12 20:53:33,670 - DEBUG - 
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 20:53:33,670 - INFO - Executing and verifying the function.
+2025-03-12 20:53:37,747 - DEBUG - 
+
+Performance metrics:
+2025-03-12 20:53:37,747 - DEBUG - 
+
+Runtime: 3.4580007195472717e-06
+2025-03-12 20:53:37,747 - DEBUG - 
+
+CPU Percent: 6.776112689393939
+2025-03-12 20:53:37,748 - DEBUG - 
+
+Memory Usage: 2641920
+2025-03-12 20:53:37,748 - DEBUG - 
+
+Approach 1: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 20:53:37,748 - INFO - Generating solution.
+2025-03-12 20:53:37,748 - INFO - Solution generated.
+2025-03-12 20:53:37,749 - DEBUG - 
+
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 20:53:37,749 - INFO - Executing and verifying the function.
+2025-03-12 20:53:41,772 - DEBUG - 
+
+Performance metrics:
+2025-03-12 20:53:41,773 - DEBUG - 
+
+Runtime: 2.0419975044205785e-06
+2025-03-12 20:53:41,773 - DEBUG - 
+
+CPU Percent: 6.7419588360539375
+2025-03-12 20:53:41,773 - DEBUG - 
+
+Memory Usage: 2469888
+2025-03-12 20:53:41,773 - DEBUG - 
+
+Approach 2: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 20:53:41,773 - INFO - Generating solution.
+2025-03-12 20:53:41,773 - INFO - Solution generated.
+2025-03-12 20:53:41,774 - DEBUG - 
+
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 20:53:41,774 - INFO - Executing and verifying the function.
+2025-03-12 20:53:45,893 - DEBUG - 
+
+Performance metrics:
+2025-03-12 20:53:45,893 - DEBUG - 
+
+Runtime: 3.582998033380136e-06
+2025-03-12 20:53:45,893 - DEBUG - 
+
+CPU Percent: 6.821992124160296
+2025-03-12 20:53:45,893 - DEBUG - 
+
+Memory Usage: 2478080
+2025-03-12 20:53:45,893 - INFO - Generation complete.
+2025-03-12 20:53:45,893 - INFO - Winner selected.
+2025-03-12 20:53:45,893 - DEBUG - 
+
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 20:53:45,894 - DEBUG - 
+
+Performance metrics:
+2025-03-12 20:53:45,894 - DEBUG - 
+
+Runtime: 2.0419975044205785e-06
+2025-03-12 20:53:45,894 - DEBUG - 
+
+CPU Percent: 6.7419588360539375
+2025-03-12 20:53:45,894 - DEBUG - 
+
+Memory Usage: 2469888
+2025-03-12 20:53:45,894 - INFO - Generation 2
+2025-03-12 20:53:45,894 - INFO - Generating approaches.
+2025-03-12 20:53:45,895 - INFO - Approaches generated.
+2025-03-12 20:53:45,895 - DEBUG - 
+
+Approach 0: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 20:53:45,895 - INFO - Generating solution.
+2025-03-12 20:53:45,895 - INFO - Solution generated.
+2025-03-12 20:53:45,895 - DEBUG - 
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 20:53:45,895 - INFO - Executing and verifying the function.
+2025-03-12 20:53:49,916 - DEBUG - 
+
+Performance metrics:
+2025-03-12 20:53:49,917 - DEBUG - 
+
+Runtime: 3.916997229680419e-06
+2025-03-12 20:53:49,917 - DEBUG - 
+
+CPU Percent: 7.075399905347847
+2025-03-12 20:53:49,917 - DEBUG - 
+
+Memory Usage: 2498560
+2025-03-12 20:53:49,917 - DEBUG - 
+
+Approach 1: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 20:53:49,917 - INFO - Generating solution.
+2025-03-12 20:53:49,918 - INFO - Solution generated.
+2025-03-12 20:53:49,918 - DEBUG - 
+
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 20:53:49,918 - INFO - Executing and verifying the function.
+2025-03-12 20:53:54,029 - DEBUG - 
+
+Performance metrics:
+2025-03-12 20:53:54,029 - DEBUG - 
+
+Runtime: 1.7090023902710527e-06
+2025-03-12 20:53:54,029 - DEBUG - 
+
+CPU Percent: 6.7391758747697965
+2025-03-12 20:53:54,029 - DEBUG - 
+
+Memory Usage: 2490368
+2025-03-12 20:53:54,029 - DEBUG - 
+
+Approach 2: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 20:53:54,029 - INFO - Generating solution.
+2025-03-12 20:53:54,030 - INFO - Solution generated.
+2025-03-12 20:53:54,030 - DEBUG - 
+
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 20:53:54,030 - INFO - Executing and verifying the function.
+2025-03-12 20:53:58,053 - DEBUG - 
+
+Performance metrics:
+2025-03-12 20:53:58,053 - DEBUG - 
+
+Runtime: 3.6669989640358835e-06
+2025-03-12 20:53:58,053 - DEBUG - 
+
+CPU Percent: 6.881387967787779
+2025-03-12 20:53:58,053 - DEBUG - 
+
+Memory Usage: 2506752
+2025-03-12 20:53:58,053 - INFO - Generation complete.
+2025-03-12 20:53:58,054 - INFO - Winner selected.
+2025-03-12 20:53:58,054 - DEBUG - 
+
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 20:53:58,054 - DEBUG - 
+
+Performance metrics:
+2025-03-12 20:53:58,054 - DEBUG - 
+
+Runtime: 1.7090023902710527e-06
+2025-03-12 20:53:58,054 - DEBUG - 
+
+CPU Percent: 6.7391758747697965
+2025-03-12 20:53:58,054 - DEBUG - 
+
+Memory Usage: 2490368
+2025-03-12 20:53:58,054 - INFO - Generation 3
+2025-03-12 20:53:58,054 - INFO - Generating approaches.
+2025-03-12 20:53:58,054 - INFO - Approaches generated.
+2025-03-12 20:53:58,054 - DEBUG - 
+
+Approach 0: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 20:53:58,054 - INFO - Generating solution.
+2025-03-12 20:53:58,055 - INFO - Solution generated.
+2025-03-12 20:53:58,055 - DEBUG - 
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 20:53:58,055 - INFO - Executing and verifying the function.
+2025-03-12 20:54:02,121 - DEBUG - 
+
+Performance metrics:
+2025-03-12 20:54:02,121 - DEBUG - 
+
+Runtime: 3.7909994716756046e-06
+2025-03-12 20:54:02,121 - DEBUG - 
+
+CPU Percent: 7.217934096751577
+2025-03-12 20:54:02,122 - DEBUG - 
+
+Memory Usage: 2506752
+2025-03-12 20:54:02,122 - DEBUG - 
+
+Approach 1: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 20:54:02,122 - INFO - Generating solution.
+2025-03-12 20:54:02,122 - INFO - Solution generated.
+2025-03-12 20:54:02,122 - DEBUG - 
+
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 20:54:02,122 - INFO - Executing and verifying the function.
+2025-03-12 20:54:06,207 - DEBUG - 
+
+Performance metrics:
+2025-03-12 20:54:06,208 - DEBUG - 
+
+Runtime: 1.6660014807712287e-06
+2025-03-12 20:54:06,208 - DEBUG - 
+
+CPU Percent: 6.759402985074627
+2025-03-12 20:54:06,208 - DEBUG - 
+
+Memory Usage: 2514944
+2025-03-12 20:54:06,208 - DEBUG - 
+
+Approach 2: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 20:54:06,208 - INFO - Generating solution.
+2025-03-12 20:54:06,209 - INFO - Solution generated.
+2025-03-12 20:54:06,209 - DEBUG - 
+
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 20:54:06,209 - INFO - Executing and verifying the function.
+2025-03-12 20:54:17,976 - INFO - Logger initialized.
+2025-03-12 20:54:17,976 - INFO - Generating baseline solution.
+2025-03-12 20:54:17,977 - INFO - Baseline solution generated.
+2025-03-12 20:54:17,977 - DEBUG - def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+2025-03-12 20:54:17,978 - INFO - Executing and verifying the function.
+2025-03-12 20:54:21,001 - INFO - Function execution successful.
+2025-03-12 20:54:21,001 - DEBUG - Performance metrics:
+2025-03-12 20:54:21,001 - DEBUG - Runtime: 2.4999972083605826e-06
+2025-03-12 20:54:21,002 - DEBUG - CPU Percent: 7.027536094674557
+2025-03-12 20:54:21,002 - DEBUG - Memory Usage: 2478080
+2025-03-12 20:54:21,002 - INFO - Generation 1
+2025-03-12 20:54:21,002 - INFO - Generating approaches.
+2025-03-12 20:54:21,002 - INFO - Approaches generated.
+2025-03-12 20:54:21,002 - DEBUG - Approach 0: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 20:54:21,002 - INFO - Generating solution.
+2025-03-12 20:54:21,003 - INFO - Solution generated.
+2025-03-12 20:54:21,003 - DEBUG - def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 20:54:21,003 - INFO - Executing and verifying the function.
+2025-03-12 20:55:34,175 - INFO - Logger initialized.
+2025-03-12 20:55:34,175 - INFO - Generating baseline solution.
+2025-03-12 20:55:34,177 - INFO - Baseline solution generated.
+2025-03-12 20:55:34,177 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+2025-03-12 20:55:34,177 - INFO - Executing and verifying the function.
+2025-03-12 20:55:38,033 - INFO - Function execution successful.
+2025-03-12 20:55:38,034 - DEBUG - Performance metrics:
+2025-03-12 20:55:38,034 - DEBUG - Runtime: 2.416996721876785e-06
+2025-03-12 20:55:38,034 - DEBUG - CPU Percent: 7.005485632866303
+2025-03-12 20:55:38,034 - DEBUG - Memory Usage: 2453504
+2025-03-12 20:55:38,034 - INFO - Generation 1
+2025-03-12 20:55:38,034 - INFO - Generating approaches.
+2025-03-12 20:55:38,035 - INFO - Approaches generated.
+2025-03-12 20:55:38,035 - DEBUG - Approach 0: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 20:55:38,035 - INFO - Generating solution.
+2025-03-12 20:55:38,036 - INFO - Solution generated.
+2025-03-12 20:55:38,036 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 20:55:38,036 - INFO - Executing and verifying the function.
+2025-03-12 20:55:42,073 - DEBUG - Performance metrics:
+2025-03-12 20:55:42,073 - DEBUG - Runtime: 3.291999746579677e-06
+2025-03-12 20:55:42,073 - DEBUG - CPU Percent: 6.808290960451976
+2025-03-12 20:55:42,073 - DEBUG - Memory Usage: 2469888
+2025-03-12 20:55:42,073 - DEBUG - Approach 1: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 20:55:42,073 - INFO - Generating solution.
+2025-03-12 20:55:42,073 - INFO - Solution generated.
+2025-03-12 20:55:42,073 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 20:55:42,073 - INFO - Executing and verifying the function.
+2025-03-12 20:55:46,166 - DEBUG - Performance metrics:
+2025-03-12 20:55:46,167 - DEBUG - Runtime: 1.5000005078036338e-06
+2025-03-12 20:55:46,167 - DEBUG - CPU Percent: 6.786178208461356
+2025-03-12 20:55:46,167 - DEBUG - Memory Usage: 2490368
+2025-03-12 20:55:46,167 - DEBUG - Approach 2: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 20:55:46,167 - INFO - Generating solution.
+2025-03-12 20:55:46,168 - INFO - Solution generated.
+2025-03-12 20:55:46,168 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 20:55:46,168 - INFO - Executing and verifying the function.
+2025-03-12 20:55:50,182 - DEBUG - Performance metrics:
+2025-03-12 20:55:50,182 - DEBUG - Runtime: 3.5000011848751456e-06
+2025-03-12 20:55:50,182 - DEBUG - CPU Percent: 6.992710413694722
+2025-03-12 20:55:50,182 - DEBUG - Memory Usage: 2494464
+2025-03-12 20:55:50,182 - INFO - Generation complete.
+2025-03-12 20:55:50,182 - INFO - Winner selected.
+2025-03-12 20:55:50,182 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 20:55:50,182 - DEBUG - Performance metrics:
+2025-03-12 20:55:50,183 - DEBUG - Runtime: 1.5000005078036338e-06
+2025-03-12 20:55:50,183 - DEBUG - CPU Percent: 6.786178208461356
+2025-03-12 20:55:50,183 - DEBUG - Memory Usage: 2490368
+2025-03-12 20:55:50,183 - INFO - Generation 2
+2025-03-12 20:55:50,183 - INFO - Generating approaches.
+2025-03-12 20:55:50,183 - INFO - Approaches generated.
+2025-03-12 20:55:50,183 - DEBUG - Approach 0: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 20:55:50,183 - INFO - Generating solution.
+2025-03-12 20:55:50,184 - INFO - Solution generated.
+2025-03-12 20:55:50,184 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 20:55:50,184 - INFO - Executing and verifying the function.
+2025-03-12 20:55:54,305 - DEBUG - Performance metrics:
+2025-03-12 20:55:54,305 - DEBUG - Runtime: 3.4580007195472717e-06
+2025-03-12 20:55:54,305 - DEBUG - CPU Percent: 6.763203125
+2025-03-12 20:55:54,305 - DEBUG - Memory Usage: 2486272
+2025-03-12 20:55:54,305 - DEBUG - Approach 1: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 20:55:54,305 - INFO - Generating solution.
+2025-03-12 20:55:54,305 - INFO - Solution generated.
+2025-03-12 20:55:54,306 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 20:55:54,306 - INFO - Executing and verifying the function.
+2025-03-12 20:55:58,325 - DEBUG - Performance metrics:
+2025-03-12 20:55:58,325 - DEBUG - Runtime: 1.8329992599319667e-06
+2025-03-12 20:55:58,325 - DEBUG - CPU Percent: 6.9783926031294445
+2025-03-12 20:55:58,325 - DEBUG - Memory Usage: 2498560
+2025-03-12 20:55:58,326 - DEBUG - Approach 2: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 20:55:58,326 - INFO - Generating solution.
+2025-03-12 20:55:58,326 - INFO - Solution generated.
+2025-03-12 20:55:58,326 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 20:55:58,326 - INFO - Executing and verifying the function.
+2025-03-12 20:56:02,345 - DEBUG - Performance metrics:
+2025-03-12 20:56:02,346 - DEBUG - Runtime: 3.875000402331352e-06
+2025-03-12 20:56:02,346 - DEBUG - CPU Percent: 6.974958540630183
+2025-03-12 20:56:02,346 - DEBUG - Memory Usage: 2502656
+2025-03-12 20:56:02,346 - INFO - Generation complete.
+2025-03-12 20:56:02,346 - INFO - Winner selected.
+2025-03-12 20:56:02,346 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 20:56:02,346 - DEBUG - Performance metrics:
+2025-03-12 20:56:02,346 - DEBUG - Runtime: 1.5000005078036338e-06
+2025-03-12 20:56:02,346 - DEBUG - CPU Percent: 6.786178208461356
+2025-03-12 20:56:02,346 - DEBUG - Memory Usage: 2490368
+2025-03-12 20:56:02,346 - INFO - Generation 3
+2025-03-12 20:56:02,346 - INFO - Generating approaches.
+2025-03-12 20:56:02,347 - INFO - Approaches generated.
+2025-03-12 20:56:02,347 - DEBUG - Approach 0: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 20:56:02,347 - INFO - Generating solution.
+2025-03-12 20:56:02,347 - INFO - Solution generated.
+2025-03-12 20:56:02,347 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 20:56:02,347 - INFO - Executing and verifying the function.
+2025-03-12 20:56:06,453 - DEBUG - Performance metrics:
+2025-03-12 20:56:06,453 - DEBUG - Runtime: 3.417000698391348e-06
+2025-03-12 20:56:06,453 - DEBUG - CPU Percent: 6.917894736842105
+2025-03-12 20:56:06,453 - DEBUG - Memory Usage: 2514944
+2025-03-12 20:56:06,453 - DEBUG - Approach 1: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 20:56:06,453 - INFO - Generating solution.
+2025-03-12 20:56:06,454 - INFO - Solution generated.
+2025-03-12 20:56:06,454 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 20:56:06,454 - INFO - Executing and verifying the function.
+2025-03-12 20:56:10,474 - DEBUG - Performance metrics:
+2025-03-12 20:56:10,474 - DEBUG - Runtime: 1.7080019460991025e-06
+2025-03-12 20:56:10,474 - DEBUG - CPU Percent: 7.075379506641366
+2025-03-12 20:56:10,474 - DEBUG - Memory Usage: 2519040
+2025-03-12 20:56:10,474 - DEBUG - Approach 2: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 20:56:10,474 - INFO - Generating solution.
+2025-03-12 20:56:10,475 - INFO - Solution generated.
+2025-03-12 20:56:10,475 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 20:56:10,475 - INFO - Executing and verifying the function.
+2025-03-12 20:56:14,590 - DEBUG - Performance metrics:
+2025-03-12 20:56:14,590 - DEBUG - Runtime: 3.7089994293637574e-06
+2025-03-12 20:56:14,590 - DEBUG - CPU Percent: 6.75826967326277
+2025-03-12 20:56:14,590 - DEBUG - Memory Usage: 2531328
+2025-03-12 20:56:14,590 - INFO - Generation complete.
+2025-03-12 20:56:14,590 - INFO - Winner selected.
+2025-03-12 20:56:14,590 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 20:56:14,590 - DEBUG - Performance metrics:
+2025-03-12 20:56:14,590 - DEBUG - Runtime: 1.5000005078036338e-06
+2025-03-12 20:56:14,590 - DEBUG - CPU Percent: 6.786178208461356
+2025-03-12 20:56:14,590 - DEBUG - Memory Usage: 2490368
+2025-03-12 22:27:47,435 - INFO - Logger initialized.
+2025-03-12 22:27:47,435 - INFO - Generating baseline solution.
+2025-03-12 22:27:47,436 - INFO - Baseline solution generated.
+2025-03-12 22:27:47,436 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+2025-03-12 22:27:47,436 - INFO - Executing and verifying the function.
+2025-03-12 22:27:50,471 - INFO - Function execution successful.
+2025-03-12 22:27:50,471 - DEBUG - Performance metrics:
+2025-03-12 22:27:50,471 - DEBUG - Runtime: 2.5420013116672635e-06
+2025-03-12 22:27:50,472 - DEBUG - CPU Percent: 7.906150578239321
+2025-03-12 22:27:50,472 - DEBUG - Memory Usage: 2461696
+2025-03-12 22:27:50,472 - INFO - Generation 1
+2025-03-12 22:27:50,472 - INFO - Generating approaches.
+2025-03-12 22:27:50,472 - INFO - Approaches generated.
+2025-03-12 22:27:50,472 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 22:27:50,472 - INFO - Generating solution.
+2025-03-12 22:27:50,472 - INFO - Solution generated.
+2025-03-12 22:27:50,473 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 22:27:50,473 - INFO - Executing and verifying the function.
+2025-03-12 22:27:54,578 - DEBUG - Performance metrics:
+2025-03-12 22:27:54,580 - DEBUG - Runtime: 3.3750002330634743e-06
+2025-03-12 22:27:54,580 - DEBUG - CPU Percent: 7.144111842105263
+2025-03-12 22:27:54,580 - DEBUG - Memory Usage: 2469888
+2025-03-12 22:27:54,581 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 22:27:54,581 - INFO - Generating solution.
+2025-03-12 22:27:54,582 - INFO - Solution generated.
+2025-03-12 22:27:54,583 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:27:54,583 - INFO - Executing and verifying the function.
+2025-03-12 22:27:58,589 - DEBUG - Performance metrics:
+2025-03-12 22:27:58,589 - DEBUG - Runtime: 1.7500024114269763e-06
+2025-03-12 22:27:58,589 - DEBUG - CPU Percent: 7.699234244946491
+2025-03-12 22:27:58,589 - DEBUG - Memory Usage: 2473984
+2025-03-12 22:27:58,590 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 22:27:58,590 - INFO - Generating solution.
+2025-03-12 22:27:58,590 - INFO - Solution generated.
+2025-03-12 22:27:58,590 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 22:27:58,590 - INFO - Executing and verifying the function.
+2025-03-12 22:28:02,729 - DEBUG - Performance metrics:
+2025-03-12 22:28:02,730 - DEBUG - Runtime: 3.834000381175429e-06
+2025-03-12 22:28:02,731 - DEBUG - CPU Percent: 7.059496797804209
+2025-03-12 22:28:02,731 - DEBUG - Memory Usage: 2482176
+2025-03-12 22:28:02,731 - INFO - Generation complete.
+2025-03-12 22:28:02,731 - INFO - Winner selected.
+2025-03-12 22:28:02,731 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:28:02,731 - DEBUG - Performance metrics:
+2025-03-12 22:28:02,731 - DEBUG - Runtime: 1.7500024114269763e-06
+2025-03-12 22:28:02,731 - DEBUG - CPU Percent: 7.699234244946491
+2025-03-12 22:28:02,732 - DEBUG - Memory Usage: 2473984
+2025-03-12 22:28:02,732 - INFO - Generation 2
+2025-03-12 22:28:02,732 - INFO - Generating approaches.
+2025-03-12 22:28:02,732 - INFO - Approaches generated.
+2025-03-12 22:28:02,732 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 22:28:02,732 - INFO - Generating solution.
+2025-03-12 22:28:02,732 - INFO - Solution generated.
+2025-03-12 22:28:02,732 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 22:28:02,733 - INFO - Executing and verifying the function.
+2025-03-12 22:28:06,745 - DEBUG - Performance metrics:
+2025-03-12 22:28:06,745 - DEBUG - Runtime: 3.832999937003478e-06
+2025-03-12 22:28:06,745 - DEBUG - CPU Percent: 7.148779097387173
+2025-03-12 22:28:06,745 - DEBUG - Memory Usage: 2715648
+2025-03-12 22:28:06,745 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 22:28:06,745 - INFO - Generating solution.
+2025-03-12 22:28:06,746 - INFO - Solution generated.
+2025-03-12 22:28:06,746 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:28:06,746 - INFO - Executing and verifying the function.
+2025-03-12 22:28:10,757 - DEBUG - Performance metrics:
+2025-03-12 22:28:10,757 - DEBUG - Runtime: 1.8749997252598405e-06
+2025-03-12 22:28:10,757 - DEBUG - CPU Percent: 7.365045173561578
+2025-03-12 22:28:10,757 - DEBUG - Memory Usage: 2498560
+2025-03-12 22:28:10,757 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 22:28:10,758 - INFO - Generating solution.
+2025-03-12 22:28:10,758 - INFO - Solution generated.
+2025-03-12 22:28:10,758 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 22:28:10,758 - INFO - Executing and verifying the function.
+2025-03-12 22:28:14,921 - DEBUG - Performance metrics:
+2025-03-12 22:28:14,921 - DEBUG - Runtime: 3.707998985191807e-06
+2025-03-12 22:28:14,921 - DEBUG - CPU Percent: 7.567889145496536
+2025-03-12 22:28:14,921 - DEBUG - Memory Usage: 2506752
+2025-03-12 22:28:14,921 - INFO - Generation complete.
+2025-03-12 22:28:14,921 - INFO - Winner selected.
+2025-03-12 22:28:14,921 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:28:14,921 - DEBUG - Performance metrics:
+2025-03-12 22:28:14,921 - DEBUG - Runtime: 1.7500024114269763e-06
+2025-03-12 22:28:14,921 - DEBUG - CPU Percent: 7.699234244946491
+2025-03-12 22:28:14,921 - DEBUG - Memory Usage: 2473984
+2025-03-12 22:28:14,922 - INFO - Generation 3
+2025-03-12 22:28:14,922 - INFO - Generating approaches.
+2025-03-12 22:28:14,922 - INFO - Approaches generated.
+2025-03-12 22:28:14,922 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 22:28:14,922 - INFO - Generating solution.
+2025-03-12 22:28:14,922 - INFO - Solution generated.
+2025-03-12 22:28:14,922 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 22:28:14,923 - INFO - Executing and verifying the function.
+2025-03-12 22:28:18,940 - DEBUG - Performance metrics:
+2025-03-12 22:28:18,940 - DEBUG - Runtime: 3.7089994293637574e-06
+2025-03-12 22:28:18,940 - DEBUG - CPU Percent: 7.433222591362126
+2025-03-12 22:28:18,940 - DEBUG - Memory Usage: 2510848
+2025-03-12 22:28:18,940 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 22:28:18,940 - INFO - Generating solution.
+2025-03-12 22:28:18,941 - INFO - Solution generated.
+2025-03-12 22:28:18,941 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:28:18,941 - INFO - Executing and verifying the function.
+2025-03-12 22:28:23,058 - DEBUG - Performance metrics:
+2025-03-12 22:28:23,058 - DEBUG - Runtime: 2.083001163555309e-06
+2025-03-12 22:28:23,058 - DEBUG - CPU Percent: 6.907288174512055
+2025-03-12 22:28:23,059 - DEBUG - Memory Usage: 2519040
+2025-03-12 22:28:23,059 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 22:28:23,059 - INFO - Generating solution.
+2025-03-12 22:28:23,059 - INFO - Solution generated.
+2025-03-12 22:28:23,059 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 22:28:23,059 - INFO - Executing and verifying the function.
+2025-03-12 22:28:27,075 - DEBUG - Performance metrics:
+2025-03-12 22:28:27,075 - DEBUG - Runtime: 3.6669989640358835e-06
+2025-03-12 22:28:27,075 - DEBUG - CPU Percent: 7.3087580147233435
+2025-03-12 22:28:27,075 - DEBUG - Memory Usage: 2531328
+2025-03-12 22:28:27,076 - INFO - Generation complete.
+2025-03-12 22:28:27,076 - INFO - Winner selected.
+2025-03-12 22:28:27,076 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:28:27,076 - DEBUG - Performance metrics:
+2025-03-12 22:28:27,076 - DEBUG - Runtime: 1.7500024114269763e-06
+2025-03-12 22:28:27,076 - DEBUG - CPU Percent: 7.699234244946491
+2025-03-12 22:28:27,076 - DEBUG - Memory Usage: 2473984
+2025-03-12 22:30:05,806 - INFO - Logger initialized.
+2025-03-12 22:30:05,807 - INFO - Generating baseline solution.
+2025-03-12 22:30:05,808 - INFO - Baseline solution generated.
+2025-03-12 22:30:05,808 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+2025-03-12 22:30:05,808 - INFO - Executing and verifying the function.
+2025-03-12 22:30:08,829 - INFO - Function execution successful.
+2025-03-12 22:30:08,830 - DEBUG - Performance metrics:
+2025-03-12 22:30:08,830 - DEBUG - Runtime: 2.5839981390163302e-06
+2025-03-12 22:30:08,830 - DEBUG - CPU Percent: 7.473756814410998
+2025-03-12 22:30:08,830 - DEBUG - Memory Usage: 2473984
+2025-03-12 22:30:08,830 - INFO - Generation 1
+2025-03-12 22:30:08,830 - INFO - Generating approaches.
+2025-03-12 22:30:08,831 - INFO - Approaches generated.
+2025-03-12 22:30:08,831 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 22:30:08,831 - INFO - Generating solution.
+2025-03-12 22:30:08,831 - INFO - Solution generated.
+2025-03-12 22:30:08,831 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 22:30:08,831 - INFO - Executing and verifying the function.
+2025-03-12 22:30:12,952 - DEBUG - Performance metrics:
+2025-03-12 22:30:12,952 - DEBUG - Runtime: 3.4579970815684646e-06
+2025-03-12 22:30:12,952 - DEBUG - CPU Percent: 6.8604501607717046
+2025-03-12 22:30:12,952 - DEBUG - Memory Usage: 2465792
+2025-03-12 22:30:12,952 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 22:30:12,952 - INFO - Generating solution.
+2025-03-12 22:30:12,953 - INFO - Solution generated.
+2025-03-12 22:30:12,953 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:30:12,953 - INFO - Executing and verifying the function.
+2025-03-12 22:30:16,962 - DEBUG - Performance metrics:
+2025-03-12 22:30:16,963 - DEBUG - Runtime: 1.5839978004805744e-06
+2025-03-12 22:30:16,963 - DEBUG - CPU Percent: 6.899020214030916
+2025-03-12 22:30:16,963 - DEBUG - Memory Usage: 2473984
+2025-03-12 22:30:16,963 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 22:30:16,963 - INFO - Generating solution.
+2025-03-12 22:30:16,964 - INFO - Solution generated.
+2025-03-12 22:30:16,964 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 22:30:16,964 - INFO - Executing and verifying the function.
+2025-03-12 22:30:21,006 - DEBUG - Performance metrics:
+2025-03-12 22:30:21,006 - DEBUG - Runtime: 3.7909994716756046e-06
+2025-03-12 22:30:21,006 - DEBUG - CPU Percent: 7.036847313854855
+2025-03-12 22:30:21,006 - DEBUG - Memory Usage: 2486272
+2025-03-12 22:30:21,006 - INFO - Generation complete.
+2025-03-12 22:30:21,006 - INFO - Winner selected.
+2025-03-12 22:30:21,006 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:30:21,006 - DEBUG - Performance metrics:
+2025-03-12 22:30:21,006 - DEBUG - Runtime: 1.5839978004805744e-06
+2025-03-12 22:30:21,006 - DEBUG - CPU Percent: 6.899020214030916
+2025-03-12 22:30:21,006 - DEBUG - Memory Usage: 2473984
+2025-03-12 22:30:21,006 - INFO - Generation 2
+2025-03-12 22:30:21,006 - INFO - Generating approaches.
+2025-03-12 22:30:21,006 - INFO - Approaches generated.
+2025-03-12 22:30:21,007 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 22:30:21,007 - INFO - Generating solution.
+2025-03-12 22:30:21,007 - INFO - Solution generated.
+2025-03-12 22:30:21,007 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 22:30:21,007 - INFO - Executing and verifying the function.
+2025-03-12 22:30:25,109 - DEBUG - Performance metrics:
+2025-03-12 22:30:25,109 - DEBUG - Runtime: 3.5000011848751456e-06
+2025-03-12 22:30:25,109 - DEBUG - CPU Percent: 6.812518621973929
+2025-03-12 22:30:25,109 - DEBUG - Memory Usage: 2490368
+2025-03-12 22:30:25,109 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 22:30:25,109 - INFO - Generating solution.
+2025-03-12 22:30:25,109 - INFO - Solution generated.
+2025-03-12 22:30:25,109 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:30:25,109 - INFO - Executing and verifying the function.
+2025-03-12 22:30:29,134 - DEBUG - Performance metrics:
+2025-03-12 22:30:29,135 - DEBUG - Runtime: 1.6659978427924216e-06
+2025-03-12 22:30:29,135 - DEBUG - CPU Percent: 7.251940298507463
+2025-03-12 22:30:29,135 - DEBUG - Memory Usage: 2514944
+2025-03-12 22:30:29,135 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 22:30:29,135 - INFO - Generating solution.
+2025-03-12 22:30:29,136 - INFO - Solution generated.
+2025-03-12 22:30:29,136 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 22:30:29,136 - INFO - Executing and verifying the function.
+2025-03-12 22:30:33,258 - DEBUG - Performance metrics:
+2025-03-12 22:30:33,258 - DEBUG - Runtime: 4.0000013541430235e-06
+2025-03-12 22:30:33,258 - DEBUG - CPU Percent: 6.880716911764706
+2025-03-12 22:30:33,258 - DEBUG - Memory Usage: 2502656
+2025-03-12 22:30:33,258 - INFO - Generation complete.
+2025-03-12 22:30:33,258 - INFO - Winner selected.
+2025-03-12 22:30:33,258 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:30:33,258 - DEBUG - Performance metrics:
+2025-03-12 22:30:33,258 - DEBUG - Runtime: 1.5839978004805744e-06
+2025-03-12 22:30:33,258 - DEBUG - CPU Percent: 6.899020214030916
+2025-03-12 22:30:33,258 - DEBUG - Memory Usage: 2473984
+2025-03-12 22:30:33,258 - INFO - Generation 3
+2025-03-12 22:30:33,258 - INFO - Generating approaches.
+2025-03-12 22:30:33,259 - INFO - Approaches generated.
+2025-03-12 22:30:33,259 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 22:30:33,259 - INFO - Generating solution.
+2025-03-12 22:30:33,259 - INFO - Solution generated.
+2025-03-12 22:30:33,259 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 22:30:33,259 - INFO - Executing and verifying the function.
+2025-03-12 22:30:37,277 - DEBUG - Performance metrics:
+2025-03-12 22:30:37,277 - DEBUG - Runtime: 3.4580007195472717e-06
+2025-03-12 22:30:37,278 - DEBUG - CPU Percent: 6.9701067615658365
+2025-03-12 22:30:37,278 - DEBUG - Memory Usage: 2514944
+2025-03-12 22:30:37,278 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 22:30:37,278 - INFO - Generating solution.
+2025-03-12 22:30:37,279 - INFO - Solution generated.
+2025-03-12 22:30:37,279 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:30:37,279 - INFO - Executing and verifying the function.
+2025-03-12 22:30:41,376 - DEBUG - Performance metrics:
+2025-03-12 22:30:41,376 - DEBUG - Runtime: 1.5830009942874312e-06
+2025-03-12 22:30:41,376 - DEBUG - CPU Percent: 6.623276260990282
+2025-03-12 22:30:41,376 - DEBUG - Memory Usage: 2519040
+2025-03-12 22:30:41,376 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 22:30:41,376 - INFO - Generating solution.
+2025-03-12 22:30:41,377 - INFO - Solution generated.
+2025-03-12 22:30:41,377 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 22:30:41,377 - INFO - Executing and verifying the function.
+2025-03-12 22:30:45,407 - DEBUG - Performance metrics:
+2025-03-12 22:30:45,407 - DEBUG - Runtime: 4.0000013541430235e-06
+2025-03-12 22:30:45,407 - DEBUG - CPU Percent: 7.062616733823181
+2025-03-12 22:30:45,407 - DEBUG - Memory Usage: 2531328
+2025-03-12 22:30:45,407 - INFO - Generation complete.
+2025-03-12 22:30:45,407 - INFO - Winner selected.
+2025-03-12 22:30:45,407 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:30:45,407 - DEBUG - Performance metrics:
+2025-03-12 22:30:45,408 - DEBUG - Runtime: 1.5830009942874312e-06
+2025-03-12 22:30:45,408 - DEBUG - CPU Percent: 6.623276260990282
+2025-03-12 22:30:45,408 - DEBUG - Memory Usage: 2519040
+2025-03-12 22:34:09,437 - INFO - Logger initialized.
+2025-03-12 22:34:09,437 - INFO - Generating baseline solution.
+2025-03-12 22:34:09,438 - INFO - Baseline solution generated.
+2025-03-12 22:34:09,438 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+2025-03-12 22:34:09,438 - INFO - Executing and verifying the function.
+2025-03-12 22:34:12,564 - INFO - Function execution successful.
+2025-03-12 22:34:12,564 - DEBUG - Performance metrics:
+2025-03-12 22:34:12,564 - DEBUG - Runtime: 5.83300061407499e-06
+2025-03-12 22:34:12,564 - DEBUG - CPU Percent: 7.37149150986691
+2025-03-12 22:34:12,565 - DEBUG - Memory Usage: 2453504
+2025-03-12 22:34:12,565 - INFO - Generation 1
+2025-03-12 22:34:12,565 - INFO - Generating approaches.
+2025-03-12 22:34:12,566 - INFO - Approaches generated.
+2025-03-12 22:34:12,566 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 22:34:12,566 - INFO - Generating solution.
+2025-03-12 22:34:12,566 - INFO - Solution generated.
+2025-03-12 22:34:12,567 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 22:34:12,567 - INFO - Executing and verifying the function.
+2025-03-12 22:34:42,651 - INFO - Logger initialized.
+2025-03-12 22:34:42,651 - INFO - Generating baseline solution.
+2025-03-12 22:34:42,652 - INFO - Baseline solution generated.
+2025-03-12 22:34:42,652 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+2025-03-12 22:34:42,652 - INFO - Executing and verifying the function.
+2025-03-12 22:34:46,537 - INFO - Function execution successful.
+2025-03-12 22:34:46,537 - DEBUG - Performance metrics:
+2025-03-12 22:34:46,537 - DEBUG - Runtime: 2.7909991331398487e-06
+2025-03-12 22:34:46,537 - DEBUG - CPU Percent: 7.266786815271519
+2025-03-12 22:34:46,537 - DEBUG - Memory Usage: 2486272
+2025-03-12 22:34:46,537 - INFO - Generation 1
+2025-03-12 22:34:46,537 - INFO - Generating approaches.
+2025-03-12 22:34:46,538 - INFO - Approaches generated.
+2025-03-12 22:34:46,538 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 22:34:46,538 - INFO - Generating solution.
+2025-03-12 22:34:46,538 - INFO - Solution generated.
+2025-03-12 22:34:46,538 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 22:34:46,538 - INFO - Executing and verifying the function.
+2025-03-12 22:34:50,578 - DEBUG - Performance metrics:
+2025-03-12 22:34:50,578 - DEBUG - Runtime: 3.3750002330634743e-06
+2025-03-12 22:34:50,579 - DEBUG - CPU Percent: 6.947273582686426
+2025-03-12 22:34:50,579 - DEBUG - Memory Usage: 2465792
+2025-03-12 22:34:50,579 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 22:34:50,579 - INFO - Generating solution.
+2025-03-12 22:34:50,579 - INFO - Solution generated.
+2025-03-12 22:34:50,579 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:34:50,579 - INFO - Executing and verifying the function.
+2025-03-12 22:34:54,686 - DEBUG - Performance metrics:
+2025-03-12 22:34:54,686 - DEBUG - Runtime: 1.7500024114269763e-06
+2025-03-12 22:34:54,686 - DEBUG - CPU Percent: 7.0021603927986895
+2025-03-12 22:34:54,686 - DEBUG - Memory Usage: 2473984
+2025-03-12 22:34:54,686 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 22:34:54,686 - INFO - Generating solution.
+2025-03-12 22:34:54,687 - INFO - Solution generated.
+2025-03-12 22:34:54,687 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 22:34:54,687 - INFO - Executing and verifying the function.
+2025-03-12 22:34:58,712 - DEBUG - Performance metrics:
+2025-03-12 22:34:58,713 - DEBUG - Runtime: 3.5420016502030194e-06
+2025-03-12 22:34:58,713 - DEBUG - CPU Percent: 6.901429924242423
+2025-03-12 22:34:58,713 - DEBUG - Memory Usage: 2490368
+2025-03-12 22:34:58,713 - INFO - Generation complete.
+2025-03-12 22:34:58,713 - INFO - Winner selected.
+2025-03-12 22:34:58,713 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:34:58,713 - DEBUG - Performance metrics:
+2025-03-12 22:34:58,713 - DEBUG - Runtime: 1.7500024114269763e-06
+2025-03-12 22:34:58,713 - DEBUG - CPU Percent: 7.0021603927986895
+2025-03-12 22:34:58,714 - DEBUG - Memory Usage: 2473984
+2025-03-12 22:36:42,978 - INFO - Logger initialized.
+2025-03-12 22:36:42,978 - INFO - Generating baseline solution.
+2025-03-12 22:36:42,980 - INFO - Baseline solution generated.
+2025-03-12 22:36:42,980 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+2025-03-12 22:36:42,980 - INFO - Executing and verifying the function.
+2025-03-12 22:36:46,573 - INFO - Function execution successful.
+2025-03-12 22:36:46,573 - DEBUG - Performance metrics:
+2025-03-12 22:36:46,574 - DEBUG - Runtime: 2.540997229516506e-06
+2025-03-12 22:36:46,574 - DEBUG - CPU Percent: 7.157300380228138
+2025-03-12 22:36:46,574 - DEBUG - Memory Usage: 2469888
+2025-03-12 22:36:46,574 - INFO - Generation 1
+2025-03-12 22:36:46,574 - INFO - Generating approaches.
+2025-03-12 22:36:46,575 - INFO - Approaches generated.
+2025-03-12 22:36:46,575 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 22:36:46,575 - INFO - Generating solution.
+2025-03-12 22:36:46,575 - INFO - Solution generated.
+2025-03-12 22:36:46,576 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 22:36:46,576 - INFO - Executing and verifying the function.
+2025-03-12 22:36:50,596 - DEBUG - Performance metrics:
+2025-03-12 22:36:50,596 - DEBUG - Runtime: 3.4580007195472717e-06
+2025-03-12 22:36:50,597 - DEBUG - CPU Percent: 7.206570414201183
+2025-03-12 22:36:50,597 - DEBUG - Memory Usage: 2461696
+2025-03-12 22:36:50,597 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 22:36:50,597 - INFO - Generating solution.
+2025-03-12 22:36:50,598 - INFO - Solution generated.
+2025-03-12 22:36:50,598 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:36:50,598 - INFO - Executing and verifying the function.
+2025-03-12 22:36:54,722 - DEBUG - Performance metrics:
+2025-03-12 22:36:54,722 - DEBUG - Runtime: 1.625001459615305e-06
+2025-03-12 22:36:54,722 - DEBUG - CPU Percent: 6.926397544853636
+2025-03-12 22:36:54,722 - DEBUG - Memory Usage: 2646016
+2025-03-12 22:36:54,723 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 22:36:54,723 - INFO - Generating solution.
+2025-03-12 22:36:54,723 - INFO - Solution generated.
+2025-03-12 22:36:54,724 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 22:36:54,724 - INFO - Executing and verifying the function.
+2025-03-12 22:36:58,742 - DEBUG - Performance metrics:
+2025-03-12 22:36:58,742 - DEBUG - Runtime: 3.625002136686817e-06
+2025-03-12 22:36:58,742 - DEBUG - CPU Percent: 6.915236966824645
+2025-03-12 22:36:58,743 - DEBUG - Memory Usage: 2551808
+2025-03-12 22:36:58,743 - INFO - Generation complete.
+2025-03-12 22:36:58,743 - INFO - Winner selected.
+2025-03-12 22:36:58,743 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:36:58,743 - DEBUG - Performance metrics:
+2025-03-12 22:36:58,743 - DEBUG - Runtime: 1.625001459615305e-06
+2025-03-12 22:36:58,743 - DEBUG - CPU Percent: 6.926397544853636
+2025-03-12 22:36:58,744 - DEBUG - Memory Usage: 2646016
+2025-03-12 22:36:58,744 - INFO - Generation 2
+2025-03-12 22:36:58,744 - INFO - Generating approaches.
+2025-03-12 22:36:58,744 - INFO - Approaches generated.
+2025-03-12 22:36:58,744 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 22:36:58,744 - INFO - Generating solution.
+2025-03-12 22:36:58,745 - INFO - Solution generated.
+2025-03-12 22:36:58,745 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 22:36:58,745 - INFO - Executing and verifying the function.
+2025-03-12 22:37:02,872 - DEBUG - Performance metrics:
+2025-03-12 22:37:02,873 - DEBUG - Runtime: 3.3329997677356005e-06
+2025-03-12 22:37:02,873 - DEBUG - CPU Percent: 6.8097501719000695
+2025-03-12 22:37:02,873 - DEBUG - Memory Usage: 2486272
+2025-03-12 22:37:02,873 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 22:37:02,874 - INFO - Generating solution.
+2025-03-12 22:37:02,874 - INFO - Solution generated.
+2025-03-12 22:37:02,874 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:37:02,874 - INFO - Executing and verifying the function.
+2025-03-12 22:37:06,890 - DEBUG - Performance metrics:
+2025-03-12 22:37:06,890 - DEBUG - Runtime: 1.624997821636498e-06
+2025-03-12 22:37:06,890 - DEBUG - CPU Percent: 7.02768098741989
+2025-03-12 22:37:06,891 - DEBUG - Memory Usage: 2494464
+2025-03-12 22:37:06,891 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 22:37:06,891 - INFO - Generating solution.
+2025-03-12 22:37:06,891 - INFO - Solution generated.
+2025-03-12 22:37:06,892 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 22:37:06,892 - INFO - Executing and verifying the function.
+2025-03-12 22:37:10,929 - DEBUG - Performance metrics:
+2025-03-12 22:37:10,929 - DEBUG - Runtime: 3.791999915847555e-06
+2025-03-12 22:37:10,929 - DEBUG - CPU Percent: 6.9042783018867935
+2025-03-12 22:37:10,929 - DEBUG - Memory Usage: 2498560
+2025-03-12 22:37:10,929 - INFO - Generation complete.
+2025-03-12 22:37:10,929 - INFO - Winner selected.
+2025-03-12 22:37:10,929 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:37:10,929 - DEBUG - Performance metrics:
+2025-03-12 22:37:10,930 - DEBUG - Runtime: 1.624997821636498e-06
+2025-03-12 22:37:10,930 - DEBUG - CPU Percent: 7.02768098741989
+2025-03-12 22:37:10,930 - DEBUG - Memory Usage: 2494464
+2025-03-12 22:37:10,930 - INFO - Generation 3
+2025-03-12 22:37:10,930 - INFO - Generating approaches.
+2025-03-12 22:37:10,930 - INFO - Approaches generated.
+2025-03-12 22:37:10,931 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 22:37:10,931 - INFO - Generating solution.
+2025-03-12 22:37:10,931 - INFO - Solution generated.
+2025-03-12 22:37:10,931 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 22:37:10,931 - INFO - Executing and verifying the function.
+2025-03-12 22:37:15,044 - DEBUG - Performance metrics:
+2025-03-12 22:37:15,045 - DEBUG - Runtime: 3.5000011848751456e-06
+2025-03-12 22:37:15,045 - DEBUG - CPU Percent: 7.015967818267866
+2025-03-12 22:37:15,045 - DEBUG - Memory Usage: 2531328
+2025-03-12 22:37:15,045 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 22:37:15,045 - INFO - Generating solution.
+2025-03-12 22:37:15,045 - INFO - Solution generated.
+2025-03-12 22:37:15,046 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:37:15,046 - INFO - Executing and verifying the function.
+2025-03-12 22:37:19,059 - DEBUG - Performance metrics:
+2025-03-12 22:37:19,059 - DEBUG - Runtime: 1.791999238776043e-06
+2025-03-12 22:37:19,059 - DEBUG - CPU Percent: 6.773616314915816
+2025-03-12 22:37:19,059 - DEBUG - Memory Usage: 2523136
+2025-03-12 22:37:19,059 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 22:37:19,059 - INFO - Generating solution.
+2025-03-12 22:37:19,060 - INFO - Solution generated.
+2025-03-12 22:37:19,060 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 22:37:19,060 - INFO - Executing and verifying the function.
+2025-03-12 22:37:23,179 - DEBUG - Performance metrics:
+2025-03-12 22:37:23,179 - DEBUG - Runtime: 3.791999915847555e-06
+2025-03-12 22:37:23,179 - DEBUG - CPU Percent: 6.754179310344827
+2025-03-12 22:37:23,179 - DEBUG - Memory Usage: 2527232
+2025-03-12 22:37:23,180 - INFO - Generation complete.
+2025-03-12 22:37:23,180 - INFO - Winner selected.
+2025-03-12 22:37:23,180 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:37:23,180 - DEBUG - Performance metrics:
+2025-03-12 22:37:23,180 - DEBUG - Runtime: 1.624997821636498e-06
+2025-03-12 22:37:23,180 - DEBUG - CPU Percent: 7.02768098741989
+2025-03-12 22:37:23,180 - DEBUG - Memory Usage: 2494464
+2025-03-12 22:37:23,180 - INFO - Generation 4
+2025-03-12 22:37:23,180 - INFO - Generating approaches.
+2025-03-12 22:37:23,180 - INFO - Approaches generated.
+2025-03-12 22:37:23,181 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 22:37:23,181 - INFO - Generating solution.
+2025-03-12 22:37:23,181 - INFO - Solution generated.
+2025-03-12 22:37:23,181 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 22:37:23,181 - INFO - Executing and verifying the function.
+2025-03-12 22:37:27,194 - DEBUG - Performance metrics:
+2025-03-12 22:37:27,194 - DEBUG - Runtime: 3.3750002330634743e-06
+2025-03-12 22:37:27,194 - DEBUG - CPU Percent: 6.8136216730038015
+2025-03-12 22:37:27,194 - DEBUG - Memory Usage: 2535424
+2025-03-12 22:37:27,194 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 22:37:27,194 - INFO - Generating solution.
+2025-03-12 22:37:27,195 - INFO - Solution generated.
+2025-03-12 22:37:27,195 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:37:27,195 - INFO - Executing and verifying the function.
+2025-03-12 22:37:31,231 - DEBUG - Performance metrics:
+2025-03-12 22:37:31,231 - DEBUG - Runtime: 1.5000005078036338e-06
+2025-03-12 22:37:31,231 - DEBUG - CPU Percent: 6.84193122939237
+2025-03-12 22:37:31,232 - DEBUG - Memory Usage: 2547712
+2025-03-12 22:37:31,232 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 22:37:31,232 - INFO - Generating solution.
+2025-03-12 22:37:31,232 - INFO - Solution generated.
+2025-03-12 22:37:31,232 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 22:37:31,232 - INFO - Executing and verifying the function.
+2025-03-12 22:37:35,333 - DEBUG - Performance metrics:
+2025-03-12 22:37:35,334 - DEBUG - Runtime: 3.4580007195472717e-06
+2025-03-12 22:37:35,334 - DEBUG - CPU Percent: 6.839505019845903
+2025-03-12 22:37:35,334 - DEBUG - Memory Usage: 2560000
+2025-03-12 22:37:35,334 - INFO - Generation complete.
+2025-03-12 22:37:35,334 - INFO - Winner selected.
+2025-03-12 22:37:35,334 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 22:37:35,334 - DEBUG - Performance metrics:
+2025-03-12 22:37:35,334 - DEBUG - Runtime: 1.5000005078036338e-06
+2025-03-12 22:37:35,334 - DEBUG - CPU Percent: 6.84193122939237
+2025-03-12 22:37:35,334 - DEBUG - Memory Usage: 2547712
+2025-03-12 22:37:35,334 - INFO - Generation 5
+2025-03-12 22:37:35,334 - INFO - Generating approaches.
+2025-03-12 22:37:35,335 - INFO - Approaches generated.
+2025-03-12 22:37:35,335 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 22:37:35,335 - INFO - Generating solution.
+2025-03-12 22:37:35,335 - INFO - Solution generated.
+2025-03-12 22:37:35,335 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 22:37:35,335 - INFO - Executing and verifying the function.
+2025-03-12 23:15:51,041 - INFO - Logger initialized.
+2025-03-12 23:15:51,042 - INFO - Generating baseline solution.
+2025-03-12 23:15:51,043 - INFO - Baseline solution generated.
+2025-03-12 23:15:51,043 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+2025-03-12 23:15:51,043 - INFO - Executing and verifying the function.
+2025-03-12 23:15:54,065 - INFO - Function execution successful.
+2025-03-12 23:15:54,066 - DEBUG - Performance metrics:
+2025-03-12 23:15:54,066 - DEBUG - Runtime: 2.4170003598555923e-06
+2025-03-12 23:15:54,066 - DEBUG - CPU Percent: 7.849810606060606
+2025-03-12 23:15:54,066 - DEBUG - Memory Usage: 2498560
+2025-03-12 23:15:54,066 - INFO - Generation 1
+2025-03-12 23:15:54,066 - INFO - Generating approaches.
+2025-03-12 23:15:54,067 - INFO - Approaches generated.
+2025-03-12 23:15:54,067 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:15:54,067 - INFO - Generating solution.
+2025-03-12 23:15:54,067 - INFO - Solution generated.
+2025-03-12 23:15:54,067 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:15:54,067 - INFO - Executing and verifying the function.
+2025-03-12 23:15:58,081 - DEBUG - Performance metrics:
+2025-03-12 23:15:58,081 - DEBUG - Runtime: 3.459001163719222e-06
+2025-03-12 23:15:58,081 - DEBUG - CPU Percent: 6.790248874140792
+2025-03-12 23:15:58,081 - DEBUG - Memory Usage: 2478080
+2025-03-12 23:15:58,081 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:15:58,081 - INFO - Generating solution.
+2025-03-12 23:15:58,082 - INFO - Solution generated.
+2025-03-12 23:15:58,082 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:15:58,082 - INFO - Executing and verifying the function.
+2025-03-12 23:16:02,104 - DEBUG - Performance metrics:
+2025-03-12 23:16:02,105 - DEBUG - Runtime: 1.9170001905877143e-06
+2025-03-12 23:16:02,105 - DEBUG - CPU Percent: 7.05902058197303
+2025-03-12 23:16:02,105 - DEBUG - Memory Usage: 2519040
+2025-03-12 23:16:02,105 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:16:02,106 - INFO - Generating solution.
+2025-03-12 23:16:02,106 - INFO - Solution generated.
+2025-03-12 23:16:02,106 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:16:02,106 - INFO - Executing and verifying the function.
+2025-03-12 23:16:06,126 - DEBUG - Performance metrics:
+2025-03-12 23:16:06,127 - DEBUG - Runtime: 3.834000381175429e-06
+2025-03-12 23:16:06,127 - DEBUG - CPU Percent: 6.996018957345972
+2025-03-12 23:16:06,127 - DEBUG - Memory Usage: 2510848
+2025-03-12 23:16:06,127 - INFO - Generation complete.
+2025-03-12 23:16:06,127 - INFO - Winner selected.
+2025-03-12 23:16:06,127 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:16:06,127 - DEBUG - Performance metrics:
+2025-03-12 23:16:06,127 - DEBUG - Runtime: 1.9170001905877143e-06
+2025-03-12 23:16:06,127 - DEBUG - CPU Percent: 7.05902058197303
+2025-03-12 23:16:06,127 - DEBUG - Memory Usage: 2519040
+2025-03-12 23:16:06,127 - INFO - Generation 2
+2025-03-12 23:16:06,127 - INFO - Generating approaches.
+2025-03-12 23:16:06,128 - INFO - Approaches generated.
+2025-03-12 23:16:06,128 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:16:06,128 - INFO - Generating solution.
+2025-03-12 23:16:06,128 - INFO - Solution generated.
+2025-03-12 23:16:06,128 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:16:06,128 - INFO - Executing and verifying the function.
+2025-03-12 23:16:10,145 - DEBUG - Performance metrics:
+2025-03-12 23:16:10,146 - DEBUG - Runtime: 3.3750002330634743e-06
+2025-03-12 23:16:10,146 - DEBUG - CPU Percent: 7.0727747448374085
+2025-03-12 23:16:10,146 - DEBUG - Memory Usage: 2482176
+2025-03-12 23:16:10,146 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:16:10,146 - INFO - Generating solution.
+2025-03-12 23:16:10,146 - INFO - Solution generated.
+2025-03-12 23:16:10,146 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:16:10,147 - INFO - Executing and verifying the function.
+2025-03-12 23:16:14,168 - DEBUG - Performance metrics:
+2025-03-12 23:16:14,168 - DEBUG - Runtime: 1.9170001905877143e-06
+2025-03-12 23:16:14,168 - DEBUG - CPU Percent: 7.014885152735023
+2025-03-12 23:16:14,168 - DEBUG - Memory Usage: 2490368
+2025-03-12 23:16:14,168 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:16:14,168 - INFO - Generating solution.
+2025-03-12 23:16:14,169 - INFO - Solution generated.
+2025-03-12 23:16:14,169 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:16:14,169 - INFO - Executing and verifying the function.
+2025-03-12 23:16:18,192 - DEBUG - Performance metrics:
+2025-03-12 23:16:18,192 - DEBUG - Runtime: 3.4999975468963385e-06
+2025-03-12 23:16:18,193 - DEBUG - CPU Percent: 6.779034548035967
+2025-03-12 23:16:18,193 - DEBUG - Memory Usage: 2494464
+2025-03-12 23:16:18,193 - INFO - Generation complete.
+2025-03-12 23:16:18,193 - INFO - Winner selected.
+2025-03-12 23:16:18,193 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:16:18,193 - DEBUG - Performance metrics:
+2025-03-12 23:16:18,193 - DEBUG - Runtime: 1.9170001905877143e-06
+2025-03-12 23:16:18,193 - DEBUG - CPU Percent: 7.05902058197303
+2025-03-12 23:16:18,193 - DEBUG - Memory Usage: 2519040
+2025-03-12 23:16:18,193 - INFO - Generation 3
+2025-03-12 23:16:18,193 - INFO - Generating approaches.
+2025-03-12 23:16:18,193 - INFO - Approaches generated.
+2025-03-12 23:16:18,194 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:16:18,194 - INFO - Generating solution.
+2025-03-12 23:16:18,194 - INFO - Solution generated.
+2025-03-12 23:16:18,194 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:16:18,194 - INFO - Executing and verifying the function.
+2025-03-12 23:16:22,209 - DEBUG - Performance metrics:
+2025-03-12 23:16:22,209 - DEBUG - Runtime: 3.6660021578427404e-06
+2025-03-12 23:16:22,209 - DEBUG - CPU Percent: 6.8573434535104365
+2025-03-12 23:16:22,209 - DEBUG - Memory Usage: 2502656
+2025-03-12 23:16:22,209 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:16:22,209 - INFO - Generating solution.
+2025-03-12 23:16:22,210 - INFO - Solution generated.
+2025-03-12 23:16:22,210 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:16:22,210 - INFO - Executing and verifying the function.
+2025-03-12 23:16:26,230 - DEBUG - Performance metrics:
+2025-03-12 23:16:26,230 - DEBUG - Runtime: 1.7499987734481692e-06
+2025-03-12 23:16:26,230 - DEBUG - CPU Percent: 6.990054463651433
+2025-03-12 23:16:26,230 - DEBUG - Memory Usage: 2514944
+2025-03-12 23:16:26,230 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:16:26,230 - INFO - Generating solution.
+2025-03-12 23:16:26,231 - INFO - Solution generated.
+2025-03-12 23:16:26,231 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:16:26,231 - INFO - Executing and verifying the function.
+2025-03-12 23:16:30,253 - DEBUG - Performance metrics:
+2025-03-12 23:16:30,253 - DEBUG - Runtime: 3.4999975468963385e-06
+2025-03-12 23:16:30,253 - DEBUG - CPU Percent: 6.750480928689884
+2025-03-12 23:16:30,253 - DEBUG - Memory Usage: 2519040
+2025-03-12 23:16:30,253 - INFO - Generation complete.
+2025-03-12 23:16:30,253 - INFO - Winner selected.
+2025-03-12 23:16:30,253 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:16:30,254 - DEBUG - Performance metrics:
+2025-03-12 23:16:30,254 - DEBUG - Runtime: 1.7499987734481692e-06
+2025-03-12 23:16:30,254 - DEBUG - CPU Percent: 6.990054463651433
+2025-03-12 23:16:30,254 - DEBUG - Memory Usage: 2514944
+2025-03-12 23:16:30,254 - INFO - Generation 4
+2025-03-12 23:16:30,254 - INFO - Generating approaches.
+2025-03-12 23:16:30,255 - INFO - Approaches generated.
+2025-03-12 23:16:30,255 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:16:30,255 - INFO - Generating solution.
+2025-03-12 23:16:30,255 - INFO - Solution generated.
+2025-03-12 23:16:30,255 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:16:30,255 - INFO - Executing and verifying the function.
+2025-03-12 23:16:34,280 - DEBUG - Performance metrics:
+2025-03-12 23:16:34,280 - DEBUG - Runtime: 3.459001163719222e-06
+2025-03-12 23:16:34,280 - DEBUG - CPU Percent: 6.836131473161504
+2025-03-12 23:16:34,280 - DEBUG - Memory Usage: 2531328
+2025-03-12 23:16:34,280 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:16:34,281 - INFO - Generating solution.
+2025-03-12 23:16:34,281 - INFO - Solution generated.
+2025-03-12 23:16:34,281 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:16:34,281 - INFO - Executing and verifying the function.
+2025-03-12 23:16:38,302 - DEBUG - Performance metrics:
+2025-03-12 23:16:38,303 - DEBUG - Runtime: 1.6660014807712287e-06
+2025-03-12 23:16:38,303 - DEBUG - CPU Percent: 6.914628490298155
+2025-03-12 23:16:38,303 - DEBUG - Memory Usage: 2539520
+2025-03-12 23:16:38,303 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:16:38,303 - INFO - Generating solution.
+2025-03-12 23:16:38,303 - INFO - Solution generated.
+2025-03-12 23:16:38,304 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:16:38,304 - INFO - Executing and verifying the function.
+2025-03-12 23:16:42,327 - DEBUG - Performance metrics:
+2025-03-12 23:16:42,327 - DEBUG - Runtime: 3.6669989640358835e-06
+2025-03-12 23:16:42,327 - DEBUG - CPU Percent: 6.786799336650083
+2025-03-12 23:16:42,327 - DEBUG - Memory Usage: 2543616
+2025-03-12 23:16:42,328 - INFO - Generation complete.
+2025-03-12 23:16:42,328 - INFO - Winner selected.
+2025-03-12 23:16:42,328 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:16:42,328 - DEBUG - Performance metrics:
+2025-03-12 23:16:42,328 - DEBUG - Runtime: 1.6660014807712287e-06
+2025-03-12 23:16:42,328 - DEBUG - CPU Percent: 6.914628490298155
+2025-03-12 23:16:42,328 - DEBUG - Memory Usage: 2539520
+2025-03-12 23:16:42,328 - INFO - Generation 5
+2025-03-12 23:16:42,328 - INFO - Generating approaches.
+2025-03-12 23:16:42,328 - INFO - Approaches generated.
+2025-03-12 23:16:42,329 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:16:42,329 - INFO - Generating solution.
+2025-03-12 23:16:42,329 - INFO - Solution generated.
+2025-03-12 23:16:42,329 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:16:42,329 - INFO - Executing and verifying the function.
+2025-03-12 23:16:46,346 - DEBUG - Performance metrics:
+2025-03-12 23:16:46,346 - DEBUG - Runtime: 3.5000011848751456e-06
+2025-03-12 23:16:46,346 - DEBUG - CPU Percent: 7.0249087893864015
+2025-03-12 23:16:46,346 - DEBUG - Memory Usage: 2613248
+2025-03-12 23:16:46,346 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:16:46,346 - INFO - Generating solution.
+2025-03-12 23:16:46,347 - INFO - Solution generated.
+2025-03-12 23:16:46,347 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:16:46,347 - INFO - Executing and verifying the function.
+2025-03-12 23:16:50,364 - DEBUG - Performance metrics:
+2025-03-12 23:16:50,364 - DEBUG - Runtime: 1.8339997041039169e-06
+2025-03-12 23:16:50,364 - DEBUG - CPU Percent: 6.975034384633625
+2025-03-12 23:16:50,365 - DEBUG - Memory Usage: 2555904
+2025-03-12 23:16:50,365 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:16:50,365 - INFO - Generating solution.
+2025-03-12 23:16:50,365 - INFO - Solution generated.
+2025-03-12 23:16:50,365 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:16:50,365 - INFO - Executing and verifying the function.
+2025-03-12 23:16:54,382 - DEBUG - Performance metrics:
+2025-03-12 23:16:54,382 - DEBUG - Runtime: 4.082998202648014e-06
+2025-03-12 23:16:54,382 - DEBUG - CPU Percent: 6.948205980066446
+2025-03-12 23:16:54,382 - DEBUG - Memory Usage: 2564096
+2025-03-12 23:16:54,382 - INFO - Generation complete.
+2025-03-12 23:16:54,382 - INFO - Winner selected.
+2025-03-12 23:16:54,383 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:16:54,383 - DEBUG - Performance metrics:
+2025-03-12 23:16:54,383 - DEBUG - Runtime: 1.6660014807712287e-06
+2025-03-12 23:16:54,383 - DEBUG - CPU Percent: 6.914628490298155
+2025-03-12 23:16:54,383 - DEBUG - Memory Usage: 2539520
+2025-03-12 23:16:54,383 - INFO - Generation 6
+2025-03-12 23:16:54,383 - INFO - Generating approaches.
+2025-03-12 23:16:54,384 - INFO - Approaches generated.
+2025-03-12 23:16:54,384 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:16:54,384 - INFO - Generating solution.
+2025-03-12 23:16:54,384 - INFO - Solution generated.
+2025-03-12 23:16:54,384 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:16:54,384 - INFO - Executing and verifying the function.
+2025-03-12 23:16:58,403 - DEBUG - Performance metrics:
+2025-03-12 23:16:58,404 - DEBUG - Runtime: 3.5419980122242123e-06
+2025-03-12 23:16:58,404 - DEBUG - CPU Percent: 6.726529356060606
+2025-03-12 23:16:58,404 - DEBUG - Memory Usage: 2822144
+2025-03-12 23:16:58,404 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:16:58,404 - INFO - Generating solution.
+2025-03-12 23:16:58,404 - INFO - Solution generated.
+2025-03-12 23:16:58,404 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:16:58,404 - INFO - Executing and verifying the function.
+2025-03-12 23:17:02,426 - DEBUG - Performance metrics:
+2025-03-12 23:17:02,426 - DEBUG - Runtime: 1.6670019249431789e-06
+2025-03-12 23:17:02,426 - DEBUG - CPU Percent: 6.821893491124261
+2025-03-12 23:17:02,427 - DEBUG - Memory Usage: 2584576
+2025-03-12 23:17:02,427 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:17:02,427 - INFO - Generating solution.
+2025-03-12 23:17:02,427 - INFO - Solution generated.
+2025-03-12 23:17:02,427 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:17:02,427 - INFO - Executing and verifying the function.
+2025-03-12 23:17:06,447 - DEBUG - Performance metrics:
+2025-03-12 23:17:06,448 - DEBUG - Runtime: 3.625002136686817e-06
+2025-03-12 23:17:06,448 - DEBUG - CPU Percent: 6.912802653399668
+2025-03-12 23:17:06,448 - DEBUG - Memory Usage: 2592768
+2025-03-12 23:17:06,448 - INFO - Generation complete.
+2025-03-12 23:17:06,448 - INFO - Winner selected.
+2025-03-12 23:17:06,448 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:17:06,449 - DEBUG - Performance metrics:
+2025-03-12 23:17:06,449 - DEBUG - Runtime: 1.6660014807712287e-06
+2025-03-12 23:17:06,449 - DEBUG - CPU Percent: 6.914628490298155
+2025-03-12 23:17:06,449 - DEBUG - Memory Usage: 2539520
+2025-03-12 23:17:06,449 - INFO - Generation 7
+2025-03-12 23:17:06,449 - INFO - Generating approaches.
+2025-03-12 23:17:06,450 - INFO - Approaches generated.
+2025-03-12 23:17:06,450 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:17:06,450 - INFO - Generating solution.
+2025-03-12 23:17:06,450 - INFO - Solution generated.
+2025-03-12 23:17:06,450 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:17:06,450 - INFO - Executing and verifying the function.
+2025-03-12 23:17:10,473 - DEBUG - Performance metrics:
+2025-03-12 23:17:10,474 - DEBUG - Runtime: 3.6659985198639333e-06
+2025-03-12 23:17:10,474 - DEBUG - CPU Percent: 6.889292307692307
+2025-03-12 23:17:10,474 - DEBUG - Memory Usage: 2596864
+2025-03-12 23:17:10,474 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:17:10,474 - INFO - Generating solution.
+2025-03-12 23:17:10,474 - INFO - Solution generated.
+2025-03-12 23:17:10,475 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:17:10,475 - INFO - Executing and verifying the function.
+2025-03-12 23:17:14,494 - DEBUG - Performance metrics:
+2025-03-12 23:17:14,495 - DEBUG - Runtime: 2.459000825183466e-06
+2025-03-12 23:17:14,495 - DEBUG - CPU Percent: 6.898516587677725
+2025-03-12 23:17:14,495 - DEBUG - Memory Usage: 2715648
+2025-03-12 23:17:14,495 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:17:14,495 - INFO - Generating solution.
+2025-03-12 23:17:14,496 - INFO - Solution generated.
+2025-03-12 23:17:14,496 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:17:14,496 - INFO - Executing and verifying the function.
+2025-03-12 23:17:18,523 - DEBUG - Performance metrics:
+2025-03-12 23:17:18,523 - DEBUG - Runtime: 3.6670026020146906e-06
+2025-03-12 23:17:18,524 - DEBUG - CPU Percent: 6.915145493257629
+2025-03-12 23:17:18,524 - DEBUG - Memory Usage: 2633728
+2025-03-12 23:17:18,524 - INFO - Generation complete.
+2025-03-12 23:17:18,524 - INFO - Winner selected.
+2025-03-12 23:17:18,524 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:17:18,524 - DEBUG - Performance metrics:
+2025-03-12 23:17:18,525 - DEBUG - Runtime: 1.6660014807712287e-06
+2025-03-12 23:17:18,525 - DEBUG - CPU Percent: 6.914628490298155
+2025-03-12 23:17:18,525 - DEBUG - Memory Usage: 2539520
+2025-03-12 23:17:18,525 - INFO - Generation 8
+2025-03-12 23:17:18,525 - INFO - Generating approaches.
+2025-03-12 23:17:18,525 - INFO - Approaches generated.
+2025-03-12 23:17:18,525 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:17:18,525 - INFO - Generating solution.
+2025-03-12 23:17:18,526 - INFO - Solution generated.
+2025-03-12 23:17:18,526 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:17:18,526 - INFO - Executing and verifying the function.
+2025-03-12 23:18:03,550 - INFO - Logger initialized.
+2025-03-12 23:18:03,550 - INFO - Generating baseline solution.
+2025-03-12 23:18:03,551 - INFO - Baseline solution generated.
+2025-03-12 23:18:03,551 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+2025-03-12 23:18:03,551 - INFO - Executing and verifying the function.
+2025-03-12 23:18:06,575 - INFO - Function execution successful.
+2025-03-12 23:18:06,576 - DEBUG - Performance metrics:
+2025-03-12 23:18:06,576 - DEBUG - Runtime: 2.333999873371795e-06
+2025-03-12 23:18:06,576 - DEBUG - CPU Percent: 6.966912704045422
+2025-03-12 23:18:06,576 - DEBUG - Memory Usage: 2613248
+2025-03-12 23:18:06,576 - INFO - Generation 1
+2025-03-12 23:18:06,576 - INFO - Generating approaches.
+2025-03-12 23:18:06,577 - INFO - Approaches generated.
+2025-03-12 23:18:06,577 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:18:06,577 - INFO - Generating solution.
+2025-03-12 23:18:06,577 - INFO - Solution generated.
+2025-03-12 23:18:06,578 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:18:06,578 - INFO - Executing and verifying the function.
+2025-03-12 23:18:10,593 - DEBUG - Performance metrics:
+2025-03-12 23:18:10,593 - DEBUG - Runtime: 3.707998985191807e-06
+2025-03-12 23:18:10,593 - DEBUG - CPU Percent: 6.92590187248163
+2025-03-12 23:18:10,593 - DEBUG - Memory Usage: 2457600
+2025-03-12 23:18:10,593 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:18:10,593 - INFO - Generating solution.
+2025-03-12 23:18:10,594 - INFO - Solution generated.
+2025-03-12 23:18:10,594 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:18:10,594 - INFO - Executing and verifying the function.
+2025-03-12 23:18:14,614 - DEBUG - Performance metrics:
+2025-03-12 23:18:14,615 - DEBUG - Runtime: 1.7910024325829e-06
+2025-03-12 23:18:14,615 - DEBUG - CPU Percent: 6.876215063950735
+2025-03-12 23:18:14,615 - DEBUG - Memory Usage: 2465792
+2025-03-12 23:18:14,616 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:18:14,616 - INFO - Generating solution.
+2025-03-12 23:18:14,616 - INFO - Solution generated.
+2025-03-12 23:18:14,616 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:18:14,617 - INFO - Executing and verifying the function.
+2025-03-12 23:18:18,637 - DEBUG - Performance metrics:
+2025-03-12 23:18:18,637 - DEBUG - Runtime: 3.7910031096544117e-06
+2025-03-12 23:18:18,638 - DEBUG - CPU Percent: 6.886860657676838
+2025-03-12 23:18:18,638 - DEBUG - Memory Usage: 2494464
+2025-03-12 23:18:18,638 - INFO - Generation complete.
+2025-03-12 23:18:18,638 - INFO - Winner selected.
+2025-03-12 23:18:18,638 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:18:18,638 - DEBUG - Performance metrics:
+2025-03-12 23:18:18,638 - DEBUG - Runtime: 1.7910024325829e-06
+2025-03-12 23:18:18,638 - DEBUG - CPU Percent: 6.876215063950735
+2025-03-12 23:18:18,638 - DEBUG - Memory Usage: 2465792
+2025-03-12 23:18:18,639 - INFO - Generation 2
+2025-03-12 23:18:18,639 - INFO - Generating approaches.
+2025-03-12 23:18:18,639 - INFO - Approaches generated.
+2025-03-12 23:18:18,639 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:18:18,639 - INFO - Generating solution.
+2025-03-12 23:18:18,640 - INFO - Solution generated.
+2025-03-12 23:18:18,640 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:18:18,640 - INFO - Executing and verifying the function.
+2025-03-12 23:18:22,663 - DEBUG - Performance metrics:
+2025-03-12 23:18:22,664 - DEBUG - Runtime: 3.5000011848751456e-06
+2025-03-12 23:18:22,664 - DEBUG - CPU Percent: 7.081846153846154
+2025-03-12 23:18:22,664 - DEBUG - Memory Usage: 2572288
+2025-03-12 23:18:22,664 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:18:22,664 - INFO - Generating solution.
+2025-03-12 23:18:22,664 - INFO - Solution generated.
+2025-03-12 23:18:22,665 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:18:22,665 - INFO - Executing and verifying the function.
+2025-03-12 23:18:26,685 - DEBUG - Performance metrics:
+2025-03-12 23:18:26,685 - DEBUG - Runtime: 1.6670019249431789e-06
+2025-03-12 23:18:26,685 - DEBUG - CPU Percent: 6.752687662798958
+2025-03-12 23:18:26,685 - DEBUG - Memory Usage: 2744320
+2025-03-12 23:18:26,685 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:18:26,685 - INFO - Generating solution.
+2025-03-12 23:18:26,686 - INFO - Solution generated.
+2025-03-12 23:18:26,686 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:18:26,686 - INFO - Executing and verifying the function.
+2025-03-12 23:18:30,714 - DEBUG - Performance metrics:
+2025-03-12 23:18:30,715 - DEBUG - Runtime: 3.582998033380136e-06
+2025-03-12 23:18:30,715 - DEBUG - CPU Percent: 7.331120056831636
+2025-03-12 23:18:30,715 - DEBUG - Memory Usage: 2494464
+2025-03-12 23:18:30,715 - INFO - Generation complete.
+2025-03-12 23:18:30,715 - INFO - Winner selected.
+2025-03-12 23:18:30,715 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:18:30,715 - DEBUG - Performance metrics:
+2025-03-12 23:18:30,715 - DEBUG - Runtime: 1.6670019249431789e-06
+2025-03-12 23:18:30,716 - DEBUG - CPU Percent: 6.752687662798958
+2025-03-12 23:18:30,716 - DEBUG - Memory Usage: 2744320
+2025-03-12 23:18:30,716 - INFO - Generation 3
+2025-03-12 23:18:30,716 - INFO - Generating approaches.
+2025-03-12 23:18:30,716 - INFO - Approaches generated.
+2025-03-12 23:18:30,716 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:18:30,717 - INFO - Generating solution.
+2025-03-12 23:18:30,717 - INFO - Solution generated.
+2025-03-12 23:18:30,717 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:18:30,717 - INFO - Executing and verifying the function.
+2025-03-12 23:18:34,738 - DEBUG - Performance metrics:
+2025-03-12 23:18:34,739 - DEBUG - Runtime: 3.5000011848751456e-06
+2025-03-12 23:18:34,739 - DEBUG - CPU Percent: 7.043395690267583
+2025-03-12 23:18:34,739 - DEBUG - Memory Usage: 2510848
+2025-03-12 23:18:34,739 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:18:34,739 - INFO - Generating solution.
+2025-03-12 23:18:34,740 - INFO - Solution generated.
+2025-03-12 23:18:34,740 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:18:34,740 - INFO - Executing and verifying the function.
+2025-03-12 23:18:38,760 - DEBUG - Performance metrics:
+2025-03-12 23:18:38,761 - DEBUG - Runtime: 1.6660014807712287e-06
+2025-03-12 23:18:38,761 - DEBUG - CPU Percent: 7.192035984848485
+2025-03-12 23:18:38,761 - DEBUG - Memory Usage: 2543616
+2025-03-12 23:18:38,761 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:18:38,761 - INFO - Generating solution.
+2025-03-12 23:18:38,762 - INFO - Solution generated.
+2025-03-12 23:18:38,762 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:18:38,762 - INFO - Executing and verifying the function.
+2025-03-12 23:18:42,783 - DEBUG - Performance metrics:
+2025-03-12 23:18:42,783 - DEBUG - Runtime: 3.6670026020146906e-06
+2025-03-12 23:18:42,783 - DEBUG - CPU Percent: 7.476006631927996
+2025-03-12 23:18:42,783 - DEBUG - Memory Usage: 2613248
+2025-03-12 23:18:42,783 - INFO - Generation complete.
+2025-03-12 23:18:42,783 - INFO - Winner selected.
+2025-03-12 23:18:42,783 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:18:42,783 - DEBUG - Performance metrics:
+2025-03-12 23:18:42,783 - DEBUG - Runtime: 1.6660014807712287e-06
+2025-03-12 23:18:42,784 - DEBUG - CPU Percent: 7.192035984848485
+2025-03-12 23:18:42,784 - DEBUG - Memory Usage: 2543616
+2025-03-12 23:18:42,784 - INFO - Generation 4
+2025-03-12 23:18:42,784 - INFO - Generating approaches.
+2025-03-12 23:18:42,784 - INFO - Approaches generated.
+2025-03-12 23:18:42,785 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:18:42,785 - INFO - Generating solution.
+2025-03-12 23:18:42,785 - INFO - Solution generated.
+2025-03-12 23:18:42,785 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:18:42,786 - INFO - Executing and verifying the function.
+2025-03-12 23:18:46,807 - DEBUG - Performance metrics:
+2025-03-12 23:18:46,808 - DEBUG - Runtime: 3.7909994716756046e-06
+2025-03-12 23:18:46,808 - DEBUG - CPU Percent: 7.54523178807947
+2025-03-12 23:18:46,808 - DEBUG - Memory Usage: 2527232
+2025-03-12 23:18:46,808 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:18:46,809 - INFO - Generating solution.
+2025-03-12 23:18:46,809 - INFO - Solution generated.
+2025-03-12 23:18:46,809 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:18:46,809 - INFO - Executing and verifying the function.
+2025-03-12 23:18:50,828 - DEBUG - Performance metrics:
+2025-03-12 23:18:50,829 - DEBUG - Runtime: 1.7089987522922456e-06
+2025-03-12 23:18:50,829 - DEBUG - CPU Percent: 7.475834123222748
+2025-03-12 23:18:50,829 - DEBUG - Memory Usage: 2531328
+2025-03-12 23:18:50,829 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:18:50,829 - INFO - Generating solution.
+2025-03-12 23:18:50,830 - INFO - Solution generated.
+2025-03-12 23:18:50,830 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:18:50,830 - INFO - Executing and verifying the function.
+2025-03-12 23:18:54,851 - DEBUG - Performance metrics:
+2025-03-12 23:18:54,852 - DEBUG - Runtime: 3.6659985198639333e-06
+2025-03-12 23:18:54,853 - DEBUG - CPU Percent: 7.600928689883914
+2025-03-12 23:18:54,853 - DEBUG - Memory Usage: 2789376
+2025-03-12 23:18:54,853 - INFO - Generation complete.
+2025-03-12 23:18:54,853 - INFO - Winner selected.
+2025-03-12 23:18:54,853 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:18:54,853 - DEBUG - Performance metrics:
+2025-03-12 23:18:54,853 - DEBUG - Runtime: 1.6660014807712287e-06
+2025-03-12 23:18:54,853 - DEBUG - CPU Percent: 7.192035984848485
+2025-03-12 23:18:54,853 - DEBUG - Memory Usage: 2543616
+2025-03-12 23:18:54,853 - INFO - Generation 5
+2025-03-12 23:18:54,853 - INFO - Generating approaches.
+2025-03-12 23:18:54,854 - INFO - Approaches generated.
+2025-03-12 23:18:54,854 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:18:54,854 - INFO - Generating solution.
+2025-03-12 23:18:54,855 - INFO - Solution generated.
+2025-03-12 23:18:54,855 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:18:54,855 - INFO - Executing and verifying the function.
+2025-03-12 23:22:39,098 - INFO - Logger initialized.
+2025-03-12 23:22:39,099 - INFO - Generating baseline solution.
+2025-03-12 23:22:39,100 - INFO - Baseline solution generated.
+2025-03-12 23:22:39,100 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+2025-03-12 23:22:39,100 - INFO - Executing and verifying the function.
+2025-03-12 23:22:42,126 - INFO - Function execution successful.
+2025-03-12 23:22:42,126 - DEBUG - Performance metrics:
+2025-03-12 23:22:42,127 - DEBUG - Runtime: 2.3749998945277184e-06
+2025-03-12 23:22:42,127 - DEBUG - CPU Percent: 7.187185430463577
+2025-03-12 23:22:42,127 - DEBUG - Memory Usage: 2457600
+2025-03-12 23:22:42,127 - INFO - Generation 1
+2025-03-12 23:22:42,127 - INFO - Generating approaches.
+2025-03-12 23:22:42,128 - INFO - Approaches generated.
+2025-03-12 23:22:42,128 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:22:42,128 - INFO - Generating solution.
+2025-03-12 23:22:42,128 - INFO - Solution generated.
+2025-03-12 23:22:42,128 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:22:42,128 - INFO - Executing and verifying the function.
+2025-03-12 23:22:46,148 - DEBUG - Performance metrics:
+2025-03-12 23:22:46,148 - DEBUG - Runtime: 3.625002136686817e-06
+2025-03-12 23:22:46,148 - DEBUG - CPU Percent: 6.913374378403978
+2025-03-12 23:22:46,148 - DEBUG - Memory Usage: 2502656
+2025-03-12 23:22:46,148 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:22:46,148 - INFO - Generating solution.
+2025-03-12 23:22:46,149 - INFO - Solution generated.
+2025-03-12 23:22:46,149 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:22:46,149 - INFO - Executing and verifying the function.
+2025-03-12 23:22:50,169 - DEBUG - Performance metrics:
+2025-03-12 23:22:50,169 - DEBUG - Runtime: 1.624997821636498e-06
+2025-03-12 23:22:50,169 - DEBUG - CPU Percent: 7.0132100521574205
+2025-03-12 23:22:50,170 - DEBUG - Memory Usage: 2473984
+2025-03-12 23:22:50,170 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:22:50,170 - INFO - Generating solution.
+2025-03-12 23:22:50,170 - INFO - Solution generated.
+2025-03-12 23:22:50,170 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:22:50,170 - INFO - Executing and verifying the function.
+2025-03-12 23:22:54,189 - DEBUG - Performance metrics:
+2025-03-12 23:22:54,189 - DEBUG - Runtime: 3.625002136686817e-06
+2025-03-12 23:22:54,190 - DEBUG - CPU Percent: 6.971521481129836
+2025-03-12 23:22:54,190 - DEBUG - Memory Usage: 2600960
+2025-03-12 23:22:54,190 - INFO - Generation complete.
+2025-03-12 23:22:54,190 - INFO - Winner selected.
+2025-03-12 23:22:54,190 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:22:54,190 - DEBUG - Performance metrics:
+2025-03-12 23:22:54,190 - DEBUG - Runtime: 1.624997821636498e-06
+2025-03-12 23:22:54,190 - DEBUG - CPU Percent: 7.0132100521574205
+2025-03-12 23:22:54,190 - DEBUG - Memory Usage: 2473984
+2025-03-12 23:22:54,190 - INFO - Generation 2
+2025-03-12 23:22:54,190 - INFO - Generating approaches.
+2025-03-12 23:22:54,191 - INFO - Approaches generated.
+2025-03-12 23:22:54,191 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:22:54,191 - INFO - Generating solution.
+2025-03-12 23:22:54,192 - INFO - Solution generated.
+2025-03-12 23:22:54,192 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:22:54,192 - INFO - Executing and verifying the function.
+2025-03-12 23:22:58,213 - DEBUG - Performance metrics:
+2025-03-12 23:22:58,213 - DEBUG - Runtime: 3.416000254219398e-06
+2025-03-12 23:22:58,214 - DEBUG - CPU Percent: 6.898760056791292
+2025-03-12 23:22:58,214 - DEBUG - Memory Usage: 2486272
+2025-03-12 23:22:58,214 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:22:58,214 - INFO - Generating solution.
+2025-03-12 23:22:58,215 - INFO - Solution generated.
+2025-03-12 23:22:58,215 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:22:58,215 - INFO - Executing and verifying the function.
+2025-03-12 23:23:02,239 - DEBUG - Performance metrics:
+2025-03-12 23:23:02,239 - DEBUG - Runtime: 1.7500024114269763e-06
+2025-03-12 23:23:02,239 - DEBUG - CPU Percent: 7.00728821580691
+2025-03-12 23:23:02,239 - DEBUG - Memory Usage: 2494464
+2025-03-12 23:23:02,240 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:23:02,240 - INFO - Generating solution.
+2025-03-12 23:23:02,240 - INFO - Solution generated.
+2025-03-12 23:23:02,241 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:23:02,241 - INFO - Executing and verifying the function.
+2025-03-12 23:23:06,254 - DEBUG - Performance metrics:
+2025-03-12 23:23:06,254 - DEBUG - Runtime: 3.791999915847555e-06
+2025-03-12 23:23:06,254 - DEBUG - CPU Percent: 6.958979833926453
+2025-03-12 23:23:06,254 - DEBUG - Memory Usage: 2539520
+2025-03-12 23:23:06,254 - INFO - Generation complete.
+2025-03-12 23:23:06,254 - INFO - Winner selected.
+2025-03-12 23:23:06,254 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:23:06,254 - DEBUG - Performance metrics:
+2025-03-12 23:23:06,254 - DEBUG - Runtime: 1.624997821636498e-06
+2025-03-12 23:23:06,254 - DEBUG - CPU Percent: 7.0132100521574205
+2025-03-12 23:23:06,254 - DEBUG - Memory Usage: 2473984
+2025-03-12 23:23:06,254 - INFO - Generation 3
+2025-03-12 23:23:06,254 - INFO - Generating approaches.
+2025-03-12 23:23:06,255 - INFO - Approaches generated.
+2025-03-12 23:23:06,255 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:23:06,255 - INFO - Generating solution.
+2025-03-12 23:23:06,255 - INFO - Solution generated.
+2025-03-12 23:23:06,255 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:23:06,256 - INFO - Executing and verifying the function.
+2025-03-12 23:23:10,268 - DEBUG - Performance metrics:
+2025-03-12 23:23:10,268 - DEBUG - Runtime: 3.6249984987080097e-06
+2025-03-12 23:23:10,268 - DEBUG - CPU Percent: 7.019852976049325
+2025-03-12 23:23:10,268 - DEBUG - Memory Usage: 2514944
+2025-03-12 23:23:10,268 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:23:10,268 - INFO - Generating solution.
+2025-03-12 23:23:10,269 - INFO - Solution generated.
+2025-03-12 23:23:10,269 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:23:10,269 - INFO - Executing and verifying the function.
+2025-03-12 23:23:14,286 - DEBUG - Performance metrics:
+2025-03-12 23:23:14,287 - DEBUG - Runtime: 1.625001459615305e-06
+2025-03-12 23:23:14,287 - DEBUG - CPU Percent: 7.085220274751302
+2025-03-12 23:23:14,287 - DEBUG - Memory Usage: 2555904
+2025-03-12 23:23:14,287 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:23:14,287 - INFO - Generating solution.
+2025-03-12 23:23:14,288 - INFO - Solution generated.
+2025-03-12 23:23:14,288 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:23:14,288 - INFO - Executing and verifying the function.
+2025-03-12 23:23:18,301 - DEBUG - Performance metrics:
+2025-03-12 23:23:18,301 - DEBUG - Runtime: 3.875000402331352e-06
+2025-03-12 23:23:18,301 - DEBUG - CPU Percent: 6.909954922894425
+2025-03-12 23:23:18,301 - DEBUG - Memory Usage: 2572288
+2025-03-12 23:23:18,301 - INFO - Generation complete.
+2025-03-12 23:23:18,302 - INFO - Winner selected.
+2025-03-12 23:23:18,302 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:23:18,302 - DEBUG - Performance metrics:
+2025-03-12 23:23:18,302 - DEBUG - Runtime: 1.624997821636498e-06
+2025-03-12 23:23:18,302 - DEBUG - CPU Percent: 7.0132100521574205
+2025-03-12 23:23:18,302 - DEBUG - Memory Usage: 2473984
+2025-03-12 23:23:18,302 - INFO - Generation 4
+2025-03-12 23:23:18,302 - INFO - Generating approaches.
+2025-03-12 23:23:18,303 - INFO - Approaches generated.
+2025-03-12 23:23:18,303 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:23:18,303 - INFO - Generating solution.
+2025-03-12 23:23:18,304 - INFO - Solution generated.
+2025-03-12 23:23:18,304 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:23:18,304 - INFO - Executing and verifying the function.
+2025-03-12 23:23:22,325 - DEBUG - Performance metrics:
+2025-03-12 23:23:22,325 - DEBUG - Runtime: 3.541001206031069e-06
+2025-03-12 23:23:22,325 - DEBUG - CPU Percent: 6.900278959810875
+2025-03-12 23:23:22,325 - DEBUG - Memory Usage: 2535424
+2025-03-12 23:23:22,325 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:23:22,325 - INFO - Generating solution.
+2025-03-12 23:23:22,326 - INFO - Solution generated.
+2025-03-12 23:23:22,326 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:23:22,326 - INFO - Executing and verifying the function.
+2025-03-12 23:23:26,347 - DEBUG - Performance metrics:
+2025-03-12 23:23:26,347 - DEBUG - Runtime: 2.0000006770715117e-06
+2025-03-12 23:23:26,347 - DEBUG - CPU Percent: 7.003645833333333
+2025-03-12 23:23:26,347 - DEBUG - Memory Usage: 2543616
+2025-03-12 23:23:26,348 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:23:26,348 - INFO - Generating solution.
+2025-03-12 23:23:26,348 - INFO - Solution generated.
+2025-03-12 23:23:26,348 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:23:26,348 - INFO - Executing and verifying the function.
+2025-03-12 23:25:00,769 - INFO - Logger initialized.
+2025-03-12 23:25:00,769 - INFO - Generating baseline solution.
+2025-03-12 23:25:00,770 - INFO - Baseline solution generated.
+2025-03-12 23:25:00,770 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+2025-03-12 23:25:00,770 - INFO - Executing and verifying the function.
+2025-03-12 23:25:04,384 - INFO - Function execution successful.
+2025-03-12 23:25:04,384 - DEBUG - Performance metrics:
+2025-03-12 23:25:04,384 - DEBUG - Runtime: 2.4999972083605826e-06
+2025-03-12 23:25:04,385 - DEBUG - CPU Percent: 6.951441441441442
+2025-03-12 23:25:04,385 - DEBUG - Memory Usage: 2449408
+2025-03-12 23:25:04,385 - INFO - Generation 1
+2025-03-12 23:25:04,385 - INFO - Generating approaches.
+2025-03-12 23:25:04,385 - INFO - Approaches generated.
+2025-03-12 23:25:04,385 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:25:04,385 - INFO - Generating solution.
+2025-03-12 23:25:04,386 - INFO - Solution generated.
+2025-03-12 23:25:04,386 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:25:04,386 - INFO - Executing and verifying the function.
+2025-03-12 23:25:08,407 - DEBUG - Performance metrics:
+2025-03-12 23:25:08,407 - DEBUG - Runtime: 3.4999975468963385e-06
+2025-03-12 23:25:08,407 - DEBUG - CPU Percent: 6.961306199716044
+2025-03-12 23:25:08,407 - DEBUG - Memory Usage: 2453504
+2025-03-12 23:25:08,407 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:25:08,407 - INFO - Generating solution.
+2025-03-12 23:25:08,408 - INFO - Solution generated.
+2025-03-12 23:25:08,408 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:25:08,408 - INFO - Executing and verifying the function.
+2025-03-12 23:25:12,442 - DEBUG - Performance metrics:
+2025-03-12 23:25:12,442 - DEBUG - Runtime: 1.4999968698248267e-06
+2025-03-12 23:25:12,442 - DEBUG - CPU Percent: 6.907404436054742
+2025-03-12 23:25:12,442 - DEBUG - Memory Usage: 2461696
+2025-03-12 23:25:12,443 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:25:12,443 - INFO - Generating solution.
+2025-03-12 23:25:12,444 - INFO - Solution generated.
+2025-03-12 23:25:12,444 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:25:12,444 - INFO - Executing and verifying the function.
+2025-03-12 23:25:16,461 - DEBUG - Performance metrics:
+2025-03-12 23:25:16,461 - DEBUG - Runtime: 3.6249984987080097e-06
+2025-03-12 23:25:16,461 - DEBUG - CPU Percent: 6.759113744075829
+2025-03-12 23:25:16,461 - DEBUG - Memory Usage: 2465792
+2025-03-12 23:25:16,461 - INFO - Generation complete.
+2025-03-12 23:25:16,462 - DEBUG - {'runtime': 2.4999972083605826e-06, 'cpu_percent': 6.951441441441442, 'memory_usage': 2449408}
+2025-03-12 23:25:16,462 - DEBUG - {'runtime': 3.4999975468963385e-06, 'cpu_percent': 6.961306199716044, 'memory_usage': 2453504}
+2025-03-12 23:25:16,462 - DEBUG - {'runtime': 1.4999968698248267e-06, 'cpu_percent': 6.907404436054742, 'memory_usage': 2461696}
+2025-03-12 23:25:16,462 - DEBUG - {'runtime': 3.6249984987080097e-06, 'cpu_percent': 6.759113744075829, 'memory_usage': 2465792}
+2025-03-12 23:25:16,462 - INFO - Winner selected.
+2025-03-12 23:25:16,462 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:25:16,462 - DEBUG - Performance metrics:
+2025-03-12 23:25:16,462 - DEBUG - Runtime: 1.4999968698248267e-06
+2025-03-12 23:25:16,462 - DEBUG - CPU Percent: 6.907404436054742
+2025-03-12 23:25:16,462 - DEBUG - Memory Usage: 2461696
+2025-03-12 23:25:16,462 - INFO - Generation 2
+2025-03-12 23:25:16,462 - INFO - Generating approaches.
+2025-03-12 23:25:16,463 - INFO - Approaches generated.
+2025-03-12 23:25:16,463 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:25:16,463 - INFO - Generating solution.
+2025-03-12 23:25:16,464 - INFO - Solution generated.
+2025-03-12 23:25:16,464 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:25:16,464 - INFO - Executing and verifying the function.
+2025-03-12 23:25:20,478 - DEBUG - Performance metrics:
+2025-03-12 23:25:20,478 - DEBUG - Runtime: 3.5420016502030194e-06
+2025-03-12 23:25:20,479 - DEBUG - CPU Percent: 6.969959648706385
+2025-03-12 23:25:20,479 - DEBUG - Memory Usage: 2473984
+2025-03-12 23:25:20,479 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:25:20,479 - INFO - Generating solution.
+2025-03-12 23:25:20,479 - INFO - Solution generated.
+2025-03-12 23:25:20,479 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:25:20,479 - INFO - Executing and verifying the function.
+2025-03-12 23:25:30,770 - INFO - Logger initialized.
+2025-03-12 23:25:30,770 - INFO - Generating baseline solution.
+2025-03-12 23:25:30,771 - INFO - Baseline solution generated.
+2025-03-12 23:25:30,771 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+2025-03-12 23:25:30,771 - INFO - Executing and verifying the function.
+2025-03-12 23:25:34,403 - INFO - Function execution successful.
+2025-03-12 23:25:34,403 - DEBUG - Performance metrics:
+2025-03-12 23:25:34,404 - DEBUG - Runtime: 2.458000381011516e-06
+2025-03-12 23:25:34,404 - DEBUG - CPU Percent: 6.8592041686404555
+2025-03-12 23:25:34,404 - DEBUG - Memory Usage: 2449408
+2025-03-12 23:25:34,404 - INFO - Generation 1
+2025-03-12 23:25:34,404 - INFO - Generating approaches.
+2025-03-12 23:25:34,404 - INFO - Approaches generated.
+2025-03-12 23:25:34,405 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:25:34,405 - INFO - Generating solution.
+2025-03-12 23:25:34,405 - INFO - Solution generated.
+2025-03-12 23:25:34,405 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:25:34,405 - INFO - Executing and verifying the function.
+2025-03-12 23:25:38,426 - DEBUG - Performance metrics:
+2025-03-12 23:25:38,426 - DEBUG - Runtime: 3.3750002330634743e-06
+2025-03-12 23:25:38,427 - DEBUG - CPU Percent: 7.027456181904311
+2025-03-12 23:25:38,427 - DEBUG - Memory Usage: 2686976
+2025-03-12 23:25:38,427 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:25:38,427 - INFO - Generating solution.
+2025-03-12 23:25:38,427 - INFO - Solution generated.
+2025-03-12 23:25:38,427 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:25:38,427 - INFO - Executing and verifying the function.
+2025-03-12 23:25:42,462 - DEBUG - Performance metrics:
+2025-03-12 23:25:42,462 - DEBUG - Runtime: 1.625001459615305e-06
+2025-03-12 23:25:42,462 - DEBUG - CPU Percent: 6.92069860750531
+2025-03-12 23:25:42,462 - DEBUG - Memory Usage: 2461696
+2025-03-12 23:25:42,463 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:25:42,463 - INFO - Generating solution.
+2025-03-12 23:25:42,463 - INFO - Solution generated.
+2025-03-12 23:25:42,463 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:25:42,463 - INFO - Executing and verifying the function.
+2025-03-12 23:25:46,479 - DEBUG - Performance metrics:
+2025-03-12 23:25:46,479 - DEBUG - Runtime: 3.582998033380136e-06
+2025-03-12 23:25:46,480 - DEBUG - CPU Percent: 6.8495398481973435
+2025-03-12 23:25:46,480 - DEBUG - Memory Usage: 2539520
+2025-03-12 23:25:46,480 - INFO - Generation complete.
+2025-03-12 23:25:46,480 - DEBUG - {'runtime': 2.458000381011516e-06, 'cpu_percent': 6.8592041686404555, 'memory_usage': 2449408}
+2025-03-12 23:25:46,480 - DEBUG - {'runtime': 3.3750002330634743e-06, 'cpu_percent': 7.027456181904311, 'memory_usage': 2686976}
+2025-03-12 23:25:46,480 - DEBUG - {'runtime': 1.625001459615305e-06, 'cpu_percent': 6.92069860750531, 'memory_usage': 2461696}
+2025-03-12 23:25:46,480 - DEBUG - {'runtime': 3.582998033380136e-06, 'cpu_percent': 6.8495398481973435, 'memory_usage': 2539520}
+2025-03-12 23:25:46,480 - INFO - Winner selected.
+2025-03-12 23:25:46,480 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:25:46,480 - DEBUG - Performance metrics:
+2025-03-12 23:25:46,480 - DEBUG - Runtime: 1.625001459615305e-06
+2025-03-12 23:25:46,480 - DEBUG - CPU Percent: 6.92069860750531
+2025-03-12 23:25:46,480 - DEBUG - Memory Usage: 2461696
+2025-03-12 23:25:46,480 - INFO - Generation 2
+2025-03-12 23:25:46,480 - INFO - Generating approaches.
+2025-03-12 23:25:46,481 - INFO - Approaches generated.
+2025-03-12 23:25:46,481 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:25:46,481 - INFO - Generating solution.
+2025-03-12 23:25:46,481 - INFO - Solution generated.
+2025-03-12 23:25:46,481 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:25:46,481 - INFO - Executing and verifying the function.
+2025-03-12 23:25:50,499 - DEBUG - Performance metrics:
+2025-03-12 23:25:50,500 - DEBUG - Runtime: 3.4580007195472717e-06
+2025-03-12 23:25:50,500 - DEBUG - CPU Percent: 6.945977719838825
+2025-03-12 23:25:50,500 - DEBUG - Memory Usage: 2478080
+2025-03-12 23:25:50,500 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:25:50,500 - INFO - Generating solution.
+2025-03-12 23:25:50,500 - INFO - Solution generated.
+2025-03-12 23:25:50,501 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:25:50,501 - INFO - Executing and verifying the function.
+2025-03-12 23:25:54,526 - DEBUG - Performance metrics:
+2025-03-12 23:25:54,526 - DEBUG - Runtime: 1.6660014807712287e-06
+2025-03-12 23:25:54,526 - DEBUG - CPU Percent: 7.021663507109005
+2025-03-12 23:25:54,526 - DEBUG - Memory Usage: 2486272
+2025-03-12 23:25:54,526 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:25:54,527 - INFO - Generating solution.
+2025-03-12 23:25:54,527 - INFO - Solution generated.
+2025-03-12 23:25:54,527 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:25:54,527 - INFO - Executing and verifying the function.
+2025-03-12 23:25:58,554 - DEBUG - Performance metrics:
+2025-03-12 23:25:58,554 - DEBUG - Runtime: 3.6669989640358835e-06
+2025-03-12 23:25:58,554 - DEBUG - CPU Percent: 6.764093705631804
+2025-03-12 23:25:58,555 - DEBUG - Memory Usage: 2494464
+2025-03-12 23:25:58,555 - INFO - Generation complete.
+2025-03-12 23:25:58,555 - DEBUG - {'runtime': 2.458000381011516e-06, 'cpu_percent': 6.8592041686404555, 'memory_usage': 2449408}
+2025-03-12 23:25:58,555 - DEBUG - {'runtime': 3.3750002330634743e-06, 'cpu_percent': 7.027456181904311, 'memory_usage': 2686976}
+2025-03-12 23:25:58,555 - DEBUG - {'runtime': 1.625001459615305e-06, 'cpu_percent': 6.92069860750531, 'memory_usage': 2461696}
+2025-03-12 23:25:58,555 - DEBUG - {'runtime': 3.582998033380136e-06, 'cpu_percent': 6.8495398481973435, 'memory_usage': 2539520}
+2025-03-12 23:25:58,555 - DEBUG - {'runtime': 3.4580007195472717e-06, 'cpu_percent': 6.945977719838825, 'memory_usage': 2478080}
+2025-03-12 23:25:58,555 - DEBUG - {'runtime': 1.6660014807712287e-06, 'cpu_percent': 7.021663507109005, 'memory_usage': 2486272}
+2025-03-12 23:25:58,555 - DEBUG - {'runtime': 3.6669989640358835e-06, 'cpu_percent': 6.764093705631804, 'memory_usage': 2494464}
+2025-03-12 23:25:58,555 - INFO - Winner selected.
+2025-03-12 23:25:58,555 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:25:58,555 - DEBUG - Performance metrics:
+2025-03-12 23:25:58,555 - DEBUG - Runtime: 1.625001459615305e-06
+2025-03-12 23:25:58,556 - DEBUG - CPU Percent: 6.92069860750531
+2025-03-12 23:25:58,556 - DEBUG - Memory Usage: 2461696
+2025-03-12 23:25:58,556 - INFO - Generation 3
+2025-03-12 23:25:58,556 - INFO - Generating approaches.
+2025-03-12 23:25:58,556 - INFO - Approaches generated.
+2025-03-12 23:25:58,556 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:25:58,556 - INFO - Generating solution.
+2025-03-12 23:25:58,556 - INFO - Solution generated.
+2025-03-12 23:25:58,556 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:25:58,556 - INFO - Executing and verifying the function.
+2025-03-12 23:26:02,576 - DEBUG - Performance metrics:
+2025-03-12 23:26:02,576 - DEBUG - Runtime: 3.6669989640358835e-06
+2025-03-12 23:26:02,577 - DEBUG - CPU Percent: 6.94193747039318
+2025-03-12 23:26:02,577 - DEBUG - Memory Usage: 2732032
+2025-03-12 23:26:02,577 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:26:02,577 - INFO - Generating solution.
+2025-03-12 23:26:02,578 - INFO - Solution generated.
+2025-03-12 23:26:02,578 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:26:02,578 - INFO - Executing and verifying the function.
+2025-03-12 23:26:06,595 - DEBUG - Performance metrics:
+2025-03-12 23:26:06,596 - DEBUG - Runtime: 1.6659978427924216e-06
+2025-03-12 23:26:06,596 - DEBUG - CPU Percent: 6.968649289099527
+2025-03-12 23:26:06,596 - DEBUG - Memory Usage: 2539520
+2025-03-12 23:26:06,596 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:26:06,597 - INFO - Generating solution.
+2025-03-12 23:26:06,597 - INFO - Solution generated.
+2025-03-12 23:26:06,597 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:26:06,597 - INFO - Executing and verifying the function.
+2025-03-12 23:26:10,610 - DEBUG - Performance metrics:
+2025-03-12 23:26:10,610 - DEBUG - Runtime: 3.5419980122242123e-06
+2025-03-12 23:26:10,610 - DEBUG - CPU Percent: 6.972219321148825
+2025-03-12 23:26:10,610 - DEBUG - Memory Usage: 2539520
+2025-03-12 23:26:10,610 - INFO - Generation complete.
+2025-03-12 23:26:10,610 - DEBUG - {'runtime': 2.458000381011516e-06, 'cpu_percent': 6.8592041686404555, 'memory_usage': 2449408}
+2025-03-12 23:26:10,611 - DEBUG - {'runtime': 3.3750002330634743e-06, 'cpu_percent': 7.027456181904311, 'memory_usage': 2686976}
+2025-03-12 23:26:10,611 - DEBUG - {'runtime': 1.625001459615305e-06, 'cpu_percent': 6.92069860750531, 'memory_usage': 2461696}
+2025-03-12 23:26:10,611 - DEBUG - {'runtime': 3.582998033380136e-06, 'cpu_percent': 6.8495398481973435, 'memory_usage': 2539520}
+2025-03-12 23:26:10,611 - DEBUG - {'runtime': 3.4580007195472717e-06, 'cpu_percent': 6.945977719838825, 'memory_usage': 2478080}
+2025-03-12 23:26:10,611 - DEBUG - {'runtime': 1.6660014807712287e-06, 'cpu_percent': 7.021663507109005, 'memory_usage': 2486272}
+2025-03-12 23:26:10,611 - DEBUG - {'runtime': 3.6669989640358835e-06, 'cpu_percent': 6.764093705631804, 'memory_usage': 2494464}
+2025-03-12 23:26:10,611 - DEBUG - {'runtime': 3.6669989640358835e-06, 'cpu_percent': 6.94193747039318, 'memory_usage': 2732032}
+2025-03-12 23:26:10,611 - DEBUG - {'runtime': 1.6659978427924216e-06, 'cpu_percent': 6.968649289099527, 'memory_usage': 2539520}
+2025-03-12 23:26:10,611 - DEBUG - {'runtime': 3.5419980122242123e-06, 'cpu_percent': 6.972219321148825, 'memory_usage': 2539520}
+2025-03-12 23:26:10,611 - INFO - Winner selected.
+2025-03-12 23:26:10,611 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:26:10,611 - DEBUG - Performance metrics:
+2025-03-12 23:26:10,611 - DEBUG - Runtime: 1.625001459615305e-06
+2025-03-12 23:26:10,611 - DEBUG - CPU Percent: 6.92069860750531
+2025-03-12 23:26:10,611 - DEBUG - Memory Usage: 2461696
+2025-03-12 23:26:10,612 - INFO - Generation 4
+2025-03-12 23:26:10,612 - INFO - Generating approaches.
+2025-03-12 23:26:10,612 - INFO - Approaches generated.
+2025-03-12 23:26:10,612 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:26:10,612 - INFO - Generating solution.
+2025-03-12 23:26:10,612 - INFO - Solution generated.
+2025-03-12 23:26:10,613 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:26:10,613 - INFO - Executing and verifying the function.
+2025-03-12 23:27:53,272 - INFO - Logger initialized.
+2025-03-12 23:27:53,272 - INFO - Generating baseline solution.
+2025-03-12 23:27:53,273 - INFO - Baseline solution generated.
+2025-03-12 23:27:53,273 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+2025-03-12 23:27:53,273 - INFO - Executing and verifying the function.
+2025-03-12 23:27:56,293 - INFO - Function execution successful.
+2025-03-12 23:27:56,293 - DEBUG - Performance metrics:
+2025-03-12 23:27:56,293 - DEBUG - Runtime: 2.624998160172254e-06
+2025-03-12 23:27:56,294 - DEBUG - CPU Percent: 7.41485903814262
+2025-03-12 23:27:56,294 - DEBUG - Memory Usage: 2494464
+2025-03-12 23:27:56,294 - INFO - Generation 1
+2025-03-12 23:27:56,294 - INFO - Generating approaches.
+2025-03-12 23:27:56,294 - INFO - Approaches generated.
+2025-03-12 23:27:56,295 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:27:56,295 - INFO - Generating solution.
+2025-03-12 23:27:56,295 - INFO - Solution generated.
+2025-03-12 23:27:56,295 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:27:56,295 - INFO - Executing and verifying the function.
+2025-03-12 23:28:00,324 - DEBUG - Performance metrics:
+2025-03-12 23:28:00,325 - DEBUG - Runtime: 3.625002136686817e-06
+2025-03-12 23:28:00,325 - DEBUG - CPU Percent: 6.775821318837155
+2025-03-12 23:28:00,325 - DEBUG - Memory Usage: 2678784
+2025-03-12 23:28:00,325 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:28:00,325 - INFO - Generating solution.
+2025-03-12 23:28:00,325 - INFO - Solution generated.
+2025-03-12 23:28:00,326 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:28:00,326 - INFO - Executing and verifying the function.
+2025-03-12 23:28:04,356 - DEBUG - Performance metrics:
+2025-03-12 23:28:04,356 - DEBUG - Runtime: 1.6659978427924216e-06
+2025-03-12 23:28:04,356 - DEBUG - CPU Percent: 6.970449597728348
+2025-03-12 23:28:04,356 - DEBUG - Memory Usage: 2535424
+2025-03-12 23:28:04,356 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:28:04,356 - INFO - Generating solution.
+2025-03-12 23:28:04,357 - INFO - Solution generated.
+2025-03-12 23:28:04,357 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:28:04,357 - INFO - Executing and verifying the function.
+2025-03-12 23:28:08,376 - DEBUG - Performance metrics:
+2025-03-12 23:28:08,376 - DEBUG - Runtime: 3.6249984987080097e-06
+2025-03-12 23:28:08,376 - DEBUG - CPU Percent: 7.053486499289437
+2025-03-12 23:28:08,376 - DEBUG - Memory Usage: 2703360
+2025-03-12 23:28:08,377 - INFO - Generation complete.
+2025-03-12 23:28:08,377 - INFO - Winner selected.
+2025-03-12 23:28:08,377 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:28:08,377 - DEBUG - Performance metrics:
+2025-03-12 23:28:08,377 - DEBUG - Runtime: 1.6659978427924216e-06
+2025-03-12 23:28:08,377 - DEBUG - CPU Percent: 6.970449597728348
+2025-03-12 23:28:08,377 - DEBUG - Memory Usage: 2535424
+2025-03-12 23:28:08,377 - INFO - Generation 2
+2025-03-12 23:28:08,377 - INFO - Generating approaches.
+2025-03-12 23:28:08,378 - INFO - Approaches generated.
+2025-03-12 23:28:08,378 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-12 23:28:08,378 - INFO - Generating solution.
+2025-03-12 23:28:08,378 - INFO - Solution generated.
+2025-03-12 23:28:08,378 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-12 23:28:08,378 - INFO - Executing and verifying the function.
+2025-03-12 23:28:12,410 - DEBUG - Performance metrics:
+2025-03-12 23:28:12,411 - DEBUG - Runtime: 3.791999915847555e-06
+2025-03-12 23:28:12,411 - DEBUG - CPU Percent: 6.764486907289455
+2025-03-12 23:28:12,411 - DEBUG - Memory Usage: 2478080
+2025-03-12 23:28:12,411 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-12 23:28:12,411 - INFO - Generating solution.
+2025-03-12 23:28:12,412 - INFO - Solution generated.
+2025-03-12 23:28:12,412 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-12 23:28:12,412 - INFO - Executing and verifying the function.
+2025-03-12 23:28:16,439 - DEBUG - Performance metrics:
+2025-03-12 23:28:16,439 - DEBUG - Runtime: 1.7920028767548501e-06
+2025-03-12 23:28:16,439 - DEBUG - CPU Percent: 6.916013241901159
+2025-03-12 23:28:16,439 - DEBUG - Memory Usage: 2490368
+2025-03-12 23:28:16,440 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-12 23:28:16,440 - INFO - Generating solution.
+2025-03-12 23:28:16,440 - INFO - Solution generated.
+2025-03-12 23:28:16,440 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-12 23:28:16,440 - INFO - Executing and verifying the function.
+2025-03-12 23:28:20,458 - DEBUG - Performance metrics:
+2025-03-12 23:28:20,459 - DEBUG - Runtime: 3.749999450519681e-06
+2025-03-12 23:28:20,459 - DEBUG - CPU Percent: 6.917863571766934
+2025-03-12 23:28:20,459 - DEBUG - Memory Usage: 2494464
+2025-03-12 23:28:20,459 - INFO - Generation complete.
+2025-03-12 23:28:20,459 - INFO - Root is better than all children.

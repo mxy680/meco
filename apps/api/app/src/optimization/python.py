@@ -37,10 +37,10 @@ async def optimize_python(request: OptimizationRequest):
             optimizer,
             runner,
             validate_fn,
-            validate_command
+            validate_command,
         )
 
         await evo_manager.baseline()
 
-        await evo_manager.evolve()
-        await evo_manager.evolve()
+        while evolve := await evo_manager.evolve():
+            pass

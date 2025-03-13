@@ -2,6 +2,7 @@ from optimizer.function.client import FunctionOptimizer
 from runner.function.client import Runner
 from typing import Tuple
 from app.src.evolution.node import FunctionNode
+from app.src.evolution.logger import Logger
 
 
 class EvolutionManager:
@@ -33,9 +34,11 @@ class EvolutionManager:
         self.num_approaches = num_approaches
         self.max_retries = max_retries
         self.root: FunctionNode = None
+        self.curr: FunctionNode = None
         self.generation: int = 0
+        self.logger = Logger("evolution.log")
 
-    async def execute_and_verify(
+    async def _execute_and_verify(
         self,
         function: str,
         command: str,
@@ -44,6 +47,33 @@ class EvolutionManager:
         Execute terminal command (if provided) and run the function.
         Returns a tuple: (valid, message, result)
         """
+        self.logger.log("Executing and verifying the function.", "info")
+        valid, message, result = await self._run_command_and_function(function, command)
+        retry = 0
+        while not valid and retry < self.max_retries:
+            self.logger.log(message, "warning")
+            self.logger.log(f"Fixing the function. Retry {retry + 1}.", "info")
+            retry += 1
+            response = self.optimizer.fix(function, message)
+            function = response["function_implementation"]
+            command = response["terminal_command"]
+
+            self.logger.log(f"\n{function}", "debug")
+            self.logger.log(f"\n{command}", "debug")
+
+            valid, message, result = await self._run_command_and_function(
+                function, command
+            )
+
+        return valid, message, result
+
+    async def _run_command_and_function(
+        self, function: str, command: str
+    ) -> Tuple[bool, str, dict]:
+        """
+        Helper function to execute the terminal command and then run and verify the function.
+        """
+        # Run the terminal command if provided.
         if command:
             valid, message = self.validate_command(command, self.language)
             if valid:
@@ -52,90 +82,126 @@ class EvolutionManager:
                 if exit_code != 0:
                     return (
                         False,
-                        f"Terminal command failed with exit code {exit_code}:\n{term_result.get('stdout', '')}",
+                        f"Terminal command execution failed with exit code {exit_code}",
                         None,
                     )
 
+        # Validate the function code.
         valid, message = self.validate_fn(function, self.language)
-        if valid:
-            result = self.runner.run(function)
-            output = result.get("stdout", "")
-            exit_code = result.get("exit_code", 0)
-            if exit_code != 0:
-                message = (
-                    f"Function execution failed with exit code {exit_code}:\n{output}",
-                )
-                valid = False
-            else:
-                valid, message = self.optimizer.verify(self.test_cases, output)
+        if not valid:
+            return False, message, None
 
-        i: int = 0
-        while not valid and i < self.max_retries:
-            i += 1
-            print(f"❌ Failed function verification after {i-1} retries: {message}")
-            print("🔄 Requesting optimizer fix...")
+        # Run the function.
+        result = self.runner.run(function)
+        output = result.get("stdout", "")
+        exit_code = result.get("exit_code", 0)
+        if exit_code != 0:
+            return (
+                False,
+                f"Function execution failed with exit code {exit_code}:\n{output}",
+                result,
+            )
 
-            response = self.optimizer.fix(function, message)
-            function = response["function_implementation"]
-            command = response["terminal_command"]
-            self.print_function("Fixed Function Code:", function)
-            self.print_terminal_command(command)
-
-            valid, message, result = await self.execute_and_verify(function, command)
-
+        # Verify the output.
+        valid, message = self.optimizer.verify(self.test_cases, output)
         return valid, message, result
 
     async def baseline(self):
+        self.logger.log("Generating baseline solution.", "info")
         response = self.optimizer.baseline()
         function = response["function_implementation"]
         command = response["terminal_command"]
-        self.print_function("Baseline Function Code:", function)
-        self.print_terminal_command(command)
 
-        valid, message, result = await self.execute_and_verify(
+        self.logger.log("Baseline solution generated.", "info")
+        self.logger.log(f"\n{function}", "debug")
+        self.logger.log(f"\n{command}", "debug")
+
+        valid, message, result = await self._execute_and_verify(
             function,
             command,
         )
 
         if not valid:
-            print(f"❌ Baseline function failed verification: {message}")
+            self.logger.log(message, "error")
+            self.logger.log("Baseline solution failed. Exiting process.", "error")
             return
+        else:
+            self.logger.log("Function execution successful.", "info")
 
         metrics = self.get_metrics(result)
-        self.print_metrics(metrics)
+
+        self.logger.log("Performance metrics:", "debug")
+        self.logger.log(f"Runtime: {metrics['runtime']}", "debug")
+        self.logger.log(f"CPU Percent: {metrics['cpu_percent']}", "debug")
+        self.logger.log(f"Memory Usage: {metrics['memory_usage']}", "debug")
 
         self.root = FunctionNode(self.description, function, metrics)
+        self.curr = self.root
         self.generation = 1
 
     async def evolve(self):
-        print(f"\nGeneration {self.generation}")
+        self.logger.log(f"Generation {self.generation}", "info")
+
         function = self.root.solution
+
+        self.logger.log("Generating approaches.", "info")
         generate_approaches_response = self.optimizer.approach(function)
-        for approach in generate_approaches_response["approaches"]:
+        self.logger.log("Approaches generated.", "info")
+
+        for idx, approach in enumerate(generate_approaches_response["approaches"]):
             approach_description = approach["description"]
-            print(f"\nGenerating solution for approach: {approach_description}")
+            self.logger.log(f"Approach {idx+1}: {approach_description}", "debug")
+            self.logger.log("Generating solution.", "info")
             solution = self.optimizer.solution(function, approach_description)
             function = solution["function_implementation"]
             command = solution["terminal_command"]
-            self.print_function("Generated Solution Function Code:", function)
-            self.print_terminal_command(command)
-            valid, message, result = await self.execute_and_verify(function, command)
+            self.logger.log("Solution generated.", "info")
+            self.logger.log(f"\n{function}", "debug")
+            self.logger.log(f"\n{command}", "debug")
+            valid, message, result = await self._execute_and_verify(function, command)
 
             if not valid:
-                print(f"❌ Baseline function failed verification: {message}")
+                self.logger.log(message, "error")
+                self.logger.log(
+                    f"Solution failed after {self.max_retries} retries. Skipping approach.",
+                    "error",
+                )
                 continue
 
             metrics = self.get_metrics(result)
-            self.print_metrics(metrics)
 
-            print("=" * 100)
+            self.logger.log("Performance metrics:", "debug")
+            self.logger.log(f"Runtime: {metrics['runtime']}", "debug")
+            self.logger.log(f"CPU Percent: {metrics['cpu_percent']}", "debug")
+            self.logger.log(f"Memory Usage: {metrics['memory_usage']}", "debug")
 
-            child = FunctionNode(approach_description, function, metrics, self.root)
-            self.root.add_child(child)
+            child = FunctionNode(approach_description, function, metrics, self.curr)
+            self.curr.add_child(child)
 
-        winner = self.winner(self.root.children)
-        self.root = winner
+        self.logger.log("Generation complete.", "info")
+
+        # Check if the root metrics are better than the children
+        if all(
+            [
+                self.curr.metrics["runtime"] <= child.metrics["runtime"]
+                for child in self.curr.children
+            ]
+        ):
+            self.logger.log("Root is better than all children.", "info")
+            return False
+
+        winner = self.winner(self.curr.children)
+        self.curr = winner
         self.generation += 1
+
+        self.logger.log("Winner selected.", "info")
+        self.logger.log(winner.solution, "debug")
+        self.logger.log("Performance metrics:", "debug")
+        self.logger.log(f"Runtime: {winner.metrics['runtime']}", "debug")
+        self.logger.log(f"CPU Percent: {winner.metrics['cpu_percent']}", "debug")
+        self.logger.log(f"Memory Usage: {winner.metrics['memory_usage']}", "debug")
+
+        return True
 
     @staticmethod
     def get_metrics(result: dict):
@@ -144,22 +210,6 @@ class EvolutionManager:
             "cpu_percent": result.get("cpu_percent", float("inf")),
             "memory_usage": result.get("memory_usage", float("inf")),
         }
-
-    @staticmethod
-    def print_metrics(metrics: dict):
-        print(f"⏱ Runtime: {metrics['runtime']} sec")
-        print(f"📈 CPU Usage: {metrics['cpu_percent']}%")
-        print(f"💾 Memory Usage: {metrics['memory_usage']} MB")
-
-    @staticmethod
-    def print_function(title: str, function_code: str):
-        print(f"\n🔢 {title}")
-        print(function_code)
-
-    @staticmethod
-    def print_terminal_command(command: str):
-        if command:
-            print(f"\n🔢 Terminal Command: {command}")
 
     @staticmethod
     def winner(nodes: list[FunctionNode]) -> dict:

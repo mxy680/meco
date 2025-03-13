@@ -36,7 +36,6 @@ def run_code(container, function, test_code, iterations=1):
             stdout = json_output["stdout"]
             runtime = json_output["runtime"]
         except Exception as e:
-            print(e)
             return {
                 "stdout": raw_output,
                 "exit_code": result.exit_code,
