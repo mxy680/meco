@@ -3,11 +3,13 @@ def get_baseline_prompt(signature: str, description: str, test_code: str) -> lis
         {
             "role": "system",
             "content": (
-                "You are an expert Python programmer. Implement the function so it passes all test cases.\n\n"
+                "You are an expert Python programmer. Your task is to implement the function so that it passes all provided test cases.\n\n"
+                "Use the most typical approach to solve the problem. Ensure your solution is correct, efficient, and handles all edge cases. "
                 "Description: " + description + "\n\n"
-                "Execution: Your function will be injected into a script in a Docker container and ran using `poetry run python script.py`. Install any third-party libraries via Poetry. DO NOT POETRY ADD ANY NATIVE LIBRARIES!\n\n"
-                "Instructions: Ensure correctness, handle edge cases, and write efficient, readable code. DO NOT INCLUDE ANY COMMENTS. Do not write code outside of the functions. If necessary, you may use nested functions. Make sure the function signature is exactly the same as provided.\n\n"
-                "Third-Party Libraries: If absolutely necessary, you may use a third party library, and if used, return a valid install command in the format: `poetry add <library-name>`. Native libraries should not be included.\n\n"
+                "Execution: Your solution will be injected into a script running in a Docker container via `poetry run python script.py`. "
+                "Install only third-party libraries using Poetry (e.g., `poetry add <library-name>`) and do not include any native libraries.\n\n"
+                "Instructions: Write correct, efficient, and readable code that handles all edge cases. Do not include any comments or write code outside the function. "
+                "The function signature must match exactly as provided. You may use nested functions if necessary.\n\n"
             ),
         },
         {
@@ -25,16 +27,16 @@ def get_fix_prompt(function_code: str, error_message: str) -> list[dict]:
         {
             "role": "system",
             "content": (
-                "You are an expert Python programmer. Your task is to analyze the provided command/function and the associated error, then fix the command/function so that it no longer produces the error. "
-                "Ensure that your corrected version is efficient, handles edge cases, and follows best coding practices. Do not include extra comments in the function."
-                "Do not return any terminal command other than an empty string or 'poetry add <package-name>'"
+                "You are an expert Python programmer. The previously generated solution resulted in an error during execution or a terminal command error. "
+                "Analyze the provided function and error message, then fix the code so that the error is resolved. "
+                "Ensure your corrected version is efficient, handles edge cases, and follows best coding practices. "
+                "Do not include comments in the function and only return terminal commands as an empty string or in the format 'poetry add <package-name>'."
             ),
         },
         {
             "role": "user",
             "content": (
-                f"Function:\n{function_code}\n\n"
-                f"Error:\n{error_message}\n\n"
+                f"Function:\n{function_code}\n\n" f"Error:\n{error_message}\n\n"
             ),
         },
     ]
@@ -48,10 +50,11 @@ def get_approach_prompt(
             "role": "system",
             "content": (
                 "You are an innovative problem solver. Your task is to generate "
-                f"{n} theoretical approaches for improving the provided base function "
-                "Approaches may use native or third-party libraries if needed."
-                "Each approach should be presented as a JSON object containing only a single key: 'description'. "
-                "Do not include any code, or additional fields or commentary."
+                f"{n} unconventional and creative theoretical approaches for improving the provided base function. "
+                "Each approach must be presented as a single dense sentence in a JSON object containing only the key 'description'. "
+                "Do not include any code, additional fields, or commentary."
+                "The approaches should be different from the approach of the base function."
+                "Feel free to use public libraries if necessary, but you cannot use APIs or external services."
             ),
         },
         {
@@ -59,8 +62,7 @@ def get_approach_prompt(
             "content": (
                 f"Base Function:\n{base_function}\n\n"
                 f"Problem Description:\n{problem_description}\n\n"
-                f"Please provide {n} theoretical approaches, each as a JSON object with only a 'description' field. "
-                "Ensure that your approach can be implemented in a Python script"
+                f"Please provide {n} unconventional approaches, each as a JSON object with only a 'description' field and described in one dense sentence."
             ),
         },
     ]
@@ -71,11 +73,12 @@ def get_solution_prompt(function: str, approach: str) -> list[dict]:
         {
             "role": "system",
             "content": (
-                "You are an expert Python programmer. Your task is to implement the given approach as a Python function that improves upon the provided base function. "
-                "Ensure that the solution is efficient, handles edge cases, and adheres to best coding practices. "
-                "Execution: Your function will be injected into a script in a Docker container and ran using `poetry run python script.py`. Install any third-party libraries via Poetry. DO NOT POETRY ADD ANY NATIVE LIBRARIES!\n\n"
-                "Instructions: Ensure correctness, handle edge cases, and write efficient, readable code. DO NOT INCLUDE ANY COMMENTS. Do not write code outside of the functions. If necessary, you may use nested functions. Make sure the function signature is exactly the same as provided.\n\n"
-                "Third-Party Libraries: If absolutely necessary, you may use a third party library, and if used, return a valid install command in the format: `poetry add <library-name>`. Native libraries should not be included. If no third-party libraries are used, return an empty string.\n\n"
+                "You are an expert Python programmer. Your task is to implement the described approach as a Python function that enhances the provided base function. "
+                "The solution must be efficient, handle edge cases, and adhere to best coding practices. "
+                "The solution must be different from the base function, and must adhere to the provided approach description. "
+                "Execution: The function will be injected into a script running in a Docker container using `poetry run python script.py`. Install only third-party libraries via Poetry (using the format `poetry add <library-name>`) and do not include any native libraries.\n\n"
+                "Instructions: Write correct, efficient, and readable code without any comments. Do not include code outside of the function. Nested functions are permitted if needed. Ensure that the function signature exactly matches the provided one.\n\n"
+                "Third-Party Libraries: Only use a third-party library if absolutely necessary. If used, return a valid install command in the format `poetry add <library-name>`; otherwise, return an empty string."
             ),
         },
         {

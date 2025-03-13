@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import Union
 from parser.utils import generate_args_hash
 import json
 

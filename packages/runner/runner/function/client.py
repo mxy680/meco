@@ -5,7 +5,7 @@ import time
 
 
 class Runner:
-    def __init__(self, language: str, test_code: str, verbose: bool = False):
+    def __init__(self, language: str, test_code: str):
         if language not in LANGUAGE_CONFIGS:
             raise ValueError(f"Unsupported language: {language}")
 

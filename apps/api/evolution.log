@@ -3238,3 +3238,802 @@ def factorial(n: int, memo: dict = None) -> int:
 2025-03-12 23:28:20,459 - DEBUG - Memory Usage: 2494464
 2025-03-12 23:28:20,459 - INFO - Generation complete.
 2025-03-12 23:28:20,459 - INFO - Root is better than all children.
+2025-03-13 10:58:48,311 - INFO - Logger initialized.
+2025-03-13 10:58:48,311 - INFO - Generating baseline solution.
+2025-03-13 10:58:48,312 - INFO - Baseline solution generated.
+2025-03-13 10:58:48,312 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+2025-03-13 10:58:48,313 - INFO - Executing and verifying the function.
+2025-03-13 10:58:51,339 - INFO - Function execution successful.
+2025-03-13 10:58:51,340 - DEBUG - Performance metrics:
+2025-03-13 10:58:51,340 - DEBUG - Runtime: 2.374999999332772e-06
+2025-03-13 10:58:51,340 - DEBUG - CPU Percent: 8.736751365471385
+2025-03-13 10:58:51,340 - DEBUG - Memory Usage: 47972352
+2025-03-13 10:58:51,341 - INFO - Generation 1
+2025-03-13 10:58:51,341 - INFO - Generating approaches.
+2025-03-13 10:58:51,342 - INFO - Approaches generated.
+2025-03-13 10:58:51,342 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-13 10:58:51,342 - INFO - Generating solution.
+2025-03-13 10:58:51,343 - INFO - Solution generated.
+2025-03-13 10:58:51,343 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-13 10:58:51,343 - INFO - Executing and verifying the function.
+2025-03-13 10:58:55,352 - DEBUG - Performance metrics:
+2025-03-13 10:58:55,352 - DEBUG - Runtime: 3.583000001583514e-06
+2025-03-13 10:58:55,352 - DEBUG - CPU Percent: 7.805583611243449
+2025-03-13 10:58:55,352 - DEBUG - Memory Usage: 48013312
+2025-03-13 10:58:55,352 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-13 10:58:55,352 - INFO - Generating solution.
+2025-03-13 10:58:55,353 - INFO - Solution generated.
+2025-03-13 10:58:55,353 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-13 10:58:55,353 - INFO - Executing and verifying the function.
+2025-03-13 10:58:59,371 - DEBUG - Performance metrics:
+2025-03-13 10:58:59,372 - DEBUG - Runtime: 1.666999999372365e-06
+2025-03-13 10:58:59,372 - DEBUG - CPU Percent: 7.690983840304183
+2025-03-13 10:58:59,372 - DEBUG - Memory Usage: 47984640
+2025-03-13 10:58:59,372 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-13 10:58:59,372 - INFO - Generating solution.
+2025-03-13 10:58:59,372 - INFO - Solution generated.
+2025-03-13 10:58:59,373 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-13 10:58:59,373 - INFO - Executing and verifying the function.
+2025-03-13 10:59:03,404 - DEBUG - Performance metrics:
+2025-03-13 10:59:03,405 - DEBUG - Runtime: 3.3330000022147033e-06
+2025-03-13 10:59:03,405 - DEBUG - CPU Percent: 7.562449751714354
+2025-03-13 10:59:03,405 - DEBUG - Memory Usage: 48009216
+2025-03-13 10:59:03,405 - INFO - Generation complete.
+2025-03-13 10:59:03,405 - INFO - Winner selected.
+2025-03-13 10:59:03,405 - DEBUG - import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-13 10:59:03,405 - DEBUG - Performance metrics:
+2025-03-13 10:59:03,405 - DEBUG - Runtime: 1.666999999372365e-06
+2025-03-13 10:59:03,405 - DEBUG - CPU Percent: 7.690983840304183
+2025-03-13 10:59:03,405 - DEBUG - Memory Usage: 47984640
+2025-03-13 10:59:03,405 - INFO - Generation 2
+2025-03-13 10:59:03,405 - INFO - Generating approaches.
+2025-03-13 10:59:03,406 - INFO - Approaches generated.
+2025-03-13 10:59:03,406 - DEBUG - Approach 1: Implement an iterative approach using a stack data structure to calculate the factorial of a given number. This would involve pushing all numbers from 1 to n onto the stack, then popping them off and multiplying to obtain the factorial, allowing stack-driven recursion-like behavior without actual function recursion.
+2025-03-13 10:59:03,406 - INFO - Generating solution.
+2025-03-13 10:59:03,406 - INFO - Solution generated.
+2025-03-13 10:59:03,406 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if n == 0 or n == 1:
+        return 1
+    stack = list(range(2, n + 1))
+    result = 1
+    while stack:
+        result *= stack.pop()
+    return result
+
+2025-03-13 10:59:03,406 - INFO - Executing and verifying the function.
+2025-03-13 10:59:07,438 - DEBUG - Performance metrics:
+2025-03-13 10:59:07,439 - DEBUG - Runtime: 3.499999998268777e-06
+2025-03-13 10:59:07,439 - DEBUG - CPU Percent: 7.476112689393939
+2025-03-13 10:59:07,439 - DEBUG - Memory Usage: 48001024
+2025-03-13 10:59:07,439 - DEBUG - Approach 2: Utilize Python's built-in `math.factorial` function to handle the computation of factorials efficiently and accurately, leveraging underlying optimizations and potentially avoiding manual error checking for edge cases like negative inputs or very large numbers.
+2025-03-13 10:59:07,439 - INFO - Generating solution.
+2025-03-13 10:59:07,440 - INFO - Solution generated.
+2025-03-13 10:59:07,440 - DEBUG - 
+import math
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    return math.factorial(n)
+2025-03-13 10:59:07,440 - INFO - Executing and verifying the function.
+2025-03-13 10:59:11,465 - DEBUG - Performance metrics:
+2025-03-13 10:59:11,465 - DEBUG - Runtime: 1.8329999988964119e-06
+2025-03-13 10:59:11,465 - DEBUG - CPU Percent: 7.462939085091254
+2025-03-13 10:59:11,465 - DEBUG - Memory Usage: 48009216
+2025-03-13 10:59:11,465 - DEBUG - Approach 3: Use recursion with memoization to optimize the calculation of factorial by storing previously computed results in a dictionary. This would allow the function to return instant results for previously computed values, significantly improving efficiency for repetitive calls with overlapping subproblems.
+2025-03-13 10:59:11,466 - INFO - Generating solution.
+2025-03-13 10:59:11,466 - INFO - Solution generated.
+2025-03-13 10:59:11,467 - DEBUG - 
+def factorial(n: int, memo: dict = None) -> int:
+    if n < 0:
+        raise ValueError("Negative numbers do not have factorials")
+    if memo is None:
+        memo = {}
+    if n in memo:
+        return memo[n]
+    if n == 0 or n == 1:
+        return 1
+    memo[n] = n * factorial(n - 1, memo)
+    return memo[n]
+2025-03-13 10:59:11,467 - INFO - Executing and verifying the function.
+2025-03-13 10:59:15,488 - DEBUG - Performance metrics:
+2025-03-13 10:59:15,489 - DEBUG - Runtime: 3.5409999981084184e-06
+2025-03-13 10:59:15,489 - DEBUG - CPU Percent: 7.269952629085741
+2025-03-13 10:59:15,489 - DEBUG - Memory Usage: 48017408
+2025-03-13 10:59:15,489 - INFO - Generation complete.
+2025-03-13 10:59:15,489 - INFO - Root is better than all children.
+2025-03-13 11:11:08,994 - INFO - Logger initialized.
+2025-03-13 11:11:08,994 - INFO - Generating baseline solution.
+2025-03-13 11:11:11,341 - INFO - Baseline solution generated.
+2025-03-13 11:11:11,341 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Factorial is not defined for negative numbers")
+    elif n == 0 or n == 1:
+        return 1
+    else:
+        result = 1
+        for i in range(2, n + 1):
+            result *= i
+        return result
+2025-03-13 11:11:11,341 - DEBUG - 
+poetry add mathlib
+2025-03-13 11:11:11,342 - INFO - Executing and verifying the function.
+2025-03-13 11:11:15,261 - INFO - Function execution successful.
+2025-03-13 11:11:15,261 - DEBUG - Performance metrics:
+2025-03-13 11:11:15,261 - DEBUG - Runtime: 2.417000018795079e-06
+2025-03-13 11:11:15,262 - DEBUG - CPU Percent: 6.917705617444891
+2025-03-13 11:11:15,262 - DEBUG - Memory Usage: 13357056
+2025-03-13 11:11:15,262 - INFO - Generation 1
+2025-03-13 11:11:15,262 - INFO - Generating approaches.
+2025-03-13 11:11:18,698 - INFO - Approaches generated.
+2025-03-13 11:11:18,698 - DEBUG - Approach 1: Instead of iterative multiplication, use repeated squaring to recursively calculate factorial by first determining the highest power of a product less than or equal to the number and then multiplying upwards from that point, optimizing for large n by reducing intermediate calculations.
+2025-03-13 11:11:18,698 - INFO - Generating solution.
+2025-03-13 11:11:23,832 - INFO - Solution generated.
+2025-03-13 11:11:23,833 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Factorial is not defined for negative numbers")
+    if n == 0 or n == 1:
+        return 1
+    
+    def multiply_range(start, end):
+        if start > end:
+            return 1
+        if start == end:
+            return start
+        if end - start == 1:
+            return start * end
+        mid = (start + end) // 2
+        return multiply_range(start, mid) * multiply_range(mid + 1, end)
+
+    return multiply_range(2, n)
+2025-03-13 11:11:23,833 - INFO - Executing and verifying the function.
+2025-03-13 11:11:26,867 - DEBUG - Performance metrics:
+2025-03-13 11:11:26,868 - DEBUG - Runtime: 3.2079999527923064e-06
+2025-03-13 11:11:26,868 - DEBUG - CPU Percent: 7.050580431177446
+2025-03-13 11:11:26,868 - DEBUG - Memory Usage: 13328384
+2025-03-13 11:11:26,868 - DEBUG - Approach 2: Implement a memory-based approach using a circulating buffer of precomputed factorials for numbers within a certain range, which dynamically adjusts its range according to usage patterns, to provide results via lookup or recent computation rather than starting from scratch each time.
+2025-03-13 11:11:26,868 - INFO - Generating solution.
+2025-03-13 11:11:32,615 - INFO - Solution generated.
+2025-03-13 11:11:32,616 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Factorial is not defined for negative numbers")
+    if n == 0 or n == 1:
+        return 1
+
+    class FactorialCache:
+        def __init__(self, capacity=100):
+            self.capacity = capacity
+            self.cache = [1] * (capacity + 1)
+            self.max_computed = 1
+
+        def get(self, num):
+            if num <= self.max_computed:
+                return self.cache[num]
+            else:
+                last_cached = self.max_computed
+                result = self.cache[last_cached]
+                for i in range(last_cached + 1, num + 1):
+                    result *= i
+                    self.cache[i % (self.capacity + 1)] = result
+                self.max_computed = num
+                return result
+
+    cache = FactorialCache()
+    return cache.get(n)
+2025-03-13 11:11:32,616 - INFO - Executing and verifying the function.
+2025-03-13 11:11:35,649 - DEBUG - Performance metrics:
+2025-03-13 11:11:35,650 - DEBUG - Runtime: 1.366699996196985e-05
+2025-03-13 11:11:35,650 - DEBUG - CPU Percent: 7.02
+2025-03-13 11:11:35,650 - DEBUG - Memory Usage: 13340672
+2025-03-13 11:11:35,650 - DEBUG - Approach 3: Leverage the Monte Carlo method to estimate the factorial by simulating random permutations of a set of size n and deriving the average result, providing a probabilistic approximation that can be refined with increasing simulations.
+2025-03-13 11:11:35,650 - INFO - Generating solution.
+2025-03-13 11:11:39,373 - INFO - Solution generated.
+2025-03-13 11:11:39,373 - DEBUG - 
+import random
+
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Factorial is not defined for negative numbers")
+    if n == 0 or n == 1:
+        return 1
+
+    def monte_carlo_factorial(num, simulations=10000):
+        permutations = list(range(1, num + 1))
+        accumulative_sum = 0
+
+        for _ in range(simulations):
+            random.shuffle(permutations)
+            product = 1
+            for value in permutations:
+                product *= value
+            accumulative_sum += product
+
+        return accumulative_sum // simulations
+
+    return monte_carlo_factorial(n)
+2025-03-13 11:11:39,373 - INFO - Executing and verifying the function.
+2025-03-13 11:11:42,407 - DEBUG - Performance metrics:
+2025-03-13 11:11:42,408 - DEBUG - Runtime: 0.01506037500007551
+2025-03-13 11:11:42,408 - DEBUG - CPU Percent: 7.538831045906294
+2025-03-13 11:11:42,408 - DEBUG - Memory Usage: 13344768
+2025-03-13 11:11:42,408 - INFO - Generation complete.
+2025-03-13 11:11:42,408 - INFO - Root is better than all children.
+2025-03-13 11:19:03,248 - INFO - Logger initialized.
+2025-03-13 11:19:03,248 - INFO - Generating baseline solution.
+2025-03-13 11:19:03,251 - INFO - Baseline solution generated.
+2025-03-13 11:19:03,251 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Factorial is not defined for negative numbers")
+    elif n == 0 or n == 1:
+        return 1
+    else:
+        result = 1
+        for i in range(2, n + 1):
+            result *= i
+        return result
+2025-03-13 11:19:03,251 - DEBUG - 
+poetry add mathlib
+2025-03-13 11:19:03,251 - INFO - Executing and verifying the function.
+2025-03-13 11:19:06,993 - INFO - Function execution successful.
+2025-03-13 11:19:06,993 - DEBUG - Performance metrics:
+2025-03-13 11:19:06,993 - DEBUG - Runtime: 2.2500000795844244e-06
+2025-03-13 11:19:06,993 - DEBUG - CPU Percent: 7.025749408983452
+2025-03-13 11:19:06,994 - DEBUG - Memory Usage: 3219456
+2025-03-13 11:19:06,994 - INFO - ====================================================================================================
+2025-03-13 11:19:06,994 - INFO - ====================================================================================================
+2025-03-13 11:19:06,994 - INFO - Generation 1
+2025-03-13 11:19:06,994 - INFO - Generating approaches.
+2025-03-13 11:19:06,995 - INFO - Approaches generated.
+2025-03-13 11:19:06,995 - INFO -  
+2025-03-13 11:19:06,996 - DEBUG - Approach 1: Instead of iterative multiplication, use repeated squaring to recursively calculate factorial by first determining the highest power of a product less than or equal to the number and then multiplying upwards from that point, optimizing for large n by reducing intermediate calculations.
+2025-03-13 11:19:06,996 - INFO - Generating solution.
+2025-03-13 11:19:06,997 - INFO - Solution generated.
+2025-03-13 11:19:06,997 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Factorial is not defined for negative numbers")
+    if n == 0 or n == 1:
+        return 1
+    
+    def multiply_range(start, end):
+        if start > end:
+            return 1
+        if start == end:
+            return start
+        if end - start == 1:
+            return start * end
+        mid = (start + end) // 2
+        return multiply_range(start, mid) * multiply_range(mid + 1, end)
+
+    return multiply_range(2, n)
+2025-03-13 11:19:06,997 - INFO - Executing and verifying the function.
+2025-03-13 11:19:11,023 - DEBUG - Performance metrics:
+2025-03-13 11:19:11,023 - DEBUG - Runtime: 3.040999899894814e-06
+2025-03-13 11:19:11,024 - DEBUG - CPU Percent: 7.1218173168411045
+2025-03-13 11:19:11,024 - DEBUG - Memory Usage: 3416064
+2025-03-13 11:19:11,024 - INFO -  
+2025-03-13 11:19:11,024 - INFO -  
+2025-03-13 11:19:11,024 - DEBUG - Approach 2: Implement a memory-based approach using a circulating buffer of precomputed factorials for numbers within a certain range, which dynamically adjusts its range according to usage patterns, to provide results via lookup or recent computation rather than starting from scratch each time.
+2025-03-13 11:19:11,024 - INFO - Generating solution.
+2025-03-13 11:19:11,025 - INFO - Solution generated.
+2025-03-13 11:19:11,025 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Factorial is not defined for negative numbers")
+    if n == 0 or n == 1:
+        return 1
+
+    class FactorialCache:
+        def __init__(self, capacity=100):
+            self.capacity = capacity
+            self.cache = [1] * (capacity + 1)
+            self.max_computed = 1
+
+        def get(self, num):
+            if num <= self.max_computed:
+                return self.cache[num]
+            else:
+                last_cached = self.max_computed
+                result = self.cache[last_cached]
+                for i in range(last_cached + 1, num + 1):
+                    result *= i
+                    self.cache[i % (self.capacity + 1)] = result
+                self.max_computed = num
+                return result
+
+    cache = FactorialCache()
+    return cache.get(n)
+2025-03-13 11:19:11,026 - INFO - Executing and verifying the function.
+2025-03-13 11:19:15,047 - DEBUG - Performance metrics:
+2025-03-13 11:19:15,048 - DEBUG - Runtime: 1.3957999954072875e-05
+2025-03-13 11:19:15,048 - DEBUG - CPU Percent: 6.961694674556214
+2025-03-13 11:19:15,048 - DEBUG - Memory Usage: 3428352
+2025-03-13 11:19:15,048 - INFO -  
+2025-03-13 11:19:15,048 - INFO -  
+2025-03-13 11:19:15,048 - DEBUG - Approach 3: Leverage the Monte Carlo method to estimate the factorial by simulating random permutations of a set of size n and deriving the average result, providing a probabilistic approximation that can be refined with increasing simulations.
+2025-03-13 11:19:15,049 - INFO - Generating solution.
+2025-03-13 11:19:15,049 - INFO - Solution generated.
+2025-03-13 11:19:15,050 - DEBUG - 
+import random
+
+
+def factorial(n: int) -> int:
+    if n < 0:
+        raise ValueError("Factorial is not defined for negative numbers")
+    if n == 0 or n == 1:
+        return 1
+
+    def monte_carlo_factorial(num, simulations=10000):
+        permutations = list(range(1, num + 1))
+        accumulative_sum = 0
+
+        for _ in range(simulations):
+            random.shuffle(permutations)
+            product = 1
+            for value in permutations:
+                product *= value
+            accumulative_sum += product
+
+        return accumulative_sum // simulations
+
+    return monte_carlo_factorial(n)
+2025-03-13 11:19:15,050 - INFO - Executing and verifying the function.
+2025-03-13 11:19:19,084 - DEBUG - Performance metrics:
+2025-03-13 11:19:19,085 - DEBUG - Runtime: 0.015394416000162892
+2025-03-13 11:19:19,085 - DEBUG - CPU Percent: 7.470677685950412
+2025-03-13 11:19:19,085 - DEBUG - Memory Usage: 3407872
+2025-03-13 11:19:19,085 - INFO -  
+2025-03-13 11:19:19,086 - INFO - Generation complete.
+2025-03-13 11:19:19,086 - INFO -  
+2025-03-13 11:19:19,086 - INFO - Root is better than all children.
+2025-03-13 11:22:28,302 - INFO - Logger initialized.
+2025-03-13 11:22:28,302 - INFO - Generating baseline solution.
+2025-03-13 11:22:30,408 - INFO - Baseline solution generated.
+2025-03-13 11:22:30,409 - DEBUG - 
+def factorial(n: int) -> int:
+    if n == 0:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+2025-03-13 11:22:30,409 - DEBUG - 
+poetry run python script.py
+2025-03-13 11:22:30,409 - INFO - Executing and verifying the function.
+2025-03-13 11:22:33,444 - INFO - Function execution successful.
+2025-03-13 11:22:33,445 - DEBUG - Performance metrics:
+2025-03-13 11:22:33,445 - DEBUG - Runtime: 2.125000037267455e-06
+2025-03-13 11:22:33,445 - DEBUG - CPU Percent: 7.129709288584259
+2025-03-13 11:22:33,445 - DEBUG - Memory Usage: 2449408
+2025-03-13 11:22:33,445 - INFO - ====================================================================================================
+2025-03-13 11:22:33,445 - INFO - ====================================================================================================
+2025-03-13 11:22:33,446 - INFO - Generation 1
+2025-03-13 11:22:33,446 - INFO - Generating approaches.
+2025-03-13 11:22:36,138 - INFO - Approaches generated.
+2025-03-13 11:22:36,139 - INFO -  
+2025-03-13 11:22:36,139 - DEBUG - Approach 1: Utilize a recursive function with memoization to compute factorial values by storing previously calculated results in a dictionary to avoid redundant calculations on recursive paths.
+2025-03-13 11:22:36,139 - INFO - Generating solution.
+2025-03-13 11:22:39,352 - INFO - Solution generated.
+2025-03-13 11:22:39,353 - DEBUG - 
+def factorial(n: int) -> int:
+    memo = {}
+    def recurse(x):
+        if x in memo:
+            return memo[x]
+        if x == 0:
+            result = 1
+        else:
+            result = x * recurse(x - 1)
+        memo[x] = result
+        return result
+    return recurse(n)
+2025-03-13 11:22:39,353 - INFO - Executing and verifying the function.
+2025-03-13 11:22:42,922 - DEBUG - Performance metrics:
+2025-03-13 11:22:42,922 - DEBUG - Runtime: 4.0410000110568944e-06
+2025-03-13 11:22:42,922 - DEBUG - CPU Percent: 6.873110478899952
+2025-03-13 11:22:42,923 - DEBUG - Memory Usage: 2461696
+2025-03-13 11:22:42,923 - INFO -  
+2025-03-13 11:22:42,923 - INFO -  
+2025-03-13 11:22:42,923 - DEBUG - Approach 2: Design a piano key-like iterative approach, where each key press represents a partial multiplication step, storing intermediate values on a symbolic keyboard grid to dynamically build the factorial.
+2025-03-13 11:22:42,923 - INFO - Generating solution.
+2025-03-13 11:22:44,622 - INFO - Solution generated.
+2025-03-13 11:22:44,622 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 2:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+2025-03-13 11:22:44,623 - INFO - Executing and verifying the function.
+2025-03-13 11:22:47,651 - DEBUG - Performance metrics:
+2025-03-13 11:22:47,651 - DEBUG - Runtime: 1.9999999949504854e-06
+2025-03-13 11:22:47,651 - DEBUG - CPU Percent: 7.077526703061951
+2025-03-13 11:22:47,652 - DEBUG - Memory Usage: 2494464
+2025-03-13 11:22:47,652 - INFO -  
+2025-03-13 11:22:47,652 - INFO -  
+2025-03-13 11:22:47,652 - DEBUG - Approach 3: Adopt a parallel processing model using a divide-and-conquer strategy, where the input number is split into smaller intervals processed by different threads, merging subresults in hierarchical tree fashion to obtain the final factorial value.
+2025-03-13 11:22:47,652 - INFO - Generating solution.
+2025-03-13 11:22:52,710 - INFO - Solution generated.
+2025-03-13 11:22:52,710 - DEBUG - 
+from joblib import Parallel, delayed
+
+def factorial(n: int) -> int:
+    if n < 2:
+        return 1
+
+    def multiply_range(start, end):
+        result = 1
+        for i in range(start, end + 1):
+            result *= i
+        return result
+
+    num_threads = min(n, 4)  # or any reasonable number of threads you find suitable
+    step = n // num_threads
+    ranges = [(i * step + 1, (i + 1) * step) for i in range(num_threads)]
+    ranges[-1] = (ranges[-1][0], n)  # Adjust the last range to end with n
+
+    partial_results = Parallel(n_jobs=num_threads)(delayed(multiply_range)(start, end) for start, end in ranges)
+    total_result = 1
+    for partial in partial_results:
+        total_result *= partial
+
+    return total_result
+2025-03-13 11:22:52,710 - DEBUG - 
+poetry add joblib
+2025-03-13 11:22:52,710 - INFO - Executing and verifying the function.
+2025-03-13 11:22:56,502 - DEBUG - Performance metrics:
+2025-03-13 11:22:56,502 - DEBUG - Runtime: 0.06877695900016079
+2025-03-13 11:22:56,503 - DEBUG - CPU Percent: 19.909658767772513
+2025-03-13 11:22:56,503 - DEBUG - Memory Usage: 7774208
+2025-03-13 11:22:56,503 - INFO -  
+2025-03-13 11:22:56,503 - INFO - Generation complete.
+2025-03-13 11:22:56,503 - INFO -  
+2025-03-13 11:22:56,503 - INFO - Winner selected.
+2025-03-13 11:22:56,503 - DEBUG - def factorial(n: int) -> int:
+    if n < 2:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+2025-03-13 11:22:56,503 - DEBUG - Performance metrics:
+2025-03-13 11:22:56,504 - DEBUG - Runtime: 1.9999999949504854e-06
+2025-03-13 11:22:56,504 - DEBUG - CPU Percent: 7.077526703061951
+2025-03-13 11:22:56,504 - DEBUG - Memory Usage: 2494464
+2025-03-13 11:22:56,504 - INFO - ====================================================================================================
+2025-03-13 11:22:56,504 - INFO - ====================================================================================================
+2025-03-13 11:22:56,504 - INFO - Generation 2
+2025-03-13 11:22:56,504 - INFO - Generating approaches.
+2025-03-13 11:22:56,505 - INFO - Approaches generated.
+2025-03-13 11:22:56,505 - INFO -  
+2025-03-13 11:22:56,505 - DEBUG - Approach 1: Utilize a recursive function with memoization to compute factorial values by storing previously calculated results in a dictionary to avoid redundant calculations on recursive paths.
+2025-03-13 11:22:56,505 - INFO - Generating solution.
+2025-03-13 11:22:56,506 - INFO - Solution generated.
+2025-03-13 11:22:56,506 - DEBUG - 
+def factorial(n: int) -> int:
+    memo = {}
+    def recurse(x):
+        if x in memo:
+            return memo[x]
+        if x == 0:
+            result = 1
+        else:
+            result = x * recurse(x - 1)
+        memo[x] = result
+        return result
+    return recurse(n)
+2025-03-13 11:22:56,506 - INFO - Executing and verifying the function.
+2025-03-13 11:23:00,540 - DEBUG - Performance metrics:
+2025-03-13 11:23:00,540 - DEBUG - Runtime: 4.291999857741757e-06
+2025-03-13 11:23:00,541 - DEBUG - CPU Percent: 7.021390728476821
+2025-03-13 11:23:00,541 - DEBUG - Memory Usage: 7606272
+2025-03-13 11:23:00,541 - INFO -  
+2025-03-13 11:23:00,541 - INFO -  
+2025-03-13 11:23:00,541 - DEBUG - Approach 2: Design a piano key-like iterative approach, where each key press represents a partial multiplication step, storing intermediate values on a symbolic keyboard grid to dynamically build the factorial.
+2025-03-13 11:23:00,541 - INFO - Generating solution.
+2025-03-13 11:23:00,542 - INFO - Solution generated.
+2025-03-13 11:23:00,542 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 2:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+2025-03-13 11:23:00,542 - INFO - Executing and verifying the function.
+2025-03-13 11:23:04,565 - DEBUG - Performance metrics:
+2025-03-13 11:23:04,565 - DEBUG - Runtime: 1.9999999949504854e-06
+2025-03-13 11:23:04,566 - DEBUG - CPU Percent: 7.006377224199288
+2025-03-13 11:23:04,566 - DEBUG - Memory Usage: 7614464
+2025-03-13 11:23:04,566 - INFO -  
+2025-03-13 11:23:04,566 - INFO -  
+2025-03-13 11:23:04,566 - DEBUG - Approach 3: Adopt a parallel processing model using a divide-and-conquer strategy, where the input number is split into smaller intervals processed by different threads, merging subresults in hierarchical tree fashion to obtain the final factorial value.
+2025-03-13 11:23:04,566 - INFO - Generating solution.
+2025-03-13 11:23:04,567 - INFO - Solution generated.
+2025-03-13 11:23:04,568 - DEBUG - 
+from joblib import Parallel, delayed
+
+def factorial(n: int) -> int:
+    if n < 2:
+        return 1
+
+    def multiply_range(start, end):
+        result = 1
+        for i in range(start, end + 1):
+            result *= i
+        return result
+
+    num_threads = min(n, 4)  # or any reasonable number of threads you find suitable
+    step = n // num_threads
+    ranges = [(i * step + 1, (i + 1) * step) for i in range(num_threads)]
+    ranges[-1] = (ranges[-1][0], n)  # Adjust the last range to end with n
+
+    partial_results = Parallel(n_jobs=num_threads)(delayed(multiply_range)(start, end) for start, end in ranges)
+    total_result = 1
+    for partial in partial_results:
+        total_result *= partial
+
+    return total_result
+2025-03-13 11:23:04,568 - DEBUG - 
+poetry add joblib
+2025-03-13 11:23:04,568 - INFO - Executing and verifying the function.
+2025-03-13 11:23:08,610 - DEBUG - Performance metrics:
+2025-03-13 11:23:08,610 - DEBUG - Runtime: 0.06404520799992497
+2025-03-13 11:23:08,610 - DEBUG - CPU Percent: 17.785808580858088
+2025-03-13 11:23:08,610 - DEBUG - Memory Usage: 7786496
+2025-03-13 11:23:08,610 - INFO -  
+2025-03-13 11:23:08,610 - INFO - Generation complete.
+2025-03-13 11:23:08,611 - INFO -  
+2025-03-13 11:23:08,611 - INFO - Root is better than all children.
+2025-03-13 11:27:21,475 - INFO - Logger initialized.
+2025-03-13 11:27:21,475 - INFO - Generating baseline solution.
+2025-03-13 11:27:21,478 - INFO - Baseline solution generated.
+2025-03-13 11:27:21,478 - DEBUG - 
+def factorial(n: int) -> int:
+    if n == 0:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+2025-03-13 11:27:21,478 - DEBUG - 
+poetry run python script.py
+2025-03-13 11:27:21,478 - INFO - Executing and verifying the function.
+2025-03-13 11:27:24,504 - INFO - Function execution successful.
+2025-03-13 11:27:24,505 - DEBUG - Performance metrics:
+2025-03-13 11:27:24,505 - DEBUG - Runtime: 3.74999899577233e-07
+2025-03-13 11:27:24,505 - DEBUG - CPU Percent: 7.250549084858568
+2025-03-13 11:27:24,505 - DEBUG - Memory Usage: 2465792
+2025-03-13 11:27:24,505 - INFO - ====================================================================================================
+2025-03-13 11:27:24,506 - INFO - ====================================================================================================
+2025-03-13 11:27:24,506 - INFO - Generation 1
+2025-03-13 11:27:24,506 - INFO - Generating approaches.
+2025-03-13 11:27:24,507 - INFO - Approaches generated.
+2025-03-13 11:27:24,507 - INFO -  
+2025-03-13 11:27:24,507 - DEBUG - Approach 1: Utilize a recursive function with memoization to compute factorial values by storing previously calculated results in a dictionary to avoid redundant calculations on recursive paths.
+2025-03-13 11:27:24,507 - INFO - Generating solution.
+2025-03-13 11:27:24,508 - INFO - Solution generated.
+2025-03-13 11:27:24,508 - DEBUG - 
+def factorial(n: int) -> int:
+    memo = {}
+    def recurse(x):
+        if x in memo:
+            return memo[x]
+        if x == 0:
+            result = 1
+        else:
+            result = x * recurse(x - 1)
+        memo[x] = result
+        return result
+    return recurse(n)
+2025-03-13 11:27:24,508 - INFO - Executing and verifying the function.
+2025-03-13 11:27:28,532 - DEBUG - Performance metrics:
+2025-03-13 11:27:28,532 - DEBUG - Runtime: 1.624999867999577e-06
+2025-03-13 11:27:28,533 - DEBUG - CPU Percent: 7.037585227272728
+2025-03-13 11:27:28,533 - DEBUG - Memory Usage: 2465792
+2025-03-13 11:27:28,533 - INFO -  
+2025-03-13 11:27:28,533 - INFO -  
+2025-03-13 11:27:28,533 - DEBUG - Approach 2: Design a piano key-like iterative approach, where each key press represents a partial multiplication step, storing intermediate values on a symbolic keyboard grid to dynamically build the factorial.
+2025-03-13 11:27:28,534 - INFO - Generating solution.
+2025-03-13 11:27:28,538 - INFO - Solution generated.
+2025-03-13 11:27:28,538 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 2:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+2025-03-13 11:27:28,538 - INFO - Executing and verifying the function.
+2025-03-13 11:27:32,577 - DEBUG - Performance metrics:
+2025-03-13 11:27:32,578 - DEBUG - Runtime: 2.920000952144619e-07
+2025-03-13 11:27:32,578 - DEBUG - CPU Percent: 7.084410304892461
+2025-03-13 11:27:32,578 - DEBUG - Memory Usage: 2486272
+2025-03-13 11:27:32,578 - INFO -  
+2025-03-13 11:27:32,578 - INFO -  
+2025-03-13 11:27:32,578 - DEBUG - Approach 3: Adopt a parallel processing model using a divide-and-conquer strategy, where the input number is split into smaller intervals processed by different threads, merging subresults in hierarchical tree fashion to obtain the final factorial value.
+2025-03-13 11:27:32,578 - INFO - Generating solution.
+2025-03-13 11:27:32,579 - INFO - Solution generated.
+2025-03-13 11:27:32,580 - DEBUG - 
+from joblib import Parallel, delayed
+
+def factorial(n: int) -> int:
+    if n < 2:
+        return 1
+
+    def multiply_range(start, end):
+        result = 1
+        for i in range(start, end + 1):
+            result *= i
+        return result
+
+    num_threads = min(n, 4)  # or any reasonable number of threads you find suitable
+    step = n // num_threads
+    ranges = [(i * step + 1, (i + 1) * step) for i in range(num_threads)]
+    ranges[-1] = (ranges[-1][0], n)  # Adjust the last range to end with n
+
+    partial_results = Parallel(n_jobs=num_threads)(delayed(multiply_range)(start, end) for start, end in ranges)
+    total_result = 1
+    for partial in partial_results:
+        total_result *= partial
+
+    return total_result
+2025-03-13 11:27:32,580 - DEBUG - 
+poetry add joblib
+2025-03-13 11:27:32,580 - INFO - Executing and verifying the function.
+2025-03-13 11:27:38,952 - DEBUG - Performance metrics:
+2025-03-13 11:27:38,953 - DEBUG - Runtime: 0.026021083999921757
+2025-03-13 11:27:38,953 - DEBUG - CPU Percent: 26.533037788756847
+2025-03-13 11:27:38,953 - DEBUG - Memory Usage: 7716864
+2025-03-13 11:27:38,953 - INFO -  
+2025-03-13 11:27:38,953 - INFO - Generation complete.
+2025-03-13 11:27:38,953 - INFO -  
+2025-03-13 11:27:38,953 - INFO - Winner selected.
+2025-03-13 11:27:38,954 - DEBUG - def factorial(n: int) -> int:
+    if n < 2:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+2025-03-13 11:27:38,954 - DEBUG - Performance metrics:
+2025-03-13 11:27:38,954 - DEBUG - Runtime: 2.920000952144619e-07
+2025-03-13 11:27:38,954 - DEBUG - CPU Percent: 7.084410304892461
+2025-03-13 11:27:38,954 - DEBUG - Memory Usage: 2486272
+2025-03-13 11:27:38,954 - INFO - ====================================================================================================
+2025-03-13 11:27:38,954 - INFO - ====================================================================================================
+2025-03-13 11:27:38,955 - INFO - Generation 2
+2025-03-13 11:27:38,955 - INFO - Generating approaches.
+2025-03-13 11:27:38,956 - INFO - Approaches generated.
+2025-03-13 11:27:38,956 - INFO -  
+2025-03-13 11:27:38,956 - DEBUG - Approach 1: Utilize a recursive function with memoization to compute factorial values by storing previously calculated results in a dictionary to avoid redundant calculations on recursive paths.
+2025-03-13 11:27:38,956 - INFO - Generating solution.
+2025-03-13 11:27:38,956 - INFO - Solution generated.
+2025-03-13 11:27:38,956 - DEBUG - 
+def factorial(n: int) -> int:
+    memo = {}
+    def recurse(x):
+        if x in memo:
+            return memo[x]
+        if x == 0:
+            result = 1
+        else:
+            result = x * recurse(x - 1)
+        memo[x] = result
+        return result
+    return recurse(n)
+2025-03-13 11:27:38,956 - INFO - Executing and verifying the function.
+2025-03-13 11:27:42,989 - DEBUG - Performance metrics:
+2025-03-13 11:27:42,989 - DEBUG - Runtime: 1.3750000107393134e-06
+2025-03-13 11:27:42,989 - DEBUG - CPU Percent: 7.045992899408285
+2025-03-13 11:27:42,989 - DEBUG - Memory Usage: 7815168
+2025-03-13 11:27:42,989 - INFO -  
+2025-03-13 11:27:42,989 - INFO -  
+2025-03-13 11:27:42,990 - DEBUG - Approach 2: Design a piano key-like iterative approach, where each key press represents a partial multiplication step, storing intermediate values on a symbolic keyboard grid to dynamically build the factorial.
+2025-03-13 11:27:42,990 - INFO - Generating solution.
+2025-03-13 11:27:42,991 - INFO - Solution generated.
+2025-03-13 11:27:42,991 - DEBUG - 
+def factorial(n: int) -> int:
+    if n < 2:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+2025-03-13 11:27:42,991 - INFO - Executing and verifying the function.
+2025-03-13 11:27:47,014 - DEBUG - Performance metrics:
+2025-03-13 11:27:47,014 - DEBUG - Runtime: 3.3299988899671007e-07
+2025-03-13 11:27:47,014 - DEBUG - CPU Percent: 7.070016583747927
+2025-03-13 11:27:47,014 - DEBUG - Memory Usage: 7712768
+2025-03-13 11:27:47,014 - INFO -  
+2025-03-13 11:27:47,014 - INFO -  
+2025-03-13 11:27:47,014 - DEBUG - Approach 3: Adopt a parallel processing model using a divide-and-conquer strategy, where the input number is split into smaller intervals processed by different threads, merging subresults in hierarchical tree fashion to obtain the final factorial value.
+2025-03-13 11:27:47,014 - INFO - Generating solution.
+2025-03-13 11:27:47,015 - INFO - Solution generated.
+2025-03-13 11:27:47,015 - DEBUG - 
+from joblib import Parallel, delayed
+
+def factorial(n: int) -> int:
+    if n < 2:
+        return 1
+
+    def multiply_range(start, end):
+        result = 1
+        for i in range(start, end + 1):
+            result *= i
+        return result
+
+    num_threads = min(n, 4)  # or any reasonable number of threads you find suitable
+    step = n // num_threads
+    ranges = [(i * step + 1, (i + 1) * step) for i in range(num_threads)]
+    ranges[-1] = (ranges[-1][0], n)  # Adjust the last range to end with n
+
+    partial_results = Parallel(n_jobs=num_threads)(delayed(multiply_range)(start, end) for start, end in ranges)
+    total_result = 1
+    for partial in partial_results:
+        total_result *= partial
+
+    return total_result
+2025-03-13 11:27:47,015 - DEBUG - 
+poetry add joblib
+2025-03-13 11:27:47,015 - INFO - Executing and verifying the function.
+2025-03-13 11:27:52,994 - DEBUG - Performance metrics:
+2025-03-13 11:27:52,995 - DEBUG - Runtime: 0.02541062500017688
+2025-03-13 11:27:52,995 - DEBUG - CPU Percent: 27.446026289180992
+2025-03-13 11:27:52,995 - DEBUG - Memory Usage: 8486912
+2025-03-13 11:27:52,995 - INFO -  
+2025-03-13 11:27:52,995 - INFO - Generation complete.
+2025-03-13 11:27:52,995 - INFO -  
+2025-03-13 11:27:52,995 - INFO - Root is better than all children.

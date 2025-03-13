@@ -134,12 +134,14 @@ class EvolutionManager:
         self.logger.log(f"Runtime: {metrics['runtime']}", "debug")
         self.logger.log(f"CPU Percent: {metrics['cpu_percent']}", "debug")
         self.logger.log(f"Memory Usage: {metrics['memory_usage']}", "debug")
+        self.logger.log("=" * 100, "info")
 
         self.root = FunctionNode(self.description, function, metrics)
         self.curr = self.root
         self.generation = 1
 
     async def evolve(self):
+        self.logger.log("=" * 100, "info")
         self.logger.log(f"Generation {self.generation}", "info")
 
         function = self.root.solution
@@ -150,6 +152,7 @@ class EvolutionManager:
 
         for idx, approach in enumerate(generate_approaches_response["approaches"]):
             approach_description = approach["description"]
+            self.logger.log(" ", "info")
             self.logger.log(f"Approach {idx+1}: {approach_description}", "debug")
             self.logger.log("Generating solution.", "info")
             solution = self.optimizer.solution(function, approach_description)
@@ -174,11 +177,13 @@ class EvolutionManager:
             self.logger.log(f"Runtime: {metrics['runtime']}", "debug")
             self.logger.log(f"CPU Percent: {metrics['cpu_percent']}", "debug")
             self.logger.log(f"Memory Usage: {metrics['memory_usage']}", "debug")
+            self.logger.log(" ", "info")
 
             child = FunctionNode(approach_description, function, metrics, self.curr)
             self.curr.add_child(child)
 
         self.logger.log("Generation complete.", "info")
+        self.logger.log(" ", "info")
 
         # Check if the root metrics are better than the children
         if all(
@@ -200,6 +205,7 @@ class EvolutionManager:
         self.logger.log(f"Runtime: {winner.metrics['runtime']}", "debug")
         self.logger.log(f"CPU Percent: {winner.metrics['cpu_percent']}", "debug")
         self.logger.log(f"Memory Usage: {winner.metrics['memory_usage']}", "debug")
+        self.logger.log("=" * 100, "info")
 
         return True
 
