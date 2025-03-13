@@ -1,0 +1,351 @@
+2025-03-13 15:42:03,798 - INFO - Logger initialized.
+2025-03-13 15:42:03,798 - INFO - Generating baseline solution.
+2025-03-13 15:42:03,799 - INFO - Baseline solution generated.
+2025-03-13 15:42:03,799 - DEBUG - 
+def factorial(n: int) -> int:
+    if n == 0:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+2025-03-13 15:42:03,799 - DEBUG - 
+poetry run python script.py
+2025-03-13 15:42:03,800 - INFO - Executing and verifying the function.
+2025-03-13 15:42:07,646 - INFO - Function execution successful.
+2025-03-13 15:42:07,646 - DEBUG - Performance metrics:
+2025-03-13 15:42:07,646 - DEBUG - Runtime: 3.339991963002831e-07
+2025-03-13 15:42:07,647 - DEBUG - CPU Percent: 7.125599432489952
+2025-03-13 15:42:07,647 - DEBUG - Memory Usage: 2510848
+2025-03-13 15:42:07,647 - INFO - ====================================================================================================
+2025-03-13 15:42:07,647 - INFO - ====================================================================================================
+2025-03-13 15:42:07,647 - INFO - Generation 1
+2025-03-13 15:42:07,647 - INFO - Generating approaches.
+2025-03-13 15:42:44,160 - INFO - Approaches generated.
+2025-03-13 15:42:44,160 - INFO -  
+2025-03-13 15:42:44,160 - DEBUG - Approach 1: Employ a recursive method by creating a function that calls itself with decremented values of n until reaching n=0, at which point it returns 1 and uses each subsequent return to multiply up through the stack of function calls.
+2025-03-13 15:42:44,160 - INFO - Generating solution.
+2025-03-13 15:42:45,551 - INFO - Solution generated.
+2025-03-13 15:42:45,551 - DEBUG - 
+def factorial(n: int) -> int:
+    if n == 0:
+        return 1
+    return n * factorial(n - 1)
+2025-03-13 15:42:45,551 - INFO - Executing and verifying the function.
+2025-03-13 15:42:48,584 - DEBUG - Performance metrics:
+2025-03-13 15:42:48,585 - DEBUG - Runtime: 4.579997039400041e-07
+2025-03-13 15:42:48,585 - DEBUG - CPU Percent: 7.128206341694273
+2025-03-13 15:42:48,585 - DEBUG - Memory Usage: 2662400
+2025-03-13 15:42:48,585 - INFO -  
+2025-03-13 15:42:48,585 - INFO -  
+2025-03-13 15:42:48,585 - DEBUG - Approach 2: Utilize an iterative approximation using Stirling's approximation formula in conjunction with a loop to dynamically refine the estimation of n! by balancing precision and computation time through successive corrections.
+2025-03-13 15:42:48,586 - INFO - Generating solution.
+2025-03-13 15:42:53,114 - INFO - Solution generated.
+2025-03-13 15:42:53,114 - DEBUG - 
+from math import pi, e
+
+def factorial(n: int) -> int:
+    if n == 0:
+        return 1
+    approximation = (n / e) ** n * (2 * pi * n) ** 0.5
+    correction = 1
+    for i in range(1, 6):
+        correction += ((-1)**i) * (1/(i * (2**i))) / (n**i)
+    return int(round(approximation * correction))
+2025-03-13 15:42:53,114 - INFO - Executing and verifying the function.
+2025-03-13 15:42:56,666 - WARNING - Test case failed: {"n": 5} -> 120
+2025-03-13 15:42:56,666 - INFO - Fixing the function. Retry 1.
+2025-03-13 15:42:58,423 - DEBUG - 
+def factorial(n: int) -> int:
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+2025-03-13 15:42:58,424 - DEBUG - 
+poetry add scipy
+2025-03-13 15:43:11,406 - DEBUG - Performance metrics:
+2025-03-13 15:43:11,406 - DEBUG - Runtime: 4.579997039400041e-07
+2025-03-13 15:43:11,407 - DEBUG - CPU Percent: 7.164088867879934
+2025-03-13 15:43:11,407 - DEBUG - Memory Usage: 291057664
+2025-03-13 15:43:11,407 - INFO -  
+2025-03-13 15:43:11,407 - INFO -  
+2025-03-13 15:43:11,407 - DEBUG - Approach 3: Apply matrix exponentiation where a transformation matrix is iteratively raised to the power of n-five, allowing for the determination of factorial via fast matrix operations inspired by the combinatorial interpretations of factorial.
+2025-03-13 15:43:11,407 - INFO - Generating solution.
+2025-03-13 15:43:19,484 - INFO - Solution generated.
+2025-03-13 15:43:19,484 - DEBUG - 
+import numpy as np
+
+def factorial(n: int) -> int:
+    if n <= 1:
+        return 1
+    
+    def matrix_mult(A, B):
+        return [[sum(x * y for x, y in zip(row, col)) for col in zip(*B)] for row in A]
+
+    def matrix_exponentiate(matrix, power):
+        result = [[1 if i == j else 0 for j in range(len(matrix))] for i in range(len(matrix))]
+        base = matrix
+        while power:
+            if power % 2 == 1:
+                result = matrix_mult(result, base)
+            base = matrix_mult(base, base)
+            power //= 2
+        return result
+
+    matrix_size = n + 1
+    trans_matrix = [[0] * matrix_size for _ in range(matrix_size)]
+    for i in range(1, matrix_size):
+        trans_matrix[i][i-1] = 1
+    for j in range(matrix_size):
+        trans_matrix[0][j] = j
+    
+    result_matrix = matrix_exponentiate(trans_matrix, n - 1)
+    return result_matrix[0][0]
+2025-03-13 15:43:19,484 - INFO - Executing and verifying the function.
+2025-03-13 15:43:22,533 - WARNING - Test case failed: {"n": 5} -> 120
+2025-03-13 15:43:22,533 - INFO - Fixing the function. Retry 1.
+2025-03-13 15:43:24,635 - DEBUG - 
+def factorial(n: int) -> int:
+    if n <= 1:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+2025-03-13 15:43:27,672 - DEBUG - Performance metrics:
+2025-03-13 15:43:27,673 - DEBUG - Runtime: 3.3299875212833285e-07
+2025-03-13 15:43:27,673 - DEBUG - CPU Percent: 7.059711720226844
+2025-03-13 15:43:27,673 - DEBUG - Memory Usage: 293715968
+2025-03-13 15:43:27,673 - INFO -  
+2025-03-13 15:43:27,673 - INFO - Generation complete.
+2025-03-13 15:43:27,673 - INFO -  
+2025-03-13 15:43:27,673 - INFO - Winner selected.
+2025-03-13 15:43:27,673 - DEBUG - def factorial(n: int) -> int:
+    if n <= 1:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+2025-03-13 15:43:27,673 - DEBUG - Performance metrics:
+2025-03-13 15:43:27,674 - DEBUG - Runtime: 3.3299875212833285e-07
+2025-03-13 15:43:27,674 - DEBUG - CPU Percent: 7.059711720226844
+2025-03-13 15:43:27,674 - DEBUG - Memory Usage: 293715968
+2025-03-13 15:43:27,674 - INFO - ====================================================================================================
+2025-03-13 15:43:27,674 - INFO - ====================================================================================================
+2025-03-13 15:43:27,674 - INFO - Generation 2
+2025-03-13 15:43:27,674 - INFO - Generating approaches.
+2025-03-13 15:43:32,721 - INFO - Approaches generated.
+2025-03-13 15:43:32,721 - INFO -  
+2025-03-13 15:43:32,721 - DEBUG - Approach 1: Implement a divide-and-conquer strategy by recursively splitting the factorial computation into two halves, calculate the product of each half independently, and multiply the results to achieve n! efficiently.
+2025-03-13 15:43:32,721 - INFO - Generating solution.
+2025-03-13 15:43:35,520 - INFO - Solution generated.
+2025-03-13 15:43:35,520 - DEBUG - 
+def factorial(n: int) -> int:
+    def factorial_range(start: int, end: int) -> int:
+        if start > end:
+            return 1
+        if start == end:
+            return start
+        mid = (start + end) // 2
+        return factorial_range(start, mid) * factorial_range(mid + 1, end)
+    if n == 0:
+        return 1
+    return factorial_range(1, n)
+2025-03-13 15:43:35,521 - INFO - Executing and verifying the function.
+2025-03-13 15:43:38,554 - DEBUG - Performance metrics:
+2025-03-13 15:43:38,555 - DEBUG - Runtime: 1.1669999366858974e-06
+2025-03-13 15:43:38,556 - DEBUG - CPU Percent: 7.0207051585423565
+2025-03-13 15:43:38,556 - DEBUG - Memory Usage: 293740544
+2025-03-13 15:43:38,556 - INFO -  
+2025-03-13 15:43:38,557 - INFO -  
+2025-03-13 15:43:38,557 - DEBUG - Approach 2: Leverage memoization to cache previously computed factorial values, reducing redundant calculations and allowing for rapid retrieval and computation of n! when recalculating values for sequential numbers.
+2025-03-13 15:43:38,557 - INFO - Generating solution.
+2025-03-13 15:43:41,585 - INFO - Solution generated.
+2025-03-13 15:43:41,586 - DEBUG - 
+def factorial(n: int) -> int:
+    cache = {0: 1}
+
+    def compute_factorial(k: int) -> int:
+        if k not in cache:
+            result = 1
+            for i in range(1, k + 1):
+                result *= i
+            cache[k] = result
+        return cache[k]
+
+    return compute_factorial(n)
+2025-03-13 15:43:41,586 - INFO - Executing and verifying the function.
+2025-03-13 15:43:44,649 - DEBUG - Performance metrics:
+2025-03-13 15:43:44,650 - DEBUG - Runtime: 9.57999873207882e-07
+2025-03-13 15:43:44,650 - DEBUG - CPU Percent: 6.928128517823639
+2025-03-13 15:43:44,650 - DEBUG - Memory Usage: 293732352
+2025-03-13 15:43:44,650 - INFO -  
+2025-03-13 15:43:44,650 - INFO -  
+2025-03-13 15:43:44,651 - DEBUG - Approach 3: Construct the factorial using parallel computation by segmenting the multiplication process into separate concurrent tasks across multiple processor cores, with each task computing a partial product before a final aggregation stage.
+2025-03-13 15:43:44,651 - INFO - Generating solution.
+2025-03-13 15:43:55,216 - INFO - Solution generated.
+2025-03-13 15:43:55,217 - DEBUG - 
+from concurrent.futures import ProcessPoolExecutor, as_completed
+from math import prod
+
+def factorial(n: int) -> int:
+    if n == 0:
+        return 1
+    
+    def partial_factorial(start, end):
+        return prod(range(start, end + 1))
+
+    num_workers = min(32, n)  # reasonable upper limit of workers
+    chunk_size = n // num_workers
+    futures = []
+
+    with ProcessPoolExecutor(max_workers=num_workers) as executor:
+        for i in range(num_workers):
+            start = i * chunk_size + 1
+            end = (i + 1) * chunk_size if i < num_workers - 1 else n + 1
+            futures.append(executor.submit(partial_factorial, start, end))
+
+        result = 1
+        for future in as_completed(futures):
+            result *= future.result()
+
+    return result
+2025-03-13 15:43:55,217 - DEBUG - 
+poetry add concurrent.futures
+2025-03-13 15:43:55,217 - INFO - Executing and verifying the function.
+2025-03-13 15:43:55,751 - WARNING - Terminal command execution failed with exit code 1
+2025-03-13 15:43:55,752 - INFO - Fixing the function. Retry 1.
+2025-03-13 15:44:01,281 - DEBUG - 
+from concurrent.futures import ProcessPoolExecutor, as_completed
+from math import prod
+
+def factorial(n: int) -> int:
+    if n == 0 or n == 1:
+        return 1
+    
+    def partial_factorial(start, end):
+        return prod(range(start, end + 1))
+
+    num_workers = min(32, n)  # reasonable upper limit of workers
+    chunk_size = n // num_workers
+    futures = []
+
+    with ProcessPoolExecutor(max_workers=num_workers) as executor:
+        for i in range(num_workers):
+            start = i * chunk_size + 1
+            end = (i + 1) * chunk_size if i < num_workers - 1 else n
+            futures.append(executor.submit(partial_factorial, start, end))
+
+        result = 1
+        for future in as_completed(futures):
+            result *= future.result()
+
+    return result
+
+2025-03-13 15:44:04,348 - WARNING - Function execution failed with exit code 1:
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/multiprocessing/queues.py", line 264, in _feed
+    obj = _ForkingPickler.dumps(obj)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/multiprocessing/reduction.py", line 51, in dumps
+    cls(buf, protocol).dump(obj)
+AttributeError: Can't get local object 'factorial.<locals>.partial_factorial'
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/tmp/script-b7c8c09556e24f59a007fff0cd6357e6.py", line 58, in <module>
+    print(json.dumps(run(), indent=4))
+                     ^^^^^
+  File "/tmp/script-b7c8c09556e24f59a007fff0cd6357e6.py", line 45, in run
+    results['44d21af66b0874d9b45905ea79807cb3'] = factorial(n=5)
+                                                  ^^^^^^^^^^^^^^
+  File "/tmp/script-b7c8c09556e24f59a007fff0cd6357e6.py", line 29, in factorial
+    result *= future.result()
+              ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/usr/local/lib/python3.12/multiprocessing/queues.py", line 264, in _feed
+    obj = _ForkingPickler.dumps(obj)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/multiprocessing/reduction.py", line 51, in dumps
+    cls(buf, protocol).dump(obj)
+AttributeError: Can't get local object 'factorial.<locals>.partial_factorial'
+2025-03-13 15:44:04,348 - INFO - Fixing the function. Retry 2.
+2025-03-13 15:44:08,878 - DEBUG - 
+from concurrent.futures import ProcessPoolExecutor, as_completed
+from math import prod
+
+
+def partial_factorial(start, end):
+    return prod(range(start, end + 1))
+
+
+def factorial(n: int) -> int:
+    if n == 0 or n == 1:
+        return 1
+
+    num_workers = min(32, n)  # reasonable upper limit of workers
+    chunk_size = n // num_workers
+    futures = []
+
+    with ProcessPoolExecutor(max_workers=num_workers) as executor:
+        for i in range(num_workers):
+            start = i * chunk_size + 1
+            end = (i + 1) * chunk_size if i < num_workers - 1 else n
+            futures.append(executor.submit(partial_factorial, start, end))
+
+        result = 1
+        for future in as_completed(futures):
+            result *= future.result()
+
+    return result
+
+2025-03-13 15:44:08,878 - DEBUG - 
+poetry add concurrent.futures
+2025-03-13 15:44:09,349 - WARNING - Terminal command execution failed with exit code 1
+2025-03-13 15:44:09,349 - INFO - Fixing the function. Retry 3.
+2025-03-13 15:44:16,658 - DEBUG - 
+from concurrent.futures import ProcessPoolExecutor, as_completed
+from math import prod
+
+
+def partial_factorial(start, end):
+    return prod(range(start, end + 1))
+
+
+def factorial(n: int) -> int:
+    if n == 0 or n == 1:
+        return 1
+
+    num_workers = min(32, n)  # reasonable upper limit of workers
+    chunk_size = n // num_workers
+    futures = []
+
+    with ProcessPoolExecutor(max_workers=num_workers) as executor:
+        for i in range(num_workers):
+            start = i * chunk_size + 1
+            end = (i + 1) * chunk_size if i < num_workers - 1 else n
+            futures.append(executor.submit(partial_factorial, start, end))
+
+        result = 1
+        for future in as_completed(futures):
+            result *= future.result()
+
+    return result
+
+2025-03-13 15:44:19,690 - DEBUG - Performance metrics:
+2025-03-13 15:44:19,690 - DEBUG - Runtime: 0.006465541999205016
+2025-03-13 15:44:19,690 - DEBUG - CPU Percent: 67.64357159819521
+2025-03-13 15:44:19,690 - DEBUG - Memory Usage: 294805504
+2025-03-13 15:44:19,690 - INFO -  
+2025-03-13 15:44:19,691 - INFO - Generation complete.
+2025-03-13 15:44:19,691 - INFO -  
+2025-03-13 15:44:19,691 - INFO - Root is better than all children.

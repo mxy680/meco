@@ -42,5 +42,6 @@ async def optimize_python(request: OptimizationRequest):
 
         await evo_manager.baseline()
 
-        while evolve := await evo_manager.evolve():
-            pass
+        # Keep evolving until no more improvements can be made
+        while await evo_manager.evolve():
+            continue

@@ -30,6 +30,7 @@ def get_fix_prompt(function_code: str, error_message: str) -> list[dict]:
                 "You are an expert Python programmer. The previously generated solution resulted in an error during execution or a terminal command error. "
                 "Analyze the provided function and error message, then fix the code so that the error is resolved. "
                 "Ensure your corrected version is efficient, handles edge cases, and follows best coding practices. "
+                "You should be using the same approach as the original solution, but you may need to make modifications to the code. "
                 "Do not include comments in the function and only return terminal commands as an empty string or in the format 'poetry add <package-name>'."
             ),
         },
@@ -43,18 +44,18 @@ def get_fix_prompt(function_code: str, error_message: str) -> list[dict]:
 
 
 def get_approach_prompt(
-    base_function: str, problem_description: str, n: int
+    base_function: str, problem_description: str, prev_approaches: list[str], n: int
 ) -> list[dict]:
     return [
         {
             "role": "system",
             "content": (
                 "You are an innovative problem solver. Your task is to generate "
-                f"{n} unconventional and creative theoretical approaches for improving the provided base function. "
+                f"{n} unique and creative theoretical approaches for improving the provided base function. "
                 "Each approach must be presented as a single dense sentence in a JSON object containing only the key 'description'. "
-                "Do not include any code, additional fields, or commentary."
-                "The approaches should be different from the approach of the base function."
-                "Feel free to use public libraries if necessary, but you cannot use APIs or external services."
+                "Do not include any code, additional fields, or commentary. "
+                "Ensure that your new approaches are distinct from the base function's approach and do not repeat any of the previously suggested approaches; you may only build on or refine them. "
+                "Feel free to use public libraries, but you cannot use APIs or external services."
             ),
         },
         {
@@ -62,6 +63,7 @@ def get_approach_prompt(
             "content": (
                 f"Base Function:\n{base_function}\n\n"
                 f"Problem Description:\n{problem_description}\n\n"
+                f"Previous Approaches:\n{prev_approaches}\n\n"
                 f"Please provide {n} unconventional approaches, each as a JSON object with only a 'description' field and described in one dense sentence."
             ),
         },

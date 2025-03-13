@@ -26,6 +26,8 @@ class FunctionOptimizer(ABC):
         self.get_approach_prompt = get_approach_prompt
         self.get_solution_prompt = get_solution_prompt
 
+        self.previous_approaches: list[str] = []
+
     def call(self, prompt: str, is_code_output: bool = True) -> dict:
         payload = self.get_payload(prompt, self.model, is_code_output)
         return self._query(payload)
@@ -42,8 +44,12 @@ class FunctionOptimizer(ABC):
         return self.call(prompt)
 
     def approach(self, function: str, n: int = 3) -> dict:
-        prompt = self.get_approach_prompt(function, self.description, n)
-        return self.call(prompt, is_code_output=False)
+        prompt = self.get_approach_prompt(
+            function, self.description, self.previous_approaches, n
+        )
+        approach = self.call(prompt, is_code_output=False)
+        self.previous_approaches.append(approach)
+        return approach
 
     def solution(self, function: str, approach: str) -> dict:
         prompt = self.get_solution_prompt(function, approach)

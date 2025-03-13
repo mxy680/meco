@@ -65,7 +65,7 @@ class EvolutionManager:
                 function, command
             )
 
-        return valid, message, result
+        return valid, message, result, function, command
 
     async def _run_command_and_function(
         self, function: str, command: str
@@ -116,7 +116,7 @@ class EvolutionManager:
         self.logger.log(f"\n{function}", "debug")
         self.logger.log(f"\n{command}", "debug")
 
-        valid, message, result = await self._execute_and_verify(
+        valid, message, result, function, command = await self._execute_and_verify(
             function,
             command,
         )
@@ -161,7 +161,7 @@ class EvolutionManager:
             self.logger.log("Solution generated.", "info")
             self.logger.log(f"\n{function}", "debug")
             self.logger.log(f"\n{command}", "debug")
-            valid, message, result = await self._execute_and_verify(function, command)
+            valid, message, result, function, command = await self._execute_and_verify(function, command)
 
             if not valid:
                 self.logger.log(message, "error")
