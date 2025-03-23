@@ -46,23 +46,23 @@ def validate_signature(signature: str, test_cases: list) -> Tuple[bool, str]:
 
         for case in test_cases:
             # Check if argument is in test case
-            if arg_name not in case.inputs:
+            if arg_name not in case["inputs"]:
                 if not optional:
                     return (
                         False,
-                        f"Argument {arg_name} not found in test case: {case.inputs}",
+                        f"Argument {arg_name} not found in test case: {case["inputs"]}",
                     )
                 continue
 
             # Check if argument type is correct
-            if arg_type and arg_type != case.input_types[arg_name]:
+            if arg_type and arg_type != case["input_types"][arg_name]:
                 return (
                     False,
-                    f"Argument {arg_name} type does not match test case: {case.inputs}",
+                    f"Argument {arg_name} type does not match test case: {case["inputs"]}",
                 )
 
             # Check if argument type is valid
-            if fn["return_type"] != test_cases[0].expected_output_type:
-                return False, f"Return type does not match test case: {case.inputs}"
+            if fn["return_type"] != test_cases[0]["expected_output_type"]:
+                return False, f"Return type does not match test case: {case["inputs"]}"
 
     return True, "Signature is valid"

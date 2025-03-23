@@ -1,0 +1,8 @@
+{
+  "name": "database",
+  "version": "1.0.0",
+  "scripts": {
+    "format": "poetry run black .",
+    "build": "poetry build"
+  }
+}

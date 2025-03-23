@@ -8,9 +8,10 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { LightbulbIcon } from "lucide-react"
+import { LightbulbIcon, Loader2 } from 'lucide-react'
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { toast } from 'sonner'
 
 export type TestValue = string | number | boolean | null;
 
@@ -28,6 +29,7 @@ export default function FunctionGeneratorPage() {
   const [testCasesJson, setTestCasesJson] = useState("")
   const [model, setModel] = useState("gpt-4o-2024-08-06")
   const [jsonError, setJsonError] = useState<string | null>(null)
+  const [isGenerating, setIsGenerating] = useState(false)
 
   // Validate JSON when it changes
   useEffect(() => {
@@ -101,26 +103,65 @@ export default function FunctionGeneratorPage() {
     ]
 
     setTestCasesJson(JSON.stringify(sampleTestCases, null, 2))
+    
+    toast.success('Sample data loaded successfully')
   }
 
   const generateFunction = async () => {
     if (jsonError) return
-
+    
     try {
-      // Store form data in localStorage to pass to the results page
-      const formData = {
+      setIsGenerating(true)
+      
+      // Show a loading toast
+      const toastId = toast.loading('Validating Request')
+      
+      // Parse test cases
+      const testCases = JSON.parse(testCasesJson)
+      
+      // Prepare request data
+      const requestData = {
         signature,
         description,
-        testCases: JSON.parse(testCasesJson),
+        testCases,
         model,
       }
-
-      localStorage.setItem("functionGeneratorData", JSON.stringify(formData))
-
+      
+      // Call the API route
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      })
+      
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to generate function')
+      }
+      
+      // Get the response data
+      const responseData = await response.json()
+      
+      // Store both the form data and the API response in localStorage
+      const combinedData = {
+        formData: requestData,
+        apiResponse: responseData
+      }
+      
+      localStorage.setItem("functionGeneratorData", JSON.stringify(combinedData))
+      
+      // Dismiss the loading toast and show a success toast
+      toast.dismiss(toastId)
+      toast.success('Function generated successfully')
+      
       // Navigate to the results page
       router.push("/results")
     } catch (error) {
-      console.error("Error parsing test cases:", error)
+      console.error("Error generating function:", error)
+      toast.error(error instanceof Error ? error.message : "Failed to generate function")
+      setIsGenerating(false)
     }
   }
 
@@ -219,9 +260,16 @@ export default function FunctionGeneratorPage() {
               <Button
                 className="w-full"
                 onClick={generateFunction}
-                disabled={!signature || !description || !testCasesJson || !!jsonError}
+                disabled={!signature || !description || !testCasesJson || !!jsonError || isGenerating}
               >
-                Generate Function
+                {isGenerating ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  "Generate Function"
+                )}
               </Button>
             </CardFooter>
           </Card>
@@ -230,4 +278,3 @@ export default function FunctionGeneratorPage() {
     </div>
   )
 }
-

@@ -65,15 +65,15 @@ class FunctionOptimizer(ABC):
             if args_hash not in output:
                 return (
                     False,
-                    "Test case not found in output: " + json.dumps(case.inputs),
+                    "Test case not found in output: " + json.dumps(case["inputs"]),
                 )
-            if output[args_hash] != case.expected_output:
+            if output[args_hash] != case["expected_output"]:
                 return (
                     False,
                     "Test case failed: "
-                    + json.dumps(case.inputs)
+                    + json.dumps(case["inputs"])
                     + " -> "
-                    + json.dumps(case.expected_output),
+                    + json.dumps(case["expected_output"]),
                 )
         return (True, "All test cases passed.")
 

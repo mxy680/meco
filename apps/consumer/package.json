@@ -1,0 +1,17 @@
+{
+  "name": "consumer",
+  "version": "1.0.0",
+  "description": "FastAPI-based optimization API for MECO",
+  "scripts": {
+    "dev": "poetry run python consumer.py",
+    "format": "poetry run black .",
+    "test": "poetry run pytest -v -s",
+    "generate": "poetry run python -m prisma generate",
+    "migrate": "poetry run python -m prisma migrate dev"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

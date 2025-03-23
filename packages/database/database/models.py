@@ -11,6 +11,7 @@ class FunctionTestCase(BaseModel):
 
 class OptimizationRequest(BaseModel):
     signature: str  # Function signature
+    language: str  # Programming language
     description: str  # Function description
     models: List[str]  # LLM models to use
     test_cases: List[FunctionTestCase]  # List of structured test cases

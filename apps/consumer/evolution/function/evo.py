@@ -1,7 +1,7 @@
 from optimizer.function.client import FunctionOptimizer
 from runner.function.client import Runner
 from typing import Tuple
-from app.src.evolution.function.tree import Tree
+from .tree import Tree
 from typing import AsyncGenerator
 
 
