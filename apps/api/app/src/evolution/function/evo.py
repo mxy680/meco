@@ -50,10 +50,8 @@ class EvolutionManager:
         yield self.tree.update(
             idx=idx,
             message="optimization process started",
+            return_update=True,
         )
-
-        print("function: ", function)
-        print("command: ", command)
 
         valid, message, result = await self._run_command_and_function(function, command)
 
@@ -62,6 +60,7 @@ class EvolutionManager:
             valid=valid,
             message=message,
             result=result,
+            return_update=True,
         )
 
         retry = 0
@@ -72,6 +71,7 @@ class EvolutionManager:
                 idx=idx,
                 message=f"retrying optimization process ({retry}/{self.max_retries})",
                 retrying=True,
+                return_update=True,
             )
 
             response = self.optimizer.fix(function, message)
@@ -83,6 +83,7 @@ class EvolutionManager:
                 message="function/command generated",
                 function=function,
                 command=command,
+                return_update=True,
             )
 
             valid, message, result = await self._run_command_and_function(
@@ -94,12 +95,14 @@ class EvolutionManager:
                 valid=valid,
                 message=message,
                 result=result,
+                return_update=True,
             )
 
         yield self.tree.update(
             idx=idx,
             valid=valid,
             retrying=False,
+            return_update=True,
         )
 
     async def _run_command_and_function(
@@ -162,8 +165,8 @@ class EvolutionManager:
             command=command,
         )
 
-        async for update in self._execute_and_verify(function, command, idx=idx):
-            yield update
+        async for update, job in self._execute_and_verify(function, command, idx=idx):
+            yield job
 
         if not update["valid"]:
             self.tree.curr.fail()
@@ -204,8 +207,10 @@ class EvolutionManager:
                 command=command,
             )
 
-            async for update in self._execute_and_verify(function, command, idx=idx):
-                yield update
+            async for update, job in self._execute_and_verify(
+                function, command, idx=idx
+            ):
+                yield job
 
             if not update["valid"]:
                 self.tree.get_child(idx).fail()
@@ -225,13 +230,12 @@ class EvolutionManager:
             yield self.tree.update(
                 idx=-1,
                 message="no improvements found, evolution complete",
-                proceed=False,
             )
+            yield False
         else:
             yield self.tree.update(
                 idx=-1,
                 message=f"winner found, evolution complete",
-                proceed=True,
             )
 
             self.tree.move_to_winner(winner.child_idx)

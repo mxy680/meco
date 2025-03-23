@@ -12,6 +12,13 @@ def create_job():
     )
 
 
+def end_job(job_id: int):
+    return db.job.update(
+        where={"id": job_id},
+        data={"status": "completed"},
+    )
+
+
 def fail(job_id: int):
     return db.job.update(
         where={"id": job_id},

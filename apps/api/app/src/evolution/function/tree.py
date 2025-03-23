@@ -1,4 +1,5 @@
 from .node import Node
+import json
 
 
 class Tree:
@@ -18,11 +19,16 @@ class Tree:
     def get_child(self, idx: int):
         return self.curr.children[idx]
 
-    def update(self, idx: int, **kwargs):
+    def update(self, idx: int, return_update=False, **kwargs):
+        update = {}
         if idx < 0:
-            return self.curr.update(**kwargs)
+            update = self.curr.update(**kwargs)
         else:
-            return self.curr.children[idx].update(**kwargs)
+            update = self.curr.children[idx].update(**kwargs)
+
+        if return_update:
+            return update, self.serialize()
+        return self.serialize()
 
     def winner(self):
         # Get the best node based on the metrics
@@ -36,6 +42,12 @@ class Tree:
 
     def move_to_winner(self, idx: int):
         self.curr = self.curr.children[idx]
+
+    def serialize(self):
+        """
+        Convert the entire tree (starting at the root) to a JSON string.
+        """
+        return json.dumps(self.root.serialize())
 
     @staticmethod
     def get_default_metrics():

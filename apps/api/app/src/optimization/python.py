@@ -5,7 +5,7 @@ from parser.extract import extract_test_code, extract_signature
 from optimizer.function.gpt.client import OpenAIOptimizer
 from app.src.evolution.function.evo import EvolutionManager
 from prisma import Json
-from app.database.client import create_job, fail, update_job
+from app.database.client import create_job, fail, update_job, end_job
 
 language = "python"
 
@@ -49,16 +49,18 @@ async def optimize_python(request: OptimizationRequest):
         )
 
         async for data in evo_manager.baseline():
-            update_job(job.id, data)
+            await update_job(job.id, data)
 
-        return
         # Keep evolving until no more improvements can be made
         proceed = True
         while proceed:
             async for data in evo_manager.evolve():
-                proceed = data["proceed"]
-                if not proceed:
-                    print("No more improvements can be made.")
-                    break
+                if isinstance(data, bool):
+                    if data == False:
+                        proceed = False
+                        await end_job(job.id)
+                        break
 
-                print(data["message"])
+                await update_job(job.id, data)
+
+    return {"success": True}

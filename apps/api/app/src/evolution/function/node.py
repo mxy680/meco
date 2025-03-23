@@ -10,7 +10,6 @@ class Node:
         self.retrying: bool = None  # Flag to indicate if the node is being retried.
         self.message: str = None  # Message to store any additional information.
         self.result: str = None  # The output of the function execution.
-        self.proceed: bool = True  # Flag to indicate if the node should proceed to the next step.
 
         self.metrics: dict = None  # Performance metrics (e.g., runtime, CPU, memory).
 
@@ -33,3 +32,17 @@ class Node:
 
     def add_child(self, child_node):
         self.children.append(child_node)
+
+    def serialize(self):
+        return {
+            "child_idx": self.child_idx,
+            "approach": self.approach,
+            "function": self.function,
+            "command": self.command,
+            "children": [child.serialize() for child in self.children],
+            "valid": self.valid,
+            "retrying": self.retrying,
+            "message": self.message,
+            "result": self.result,
+            "metrics": self.metrics,
+        }
