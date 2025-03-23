@@ -1,20 +1,28 @@
 from app.models import OptimizationRequest
 from runner.function.client import Runner
-from runner.utils.score import compute_score
 from parser.validate import validate_fn, validate_signature, validate_command
 from parser.extract import extract_test_code, extract_signature
 from optimizer.function.gpt.client import OpenAIOptimizer
 from app.src.evolution.function.evo import EvolutionManager
+from prisma import Json
+from app.database.client import create_job, fail, update_job
 
 language = "python"
 
 
 async def optimize_python(request: OptimizationRequest):
+    # Create datbase job instance
+    job = await create_job()
+
+    # Validate the signature
     valid_sig, sig_message = validate_signature(
         request.signature, request.test_cases, language
     )
+
     if not valid_sig:
-        raise ValueError(f"❌ Signature validation failed: {sig_message}")
+        await fail(job.id)
+        return {"error": sig_message}
+
     fn = extract_signature(request.signature, language)
 
     test_code = extract_test_code(fn, request.test_cases, language)
@@ -40,8 +48,17 @@ async def optimize_python(request: OptimizationRequest):
             validate_command,
         )
 
-        await evo_manager.baseline()
+        async for data in evo_manager.baseline():
+            update_job(job.id, data)
 
+        return
         # Keep evolving until no more improvements can be made
-        while await evo_manager.evolve():
-            continue
+        proceed = True
+        while proceed:
+            async for data in evo_manager.evolve():
+                proceed = data["proceed"]
+                if not proceed:
+                    print("No more improvements can be made.")
+                    break
+
+                print(data["message"])

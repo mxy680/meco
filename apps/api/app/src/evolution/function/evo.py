@@ -1,8 +1,8 @@
 from optimizer.function.client import FunctionOptimizer
 from runner.function.client import Runner
 from typing import Tuple
-from app.src.evolution.node import FunctionNode
-from app.src.evolution.logger import Logger
+from app.src.evolution.function.tree import Tree
+from typing import AsyncGenerator
 
 
 class EvolutionManager:
@@ -33,39 +33,74 @@ class EvolutionManager:
         self.validate_command = validate_command
         self.num_approaches = num_approaches
         self.max_retries = max_retries
-        self.root: FunctionNode = None
-        self.curr: FunctionNode = None
+
         self.generation: int = 0
-        self.logger = Logger("evolution.log")
+        self.tree = Tree()
 
     async def _execute_and_verify(
         self,
         function: str,
         command: str,
-    ) -> Tuple[bool, str, dict]:
+        idx: int,
+    ) -> AsyncGenerator[dict, None]:
         """
         Execute terminal command (if provided) and run the function.
         Returns a tuple: (valid, message, result)
         """
-        self.logger.log("Executing and verifying the function.", "info")
+        yield self.tree.update(
+            idx=idx,
+            message="optimization process started",
+        )
+
+        print("function: ", function)
+        print("command: ", command)
+
         valid, message, result = await self._run_command_and_function(function, command)
+
+        yield self.tree.update(
+            idx=idx,
+            valid=valid,
+            message=message,
+            result=result,
+        )
+
         retry = 0
         while not valid and retry < self.max_retries:
-            self.logger.log(message, "warning")
-            self.logger.log(f"Fixing the function. Retry {retry + 1}.", "info")
             retry += 1
+
+            yield self.tree.update(
+                idx=idx,
+                message=f"retrying optimization process ({retry}/{self.max_retries})",
+                retrying=True,
+            )
+
             response = self.optimizer.fix(function, message)
             function = response["function_implementation"]
             command = response["terminal_command"]
 
-            self.logger.log(f"\n{function}", "debug")
-            self.logger.log(f"\n{command}", "debug")
+            yield self.tree.update(
+                idx=idx,
+                message="function/command generated",
+                function=function,
+                command=command,
+            )
 
             valid, message, result = await self._run_command_and_function(
                 function, command
             )
 
-        return valid, message, result, function, command
+            yield self.tree.update(
+                idx=idx,
+                valid=valid,
+                message=message,
+                result=result,
+            )
+
+        yield self.tree.update(
+            idx=idx,
+            valid=valid,
+            retrying=False,
+        )
 
     async def _run_command_and_function(
         self, function: str, command: str
@@ -107,107 +142,99 @@ class EvolutionManager:
         return valid, message, result
 
     async def baseline(self):
-        self.logger.log("Generating baseline solution.", "info")
+        idx = -1
+        self.generation = 1
+        yield self.tree.update(
+            idx=idx,
+            valid=True,
+            message="baseline optimization process started",
+        )
+
         response = self.optimizer.baseline()
         function = response["function_implementation"]
         command = response["terminal_command"]
 
-        self.logger.log("Baseline solution generated.", "info")
-        self.logger.log(f"\n{function}", "debug")
-        self.logger.log(f"\n{command}", "debug")
-
-        valid, message, result, function, command = await self._execute_and_verify(
-            function,
-            command,
+        yield self.tree.update(
+            idx=idx,
+            valid=True,
+            message="function/command generated",
+            function=function,
+            command=command,
         )
 
-        if not valid:
-            self.logger.log(message, "error")
-            self.logger.log("Baseline solution failed. Exiting process.", "error")
+        async for update in self._execute_and_verify(function, command, idx=idx):
+            yield update
+
+        if not update["valid"]:
+            self.tree.curr.fail()
             return
-        else:
-            self.logger.log("Function execution successful.", "info")
 
-        metrics = self.get_metrics(result)
+        metrics = self.get_metrics(update["result"])
 
-        self.logger.log("Performance metrics:", "debug")
-        self.logger.log(f"Runtime: {metrics['runtime']}", "debug")
-        self.logger.log(f"CPU Percent: {metrics['cpu_percent']}", "debug")
-        self.logger.log(f"Memory Usage: {metrics['memory_usage']}", "debug")
-        self.logger.log("=" * 100, "info")
-
-        self.root = FunctionNode(self.description, function, metrics)
-        self.curr = self.root
-        self.generation = 1
+        yield self.tree.update(
+            idx=idx,
+            message="metrics collected, baseline optimization complete",
+            metrics=metrics,
+        )
 
     async def evolve(self):
-        self.logger.log("=" * 100, "info")
-        self.logger.log(f"Generation {self.generation}", "info")
+        self.generation += 1
+        self.tree.add_nodes(self.num_approaches)
+        function = self.tree.curr.function
 
-        function = self.root.solution
-
-        self.logger.log("Generating approaches.", "info")
         generate_approaches_response = self.optimizer.approach(function)
-        self.logger.log("Approaches generated.", "info")
 
         for idx, approach in enumerate(generate_approaches_response["approaches"]):
-            approach_description = approach["description"]
-            self.logger.log(" ", "info")
-            self.logger.log(f"Approach {idx+1}: {approach_description}", "debug")
-            self.logger.log("Generating solution.", "info")
-            solution = self.optimizer.solution(function, approach_description)
+            yield self.tree.update(
+                idx=idx,
+                valid=True,
+                message=f"approach {idx} generated",
+                approach=approach["description"],
+            )
+
+        for idx, approach in enumerate(generate_approaches_response["approaches"]):
+            solution = self.optimizer.solution(function, approach["description"])
             function = solution["function_implementation"]
             command = solution["terminal_command"]
-            self.logger.log("Solution generated.", "info")
-            self.logger.log(f"\n{function}", "debug")
-            self.logger.log(f"\n{command}", "debug")
-            valid, message, result, function, command = await self._execute_and_verify(function, command)
 
-            if not valid:
-                self.logger.log(message, "error")
-                self.logger.log(
-                    f"Solution failed after {self.max_retries} retries. Skipping approach.",
-                    "error",
-                )
+            yield self.tree.update(
+                idx=idx,
+                message="function/command generated",
+                function=function,
+                command=command,
+            )
+
+            async for update in self._execute_and_verify(function, command, idx=idx):
+                yield update
+
+            if not update["valid"]:
+                self.tree.get_child(idx).fail()
                 continue
 
-            metrics = self.get_metrics(result)
+            metrics = self.get_metrics(update["result"])
 
-            self.logger.log("Performance metrics:", "debug")
-            self.logger.log(f"Runtime: {metrics['runtime']}", "debug")
-            self.logger.log(f"CPU Percent: {metrics['cpu_percent']}", "debug")
-            self.logger.log(f"Memory Usage: {metrics['memory_usage']}", "debug")
-            self.logger.log(" ", "info")
+            yield self.tree.update(
+                idx=idx,
+                message=f"metrics collected, approach {idx} complete",
+                metrics=metrics,
+            )
 
-            child = FunctionNode(approach_description, function, metrics, self.curr)
-            self.curr.add_child(child)
+        # Find Winner
+        winner = self.tree.winner()
+        if len(winner.children) > 0:
+            yield self.tree.update(
+                idx=-1,
+                message="no improvements found, evolution complete",
+                proceed=False,
+            )
+        else:
+            yield self.tree.update(
+                idx=-1,
+                message=f"winner found, evolution complete",
+                proceed=True,
+            )
 
-        self.logger.log("Generation complete.", "info")
-        self.logger.log(" ", "info")
-
-        # Check if the root metrics are better than the children
-        if all(
-            [
-                self.curr.metrics["runtime"] <= child.metrics["runtime"]
-                for child in self.curr.children
-            ]
-        ):
-            self.logger.log("Root is better than all children.", "info")
-            return False
-
-        winner = self.winner(self.curr.children)
-        self.curr = winner
-        self.generation += 1
-
-        self.logger.log("Winner selected.", "info")
-        self.logger.log(winner.solution, "debug")
-        self.logger.log("Performance metrics:", "debug")
-        self.logger.log(f"Runtime: {winner.metrics['runtime']}", "debug")
-        self.logger.log(f"CPU Percent: {winner.metrics['cpu_percent']}", "debug")
-        self.logger.log(f"Memory Usage: {winner.metrics['memory_usage']}", "debug")
-        self.logger.log("=" * 100, "info")
-
-        return True
+            self.tree.move_to_winner(winner.child_idx)
 
     @staticmethod
     def get_metrics(result: dict):
@@ -218,5 +245,10 @@ class EvolutionManager:
         }
 
     @staticmethod
-    def winner(nodes: list[FunctionNode]) -> dict:
-        return min(nodes, key=lambda x: x.metrics["runtime"])
+    def winner(nodes: list[dict]) -> dict:
+        # Get the best node based on the metrics
+        winner = nodes[0]
+        for node in nodes:
+            if node["metrics"]["runtime"] < winner["metrics"]["runtime"]:
+                winner = node
+        return winner

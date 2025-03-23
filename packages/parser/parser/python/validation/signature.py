@@ -19,7 +19,11 @@ def validate_signature(signature: str, test_cases: list) -> Tuple[bool, str]:
     fn_code = f"{signature}:\n    pass"
 
     # Parse function with tree-sitter
-    fn = extract_fn(fn_code)
+    try:
+        fn = extract_fn(fn_code)
+    except Exception as e:
+        return False, str(e)
+
     args = fn["params"].split(", ")
 
     # Check return type validity

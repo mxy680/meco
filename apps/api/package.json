@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload",
     "format": "poetry run black .",
-    "test": " poetry run pytest -v -s"
+    "test": "poetry run pytest -v -s",
+    "generate": "poetry run python -m prisma generate",
+    "migrate": "poetry run python -m prisma migrate dev"
   },
   "engines": {
     "node": ">=18"

@@ -4,7 +4,7 @@ import json
 import uuid
 
 
-def run_code(container, function, test_code, iterations=100):
+def run_code(container, function, test_code, iterations=100, timeout=10000):
     script = generate_script(function, iterations, test_code)
     script_name = f"script-{uuid.uuid4().hex}.py"
 

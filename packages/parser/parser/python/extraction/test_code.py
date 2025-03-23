@@ -13,11 +13,12 @@ def extract_test_code(fn: dict, test_cases: list[dict]) -> str:
     Returns:
         List[Dict]: A structured list of test cases ready for execution.
     """
-    aggregated_cases = []
+    aggregated_cases = ["# Test cases"]
 
     for case in test_cases:
         args, args_hash = generate_args_hash(case)
-        statement = f"        results['{args_hash}'] = {fn['name']}({args})"
+        statement = f"            results['{args_hash}'] = {fn['name']}({args})"
         aggregated_cases.append(statement)
-
-    return "\n".join(aggregated_cases)
+        
+    test_code = "\n".join(aggregated_cases)
+    return test_code
