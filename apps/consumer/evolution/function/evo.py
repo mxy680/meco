@@ -36,7 +36,7 @@ class EvolutionManager:
 
         self.generation: int = 0
         self.tree = Tree()
-
+        
     async def _execute_and_verify(
         self,
         function: str,
@@ -150,7 +150,9 @@ class EvolutionManager:
         yield self.tree.update(
             idx=idx,
             valid=True,
+            approach=self.description,
             message="baseline optimization process started",
+            status="running",
         )
 
         response = self.optimizer.baseline()
@@ -178,6 +180,7 @@ class EvolutionManager:
             idx=idx,
             message="metrics collected, baseline optimization complete",
             metrics=metrics,
+            status="complete",
         )
 
     async def evolve(self):
@@ -193,6 +196,7 @@ class EvolutionManager:
                 valid=True,
                 message=f"approach {idx} generated",
                 approach=approach["description"],
+                status="running",
             )
 
         for idx, approach in enumerate(generate_approaches_response["approaches"]):
@@ -222,6 +226,7 @@ class EvolutionManager:
                 idx=idx,
                 message=f"metrics collected, approach {idx} complete",
                 metrics=metrics,
+                status="complete",
             )
 
         # Find Winner
@@ -230,12 +235,14 @@ class EvolutionManager:
             yield self.tree.update(
                 idx=-1,
                 message="no improvements found, evolution complete",
+                status="complete",
             )
             yield False
         else:
             yield self.tree.update(
                 idx=-1,
                 message=f"winner found, evolution complete",
+                status="complete",
             )
 
             self.tree.move_to_winner(winner.child_idx)

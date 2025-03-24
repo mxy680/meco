@@ -4,6 +4,7 @@ from parser.extract import extract_test_code, extract_signature
 from optimizer.function.gpt.client import OpenAIOptimizer
 from evolution.function.evo import EvolutionManager
 from database.client import fail, update_job, end_job
+import json
 
 
 async def optimize_function(job_id: int, request: dict):
@@ -25,6 +26,7 @@ async def optimize_function(job_id: int, request: dict):
     runner = Runner(language, test_code)
     runner.start_container()
 
+    data = {}
     for model in request["models"]:
         optimizer = OpenAIOptimizer(
             request["signature"], request["description"], language, model, test_code
@@ -43,19 +45,21 @@ async def optimize_function(job_id: int, request: dict):
             validate_command,
         )
 
-        async for data in evo_manager.baseline():
+        async for baseline_data in evo_manager.baseline():
+            data[model] = json.loads(baseline_data)
             await update_job(job_id, data)
 
         # Keep evolving until no more improvements can be made
         proceed = True
         while proceed:
-            async for data in evo_manager.evolve():
-                if isinstance(data, bool):
-                    if data == False:
+            async for evolution_data in evo_manager.evolve():
+                if isinstance(evolution_data, bool):
+                    if evolution_data == False:
                         proceed = False
                         await end_job(job_id)
                         break
 
+                data[model] = json.loads(evolution_data)
                 await update_job(job_id, data)
 
     return {"success": True}

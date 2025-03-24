@@ -17,7 +17,7 @@ async def on_message(message: IncomingMessage):
             # If payload is stored as a JSON string within the message, decode it:
             payload = json.loads(data.get("payload"))
             job_type = data.get("job_type")
-            print(f"Received {job_type} job {job_id} with payload {payload}")
+            print(f"Received {job_type} job {job_id}")
             await process_job(job_id, payload, job_type)
         except Exception as e:
             print(f"Error processing job: {e}")

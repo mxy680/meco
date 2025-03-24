@@ -15,6 +15,6 @@ async def optimize_function(request: OptimizationRequest):
 
     # Publish the job to RabbitMQ using Pika
     await publish_job(job_id, payload, "function")
-
+    
     # Return the job ID immediately so the client can track progress
     return {"job_id": job_id}

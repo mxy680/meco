@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ArrowLeft } from "lucide-react";
 import { TestCase } from "../page";
+import { FlowChart } from "@/components/flowchart";
+import { EvolutionData } from "@/types/evolution";
 
 interface FormData {
   signature: string;
@@ -18,26 +20,49 @@ export default function ResultsPage() {
   const router = useRouter();
   const canvasContainerRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState<FormData | null>(null);
+  const [jobId, setJobId] = useState<string | null>(null);
+  const [jobData, setJobData] = useState<EvolutionData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Retrieve form data from localStorage
     try {
-      const storedData = localStorage.getItem("functionGeneratorData");
+      const storedData = localStorage.getItem("jobData");
       if (storedData) {
         const parsedData = JSON.parse(storedData);
-        setFormData(parsedData);
+        setFormData(parsedData["formData"]);
+        setJobId(parsedData["apiResponse"]["job_id"]);
       } else {
         setError("No function data found");
       }
-    } catch (error) {
-      console.error("Error retrieving form data:", error);
+    } catch (err: unknown) {
+      console.error("Error retrieving form data:", err);
       setError("Error retrieving function data");
     }
 
     setIsLoading(false);
   }, []);
+
+  // Poll the Next.js API route for job status every 5 seconds
+  useEffect(() => {
+    if (jobId) {
+      const interval = setInterval(async () => {
+        try {
+          const response = await fetch(`/api/job?jobId=${jobId}`);
+          if (response.ok) {
+            const data = await response.json();
+            setJobData(data);
+          } else {
+            console.error("Error fetching job status");
+          }
+        } catch (err) {
+          console.error("Polling error:", err);
+        }
+      }, 500); // poll every 5000ms (5 seconds)
+      return () => clearInterval(interval);
+    }
+  }, [jobId]);
 
   const goBack = () => {
     router.push("/");
@@ -115,15 +140,21 @@ export default function ResultsPage() {
             height: "calc(100vh - 65px)", // Adjust based on your header height
           }}
         >
-          {/* This div will be your React Flow container */}
           <div
-            id="react-flow-canvas"
-            className="w-full h-full"
+            ref={canvasContainerRef}
+            className="flex-1 overflow-hidden"
             style={{
-              background: "rgba(250, 250, 250, 0.05)",
+              position: "relative",
+              height: "calc(100vh - 65px)",
             }}
           >
-            {/* React Flow will be mounted here */}
+            {jobData?.data ? (
+              <FlowChart data={jobData} />
+            ) : (
+              <div className="p-4 text-sm text-muted-foreground">
+                Waiting for data...
+              </div>
+            )}
           </div>
         </div>
       </div>

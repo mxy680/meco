@@ -1,32 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
     try {
-        // Parse the request body
-        const body = await request.json()
-        const { signature, description, testCases, model } = body
+        // Parse the request params using URL
+        const { searchParams } = new URL(request.url)
+        const jobId = searchParams.get('jobId')
 
         // Validate the request data
-        if (!signature || !description || !testCases || !model) {
+        if (!jobId) {
             return NextResponse.json(
                 { error: 'Missing required fields' },
                 { status: 400 }
             )
         }
 
-        const payload = {
-            "signature": signature,
-            "description": description,
-            "test_cases": testCases,
-            "models": [model],
-            "language": "python"
-        }
-
         // Call the API
-        const response = await fetch('http://localhost:8000/api/optimize/function', {
-            method: 'POST',
+        const response = await fetch(`http://localhost:8000/api/query/job?job_id=${jobId}`, {
+            method: 'GET',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
         })
 
         // Extract JSON from the response

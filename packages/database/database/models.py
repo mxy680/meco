@@ -15,3 +15,9 @@ class OptimizationRequest(BaseModel):
     description: str  # Function description
     models: List[str]  # LLM models to use
     test_cases: List[FunctionTestCase]  # List of structured test cases
+
+
+class JobRequest(BaseModel):
+    job_id: int
+    payload: Dict[str, Any]
+    job_type: str
