@@ -1,4 +1,7 @@
 import hashlib
+import json
+from parser.utils import generate_args_hash
+
 
 def extract_test_code(fn: dict, test_cases: list[dict]) -> str:
     """
@@ -14,15 +17,7 @@ def extract_test_code(fn: dict, test_cases: list[dict]) -> str:
     aggregated_cases = ["# Test cases"]
 
     for case in test_cases:
-        args_list = []
-        for k, v in case["inputs"].items():
-            # If the value is a string, use repr() to include quotes.
-            if isinstance(v, str):
-                args_list.append(f"{k}={repr(v)}")
-            else:
-                args_list.append(f"{k}={v}")
-        args = ", ".join(args_list)
-        args_hash = hashlib.md5(args.encode()).hexdigest()
+        args, args_hash = generate_args_hash(case)
         statement = f"            results['{args_hash}'] = {fn['name']}({args})"
         aggregated_cases.append(statement)
 

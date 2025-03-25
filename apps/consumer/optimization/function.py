@@ -12,7 +12,7 @@ async def optimize_function(job_id: int, request: dict):
 
     # Validate the signature
     valid_sig, sig_message = validate_signature(
-        request["signature"], request["test_cases"], language
+        request["signature"], language
     )
 
     if not valid_sig:

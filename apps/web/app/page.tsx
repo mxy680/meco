@@ -135,9 +135,9 @@ export default function FunctionGeneratorPage() {
     // Set test cases as JSON
     const sampleTestCases = [
       {
-        inputs: { s: "a" },
+        inputs: { s: "" },
         input_types: { s: "str" },
-        expected_output: "a",
+        expected_output: "",
         expected_output_type: "str",
       },
       {

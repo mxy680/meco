@@ -1,6 +1,10 @@
-from parser.python.extraction.fn import extract_python_fn
-from parser.python.extraction.test_code import extract_python_test_code
-from parser.python.extraction.signature import extract_python_signature
+from parser.python.extraction.signature import (
+    extract_signature as extract_python_signature,
+)
+from parser.python.extraction.test_code import (
+    extract_test_code as extract_python_test_code,
+)
+from parser.python.extraction.fn import extract_fn as extract_python_fn
 
 
 def extract_fn(code: str, lang: str) -> bool:

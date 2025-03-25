@@ -26,10 +26,10 @@ def validate_command(command: str, lang: str) -> Tuple[bool, str]:
             return False
 
 
-def validate_signature(signature: str, test_cases: list, lang: str) -> Tuple[bool, str]:
+def validate_signature(signature: str, lang: str) -> Tuple[bool, str]:
     match lang:
         case "python":
-            return validate_python_signature(signature, test_cases)
+            return validate_python_signature(signature)
         case _:
             return False
 
