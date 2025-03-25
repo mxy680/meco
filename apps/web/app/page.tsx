@@ -79,7 +79,7 @@ export default function FunctionGeneratorPage() {
     }
   }, [testCasesJson]);
 
-  const loadSampleData = () => {
+  const loadSampleDataFactorial = () => {
     // Set function signature
     setSignature("def factorial(n: int) -> int");
 
@@ -114,6 +114,49 @@ export default function FunctionGeneratorPage() {
         input_types: { n: "int" },
         expected_output: 5040,
         expected_output_type: "int",
+      },
+    ];
+
+    setTestCasesJson(JSON.stringify(sampleTestCases, null, 2));
+
+    toast.success("Sample data loaded successfully");
+  };
+
+  const loadSampleDataForReverseString = () => {
+    // Set function signature
+    setSignature("def reverse_string(s: str) -> str");
+
+    // Set description
+    setDescription("Reverses the input string s.");
+
+    // Set model
+    setModel("gpt-4o-2024-08-06");
+
+    // Set test cases as JSON
+    const sampleTestCases = [
+      {
+        inputs: { s: "a" },
+        input_types: { s: "str" },
+        expected_output: "a",
+        expected_output_type: "str",
+      },
+      {
+        inputs: { s: "hello" },
+        input_types: { s: "str" },
+        expected_output: "olleh",
+        expected_output_type: "str",
+      },
+      {
+        inputs: { s: "racecar" },
+        input_types: { s: "str" },
+        expected_output: "racecar",
+        expected_output_type: "str",
+      },
+      {
+        inputs: { s: "ChatGPT" },
+        input_types: { s: "str" },
+        expected_output: "TPGtahC",
+        expected_output_type: "str",
       },
     ];
 
@@ -190,7 +233,7 @@ export default function FunctionGeneratorPage() {
             <Button
               variant="outline"
               size="sm"
-              onClick={loadSampleData}
+              onClick={loadSampleDataForReverseString}
               className="flex items-center gap-2"
             >
               <LightbulbIcon size={16} />

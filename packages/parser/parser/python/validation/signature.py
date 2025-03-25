@@ -1,68 +1,76 @@
-from ..types import TYPE_MAP
-from ..extraction.fn import extract_fn
+from parser.python.types import TYPE_MAP
+from tree_sitter import Language, Parser
+import tree_sitter_python as tspython
 from typing import Tuple
 
-
-class InvalidSignatureException(Exception):
-    """Raised when the function signature is invalid."""
-
-    def __init__(self, message="The function signature is invalid"):
-        self.message = message
-        super().__init__(self.message)
+PY_LANGUAGE = Language(tspython.language())
+parser = Parser(PY_LANGUAGE)
 
 
-def validate_signature(signature: str, test_cases: list) -> Tuple[bool, str]:
+def validate_signature(signature: str) -> Tuple[bool, str]:
     """
     Validate the function signature given the test cases.
     """
-    # Create signature into empty function (using pass)
-    fn_code = f"{signature}:\n    pass"
+    # Check if it has a return type
+    if "->" not in signature:
+        return False, "return type not found"
 
-    # Parse function with tree-sitter
-    try:
-        fn = extract_fn(fn_code)
-    except Exception as e:
-        return False, str(e)
+    # Check if it ends with a colon
+    if signature.endswith(":"):
+        signature = signature[:-1]
 
-    args = fn["params"].split(", ")
+    fn = f"{signature}:\n    pass"
+    tree = parser.parse(bytes(fn, "utf8"))
+    root = tree.root_node
 
-    # Check return type validity
-    if TYPE_MAP.get(fn["return_type"], "None") == "None":
-        return False, "Please declare a valid return type"
+    if not root.children or len(root.children) == 0:
+        return False, "signature definition invalid"
 
-    for arg in args:
-        # Check if argument is optional
-        optional = "=" in arg
-        if optional:
-            arg = arg.split("=")[0].strip()
+    fn_node = root.children[0]  # The function definition
 
-        # Check if argument has declared type
-        if ":" in arg:
-            arg_name = arg.split(":")[0].strip()
-            arg_type = arg.split(":")[1].strip()
-        else:
-            arg_name = arg
-            arg_type = None
+    # Check if the function definition has a name
+    name = fn_node.child_by_field_name("name")
+    if not name:
+        return False, "function name not found"
 
-        for case in test_cases:
-            # Check if argument is in test case
-            if arg_name not in case["inputs"]:
-                if not optional:
-                    return (
-                        False,
-                        f"Argument {arg_name} not found in test case: {case["inputs"]}",
-                    )
-                continue
+    if (
+        name.text.decode("utf-8") == "invalid"
+        or not name.text.decode("utf-8").isidentifier()
+    ):
+        return False, "invalid function name"
 
-            # Check if argument type is correct
-            if arg_type and arg_type != case["input_types"][arg_name]:
-                return (
-                    False,
-                    f"Argument {arg_name} type does not match test case: {case["inputs"]}",
-                )
+    # Check if the function definition has parameters
+    params = fn_node.child_by_field_name("parameters")
+    if not params:
+        return False, "function parameters not found"
 
-            # Check if argument type is valid
-            if fn["return_type"] != test_cases[0]["expected_output_type"]:
-                return False, f"Return type does not match test case: {case["inputs"]}"
+    params = params.text.decode("utf8")[1:-1].split(",")
+    params = [param for param in params if param]
 
-    return True, "Signature is valid"
+    for param in params:
+        param = [p.strip() for p in param.split(":")]
+        if len(param) == 1:
+            return False, f"parameter type not found for {param[0]}"
+
+        if len(param) != 2:
+            return False, f"invalid parameter {param}"
+
+        if "=" in param[1]:
+            return False, f"default parameters not supported"
+        
+        if "|" in param[1]:
+            return False, f"union types not supported"
+
+        if not param[0].isidentifier():
+            return False, f"invalid parameter name {param[0]}"
+
+    # Check if the function definition has a return type
+    return_type = fn_node.child_by_field_name("return_type")
+    if not return_type:
+        return False, "function return type not found"
+
+    return_type_extracted = signature.split("->")[1].strip()
+    if return_type_extracted != return_type.text.decode("utf8"):
+        return False, f"invalid return type {return_type_extracted}"
+
+    return True, "signature is valid"

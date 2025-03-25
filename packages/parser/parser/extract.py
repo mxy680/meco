@@ -1,8 +1,6 @@
-from parser.python import (
-    extract_python_fn,
-    extract_python_test_code,
-    extract_python_signature,
-)
+from parser.python.extraction.fn import extract_python_fn
+from parser.python.extraction.test_code import extract_python_test_code
+from parser.python.extraction.signature import extract_python_signature
 
 
 def extract_fn(code: str, lang: str) -> bool:

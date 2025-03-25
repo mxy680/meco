@@ -1,7 +1,10 @@
-from parser.python import (
-    validate_python_fn,
-    validate_python_signature,
-    validate_python_command,
+from parser.python.validation.fn import validate_fn as validate_python_fn
+from parser.python.validation.command import validate_command as validate_python_command
+from parser.python.validation.signature import (
+    validate_signature as validate_python_signature,
+)
+from parser.python.validation.test_cases import (
+    validate_test_cases as validate_python_test_cases,
 )
 
 from typing import Tuple
@@ -27,5 +30,15 @@ def validate_signature(signature: str, test_cases: list, lang: str) -> Tuple[boo
     match lang:
         case "python":
             return validate_python_signature(signature, test_cases)
+        case _:
+            return False
+
+
+def validate_test_cases(
+    fn: dict, test_cases: list[dict], lang: str
+) -> Tuple[bool, str]:
+    match lang:
+        case "python":
+            return validate_python_test_cases(fn, test_cases)
         case _:
             return False
