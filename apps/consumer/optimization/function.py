@@ -62,4 +62,5 @@ async def optimize_function(job_id: int, request: dict):
                 data[model] = json.loads(evolution_data)
                 await update_job(job_id, data)
 
+    print("Optimization complete")
     return {"success": True}

@@ -31,7 +31,7 @@ export interface TreeNode {
   metrics: MetricsData;
   approach: string | null;
   children: TreeNode[];
-  function: string;
+  fn: string;
   retrying: boolean;
   child_idx: number;
 }

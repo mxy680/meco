@@ -46,6 +46,7 @@ def run_code(container, function, test_code, iterations=100, timeout=10000):
             "runtime": runtime,
             "cpu_percent": cpu_percent,
             "memory_usage": memory_usage,
+            "exit_code": result.exit_code,
         }
 
     except Exception as e:

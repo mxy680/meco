@@ -20,18 +20,52 @@ import {
 import { Handle, Position } from "@xyflow/react";
 
 interface RootNodeProps {
-  data: { model: string; tree: TreeNode; parent: null };
+  data: {
+    model: string;
+    tree: TreeNode & {
+      result?: {
+        stdout: Record<string, number>;
+        runtime: number;
+        cpu_percent: number;
+        memory_usage: number;
+      };
+      status: string;
+      valid: boolean;
+      retrying: boolean;
+      approach: string;
+      function: string;
+      command: string;
+    };
+    parent: null;
+  };
 }
 
 function RootNode({ data }: RootNodeProps) {
   const { model, tree } = data;
-  const { metrics, status } = tree;
+  const {
+    metrics,
+    status,
+    valid,
+    retrying,
+    result,
+    approach,
+    function: fn,
+    command,
+  } = tree;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  // Determine border style based on node validity and retrying status
+  let borderClass = "";
+  if (valid === false) {
+    borderClass = retrying
+      ? "border-2 border-yellow-300"
+      : "border-2 border-red-500";
+  }
 
   return (
     <>
       <Card
-        className="w-90 max-w-md relative hover:shadow-md transition-shadow cursor-pointer"
+        className={`w-90 max-w-md relative hover:shadow-md transition-shadow cursor-pointer ${borderClass}`}
         onClick={() => setIsDialogOpen(true)}
       >
         <Handle
@@ -93,7 +127,7 @@ function RootNode({ data }: RootNodeProps) {
               <h3 className="text-sm font-medium">Description</h3>
               <div className="rounded-md bg-muted p-3">
                 <p className="text-sm whitespace-pre-line">
-                  {tree.approach || "No approach specified"}
+                  {approach || "No approach specified"}
                 </p>
               </div>
             </div>
@@ -101,7 +135,7 @@ function RootNode({ data }: RootNodeProps) {
             <div className="space-y-2">
               <h3 className="text-sm font-medium">Function</h3>
               <pre className="rounded-md bg-muted p-3 overflow-x-auto text-xs whitespace-pre-wrap break-all">
-                <code>{tree.function || "No function specified"}</code>
+                <code>{fn || "No function specified"}</code>
               </pre>
             </div>
 
@@ -109,9 +143,20 @@ function RootNode({ data }: RootNodeProps) {
               <h3 className="text-sm font-medium">Terminal Command</h3>
               <div className="rounded-md bg-muted p-3 font-mono">
                 <code className="text-xs break-all whitespace-pre-wrap">
-                  {tree.command || "No command specified"}
+                  {command || "No command specified"}
                 </code>
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="text-sm font-medium">Result</h3>
+              <pre className="rounded-md bg-muted p-3 overflow-x-auto text-xs whitespace-pre-wrap break-all">
+                <code>
+                  {result
+                    ? JSON.stringify(result, null, 2)
+                    : "No result specified"}
+                </code>
+              </pre>
             </div>
           </div>
         </DialogContent>

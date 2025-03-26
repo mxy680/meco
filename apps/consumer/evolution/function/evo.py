@@ -36,19 +36,21 @@ class EvolutionManager:
 
         self.generation: int = 0
         self.tree = Tree()
-        
+
     async def _execute_and_verify(
         self,
         function: str,
         command: str,
-        idx: int,
+        curr_idx: int,
+        child_idx: int,
     ) -> AsyncGenerator[dict, None]:
         """
         Execute terminal command (if provided) and run the function.
         Returns a tuple: (valid, message, result)
         """
         yield self.tree.update(
-            idx=idx,
+            curr_idx=curr_idx,
+            child_idx=child_idx,
             message="optimization process started",
             return_update=True,
         )
@@ -56,7 +58,8 @@ class EvolutionManager:
         valid, message, result = await self._run_command_and_function(function, command)
 
         yield self.tree.update(
-            idx=idx,
+            curr_idx=curr_idx,
+            child_idx=child_idx,
             valid=valid,
             message=message,
             result=result,
@@ -68,7 +71,8 @@ class EvolutionManager:
             retry += 1
 
             yield self.tree.update(
-                idx=idx,
+                curr_idx=curr_idx,
+                child_idx=child_idx,
                 message=f"retrying optimization process ({retry}/{self.max_retries})",
                 retrying=True,
                 return_update=True,
@@ -79,7 +83,8 @@ class EvolutionManager:
             command = response["terminal_command"]
 
             yield self.tree.update(
-                idx=idx,
+                curr_idx=curr_idx,
+                child_idx=child_idx,
                 message="function/command generated",
                 function=function,
                 command=command,
@@ -91,7 +96,8 @@ class EvolutionManager:
             )
 
             yield self.tree.update(
-                idx=idx,
+                curr_idx=curr_idx,
+                child_idx=child_idx,
                 valid=valid,
                 message=message,
                 result=result,
@@ -99,7 +105,8 @@ class EvolutionManager:
             )
 
         yield self.tree.update(
-            idx=idx,
+            curr_idx=curr_idx,
+            child_idx=child_idx,
             valid=valid,
             retrying=False,
             return_update=True,
@@ -131,8 +138,8 @@ class EvolutionManager:
 
         # Run the function.
         result = self.runner.run(function)
-        output = result.get("stdout", "")
-        exit_code = result.get("exit_code", 0)
+        output = result.get("stdout")
+        exit_code = result.get("exit_code")
         if exit_code != 0:
             return (
                 False,
@@ -145,10 +152,12 @@ class EvolutionManager:
         return valid, message, result
 
     async def baseline(self):
-        idx = -1
+        child_idx = -1
+        curr_idx = 0
         self.generation = 1
         yield self.tree.update(
-            idx=idx,
+            curr_idx=curr_idx,
+            child_idx=child_idx,
             valid=True,
             approach=self.description,
             message="baseline optimization process started",
@@ -160,24 +169,28 @@ class EvolutionManager:
         command = response["terminal_command"]
 
         yield self.tree.update(
-            idx=idx,
+            curr_idx=curr_idx,
+            child_idx=child_idx,
             valid=True,
             message="function/command generated",
             function=function,
             command=command,
         )
 
-        async for update, job in self._execute_and_verify(function, command, idx=idx):
+        async for update, job in self._execute_and_verify(
+            function, command, curr_idx=curr_idx, child_idx=child_idx
+        ):
             yield job
 
         if not update["valid"]:
-            self.tree.curr.fail()
+            self.tree.curr[curr_idx].fail()
             return
 
         metrics = self.get_metrics(update["result"])
 
         yield self.tree.update(
-            idx=idx,
+            curr_idx=curr_idx,
+            child_idx=child_idx,
             message="metrics collected, baseline optimization complete",
             metrics=metrics,
             status="complete",
@@ -185,67 +198,76 @@ class EvolutionManager:
 
     async def evolve(self):
         self.generation += 1
-        self.tree.add_nodes(self.num_approaches)
-        function = self.tree.curr.function
-
-        generate_approaches_response = self.optimizer.approach(function)
-
-        for idx, approach in enumerate(generate_approaches_response["approaches"]):
-            yield self.tree.update(
-                idx=idx,
-                valid=True,
-                message=f"approach {idx} generated",
-                approach=approach["description"],
-                status="running",
-            )
-
-        for idx, approach in enumerate(generate_approaches_response["approaches"]):
-            solution = self.optimizer.solution(function, approach["description"])
-            function = solution["function_implementation"]
-            command = solution["terminal_command"]
-
-            yield self.tree.update(
-                idx=idx,
-                message="function/command generated",
-                function=function,
-                command=command,
-            )
-
-            async for update, job in self._execute_and_verify(
-                function, command, idx=idx
-            ):
-                yield job
-
-            if not update["valid"]:
-                self.tree.get_child(idx).fail()
-                continue
-
-            metrics = self.get_metrics(update["result"])
-
-            yield self.tree.update(
-                idx=idx,
-                message=f"metrics collected, approach {idx} complete",
-                metrics=metrics,
-                status="complete",
-            )
-
-        # Find Winner
-        winner = self.tree.winner()
-        if len(winner.children) > 0:
-            yield self.tree.update(
-                idx=-1,
-                message="no improvements found, evolution complete",
-                status="complete",
-            )
+        if len(self.tree.curr) == 0:
             yield False
-        else:
-            yield self.tree.update(
-                idx=-1,
-                message=f"winner found, evolution complete",
-                status="complete",
-            )
 
-            self.tree.move_to_winner(winner.child_idx)
+        for curr_idx in range(len(self.tree.curr)):
+            self.tree.add_nodes(curr_idx=curr_idx, n=self.num_approaches)
+            function = self.tree.curr[curr_idx].function
+
+            generate_approaches_response = self.optimizer.approach(function)
+
+            for child_idx, approach in enumerate(
+                generate_approaches_response["approaches"]
+            ):
+                yield self.tree.update(
+                    curr_idx=curr_idx,
+                    child_idx=child_idx,
+                    valid=True,
+                    message=f"approach {child_idx} generated",
+                    approach=approach["description"],
+                    status="running",
+                )
+
+            for child_idx, approach in enumerate(
+                generate_approaches_response["approaches"]
+            ):
+                solution = self.optimizer.solution(function, approach["description"])
+                function = solution["function_implementation"]
+                command = solution["terminal_command"]
+
+                yield self.tree.update(
+                    curr_idx=curr_idx,
+                    child_idx=child_idx,
+                    message="function/command generated",
+                    function=function,
+                    command=command,
+                )
+
+                async for update, job in self._execute_and_verify(
+                    function, command, curr_idx=curr_idx, child_idx=child_idx
+                ):
+                    yield job
+
+                if not update["valid"]:
+                    self.tree.get_child(curr_idx=curr_idx, child_idx=child_idx).fail()
+                    continue
+
+                metrics = self.get_metrics(update["result"])
+
+                yield self.tree.update(
+                    curr_idx=curr_idx,
+                    child_idx=child_idx,
+                    message=f"metrics collected, approach {child_idx} complete",
+                    metrics=metrics,
+                    status="complete",
+                )
+
+            # Find Winner
+            winners = self.tree.winners(curr_idx=curr_idx)
+            if len(winners) == 0:
+                self.tree.no_winner(curr_idx)
+            else:
+                yield self.tree.update(
+                    curr_idx=curr_idx,
+                    child_idx=-1,
+                    message=f"winners found, evolution complete",
+                    status="complete",
+                )
+
+                self.tree.move_winners_to_curr(
+                    curr_idx, [winner.child_idx for winner in winners]
+                )
 
     @staticmethod
     def get_metrics(result: dict):

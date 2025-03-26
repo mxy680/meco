@@ -25,6 +25,14 @@ import { LightbulbIcon, Loader2 } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "sonner";
+import {
+  loadSampleDataFactorial,
+  loadSampleDataForReverseString,
+  loadSampleDataMatrixMultiplication,
+  loadSampleDataFibonacci,
+  loadSampleDataIsPrime,
+  loadSampleDataSumArray,
+} from "@/utils/sample-functions";
 
 export type TestValue = string | number | boolean | null;
 
@@ -78,92 +86,6 @@ export default function FunctionGeneratorPage() {
       setJsonError("Invalid JSON format");
     }
   }, [testCasesJson]);
-
-  const loadSampleDataFactorial = () => {
-    // Set function signature
-    setSignature("def factorial(n: int) -> int");
-
-    // Set description
-    setDescription("Compute the factorial of a given number n.");
-
-    // Set model
-    setModel("gpt-4o-2024-08-06");
-
-    // Set test cases as JSON
-    const sampleTestCases = [
-      {
-        inputs: { n: 0 },
-        input_types: { n: "int" },
-        expected_output: 1,
-        expected_output_type: "int",
-      },
-      {
-        inputs: { n: 1 },
-        input_types: { n: "int" },
-        expected_output: 1,
-        expected_output_type: "int",
-      },
-      {
-        inputs: { n: 5 },
-        input_types: { n: "int" },
-        expected_output: 120,
-        expected_output_type: "int",
-      },
-      {
-        inputs: { n: 7 },
-        input_types: { n: "int" },
-        expected_output: 5040,
-        expected_output_type: "int",
-      },
-    ];
-
-    setTestCasesJson(JSON.stringify(sampleTestCases, null, 2));
-
-    toast.success("Sample data loaded successfully");
-  };
-
-  const loadSampleDataForReverseString = () => {
-    // Set function signature
-    setSignature("def reverse_string(s: str) -> str");
-
-    // Set description
-    setDescription("Reverses the input string s.");
-
-    // Set model
-    setModel("gpt-4o-2024-08-06");
-
-    // Set test cases as JSON
-    const sampleTestCases = [
-      {
-        inputs: { s: "" },
-        input_types: { s: "str" },
-        expected_output: "",
-        expected_output_type: "str",
-      },
-      {
-        inputs: { s: "hello" },
-        input_types: { s: "str" },
-        expected_output: "olleh",
-        expected_output_type: "str",
-      },
-      {
-        inputs: { s: "racecar" },
-        input_types: { s: "str" },
-        expected_output: "racecar",
-        expected_output_type: "str",
-      },
-      {
-        inputs: { s: "ChatGPT" },
-        input_types: { s: "str" },
-        expected_output: "TPGtahC",
-        expected_output_type: "str",
-      },
-    ];
-
-    setTestCasesJson(JSON.stringify(sampleTestCases, null, 2));
-
-    toast.success("Sample data loaded successfully");
-  };
 
   const generateFunction = async () => {
     if (jsonError) return;
@@ -233,7 +155,14 @@ export default function FunctionGeneratorPage() {
             <Button
               variant="outline"
               size="sm"
-              onClick={loadSampleDataForReverseString}
+              onClick={() => {
+                loadSampleDataSumArray(
+                  setSignature,
+                  setDescription,
+                  setModel,
+                  setTestCasesJson
+                );
+              }}
               className="flex items-center gap-2"
             >
               <LightbulbIcon size={16} />

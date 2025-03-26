@@ -20,7 +20,7 @@ async def on_message(message: IncomingMessage):
             print(f"Received {job_type} job {job_id}")
             await process_job(job_id, payload, job_type)
         except Exception as e:
-            print(f"Error processing job: {e}")
+            print(f"Error processing job: {str(e)[:100]}")
 
 async def start_consumer():
     # Connect to RabbitMQ asynchronously

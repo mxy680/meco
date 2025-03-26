@@ -40,11 +40,15 @@ class Runner:
 
     def terminal(self, command: str) -> dict:
         if self.container is None:
-            raise RuntimeError("Container is not running. Call start_container() first.")
-        
+            raise RuntimeError(
+                "Container is not running. Call start_container() first."
+            )
+
         try:
             # Execute the command in the container using bash
-            exec_result = self.container.exec_run(cmd=["bash", "-c", command], stdout=True, stderr=True)
+            exec_result = self.container.exec_run(
+                cmd=["bash", "-c", command], stdout=True, stderr=True
+            )
             output = exec_result.output.decode("utf-8").strip()
             return {
                 "stdout": output,
@@ -53,11 +57,5 @@ class Runner:
         except Exception as e:
             return {"stdout": str(e)}
 
-
     def run(self, code: str):
-        if self.container is None:
-            raise RuntimeError(
-                "Container is not running. Call start_container() first."
-            )
-
         return self.config["run_function"](self.container, code, self.test_code)
