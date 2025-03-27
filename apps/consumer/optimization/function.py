@@ -7,13 +7,11 @@ from database.client import fail, update_job, end_job
 import json
 
 
-async def optimize_function(job_id: int, request: dict):
+async def optimize(job_id: int, request: dict):
     language = request["language"]
 
     # Validate the signature
-    valid_sig, sig_message = validate_signature(
-        request["signature"], language
-    )
+    valid_sig, sig_message = validate_signature(request["signature"], language)
 
     if not valid_sig:
         await fail(job_id)

@@ -156,7 +156,7 @@ export default function FunctionGeneratorPage() {
               variant="outline"
               size="sm"
               onClick={() => {
-                loadSampleDataSumArray(
+                loadSampleDataFactorial(
                   setSignature,
                   setDescription,
                   setModel,

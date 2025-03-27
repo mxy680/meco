@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "turbo run dev",
-    "test": "cd apps/api && poetry run pytest -s",
+    "test": "cd apps/consumer && poetry run pytest -s",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "format": "turbo run format"

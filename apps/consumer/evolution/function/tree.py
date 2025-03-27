@@ -32,33 +32,35 @@ class Tree:
 
     def winners(self, curr_idx: int) -> list:
         """
-        Returns the top 50% of candidate nodes (from the baseline's children) that have a lower 
-        normalized cumulative score than the baseline. The cumulative score is computed by first 
-        normalizing runtime, memory_usage, and cpu_usage (lower is better) across all nodes (baseline 
-        plus children) and then summing the normalized values. If no candidate node is better than 
-        the baseline, returns an empty list.
+        Returns the top 50% of candidate nodes (from the baseline's children) that have a normalized cumulative score
+        close to or better than the baseline. The cumulative score is computed by first normalizing runtime, memory_usage,
+        and cpu_usage (lower is better) across all nodes (baseline plus children) and then summing the normalized values.
+        A candidate is considered acceptable if its score is within a set threshold of the baseline's score or better.
+        If no candidate node qualifies, returns an empty list.
         """
         # Use the node at curr_idx as the baseline.
         baseline = self.curr[curr_idx]
-        
+
         # Only consider children, excluding the baseline itself.
         candidates = baseline.children
         if not candidates:
             return []
-        
+
         # Include baseline in normalization computation.
         all_nodes = [baseline] + candidates
         metrics = ["runtime", "memory_usage", "cpu_usage"]
-        
+
         # Compute min and max for each metric over all nodes.
         metric_stats = {}
         for metric in metrics:
-            values = [node.metrics[metric] for node in all_nodes if metric in node.metrics]
+            values = [
+                node.metrics[metric] for node in all_nodes if metric in node.metrics
+            ]
             if values:
                 metric_stats[metric] = (min(values), max(values))
             else:
                 metric_stats[metric] = (0, 0)
-        
+
         def normalized_score(node):
             score = 0
             for metric in metrics:
@@ -68,34 +70,43 @@ class Tree:
                     if max_val == min_val:
                         normalized = 0
                     else:
-                        normalized = (node.metrics[metric] - min_val) / (max_val - min_val)
+                        normalized = (node.metrics[metric] - min_val) / (
+                            max_val - min_val
+                        )
                     score += normalized
                 else:
                     score += 1  # Penalize missing metric.
             return score
-        
+
         baseline_score = normalized_score(baseline)
-        
+
+        # Define a threshold that allows candidates with scores close to the baseline.
+        threshold = 0.05  # Adjust this value as needed.
+
         # Compute normalized scores for each candidate.
         candidate_scores = []
         for node in candidates:
             score = normalized_score(node)
             candidate_scores.append((node, score))
-        
-        # Filter for candidates that are strictly better than the baseline.
-        better_candidates = [(node, score) for node, score in candidate_scores if score < baseline_score]
-        
-        if not better_candidates:
+
+        # Filter for candidates that are within the threshold of the baseline or better.
+        acceptable_candidates = [
+            (node, score)
+            for node, score in candidate_scores
+            if score <= baseline_score + threshold
+        ]
+
+        if not acceptable_candidates:
             return []
-        
+
         # Sort the candidates by their cumulative score (lower is better).
-        better_candidates.sort(key=lambda x: x[1])
-        
-        # Return top 50% (rounded up) of the candidates.
-        n_candidates = len(better_candidates)
+        acceptable_candidates.sort(key=lambda x: x[1])
+
+        # Return the top 50% (rounded up) of the acceptable candidates.
+        n_candidates = len(acceptable_candidates)
         n_winners = -(-n_candidates // 2)  # Ceiling division
-        winners_list = [node for node, _ in better_candidates[:n_winners]]
-        
+        winners_list = [node for node, _ in acceptable_candidates[:n_winners]]
+
         return winners_list
 
     def move_winners_to_curr(self, curr_idx, child_idx: list[int]):

@@ -2,12 +2,14 @@ import asyncio
 import json
 from aio_pika import connect_robust, IncomingMessage
 from database.client import db
-from optimization.function import optimize_function
+from optimization.function import optimize as optimize_function
+
 
 async def process_job(job_id: int, payload: dict, job_type: str):
     if job_type == "function":
         # Await optimize_function directly if it's async.
         await optimize_function(job_id, payload)
+
 
 async def on_message(message: IncomingMessage):
     async with message.process():
@@ -21,6 +23,7 @@ async def on_message(message: IncomingMessage):
             await process_job(job_id, payload, job_type)
         except Exception as e:
             print(f"Error processing job: {str(e)[:100]}")
+
 
 async def start_consumer():
     # Connect to RabbitMQ asynchronously
@@ -37,6 +40,7 @@ async def start_consumer():
             await asyncio.Future()  # Keep the consumer running indefinitely
         finally:
             await db.disconnect()
+
 
 if __name__ == "__main__":
     asyncio.run(start_consumer())

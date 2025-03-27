@@ -1,23 +1,21 @@
-from optimizer.function.client import FunctionOptimizer
 from runner.function.client import Runner
-from typing import Tuple
+from typing import Tuple, AsyncGenerator, List, Dict, Any, Callable
 from .tree import Tree
-from typing import AsyncGenerator
 
 
 class EvolutionManager:
     def __init__(
         self,
-        signature: str,  # Assumes validity
+        signature: str,  # Assumes validity.
         description: str,
         language: str,
-        model: str,  # Each model has independent evolution manager
-        test_cases: list[dict],  # For output verification
-        test_code: str,  # For script injection
-        optimizer: FunctionOptimizer,  # For generating optimized code
-        runner: Runner,  # For executing code
-        validate_fn: callable,  # For validating a function
-        validate_command: callable,  # For validating a command
+        model: str,  # Each model has independent evolution manager.
+        test_cases: List[dict],  # For output verification.
+        test_code: str,  # For script injection.
+        optimizer,  # For generating optimized code.
+        runner: Runner,  # For executing code.
+        validate_fn: Callable,  # For validating a function.
+        validate_command: Callable,  # For validating a command.
         num_approaches: int = 3,
         max_retries: int = 3,
     ):
@@ -34,19 +32,15 @@ class EvolutionManager:
         self.num_approaches = num_approaches
         self.max_retries = max_retries
 
-        self.generation: int = 0
+        self.generation = 0
         self.tree = Tree()
 
     async def _execute_and_verify(
-        self,
-        function: str,
-        command: str,
-        curr_idx: int,
-        child_idx: int,
+        self, function: str, command: str, curr_idx: int, child_idx: int
     ) -> AsyncGenerator[dict, None]:
         """
-        Execute terminal command (if provided) and run the function.
-        Returns a tuple: (valid, message, result)
+        Execute a terminal command (if provided) and run the function.
+        Yields updates from the tree as the process progresses.
         """
         yield self.tree.update(
             curr_idx=curr_idx,
@@ -56,7 +50,6 @@ class EvolutionManager:
         )
 
         valid, message, result = await self._run_command_and_function(function, command)
-
         yield self.tree.update(
             curr_idx=curr_idx,
             child_idx=child_idx,
@@ -69,7 +62,6 @@ class EvolutionManager:
         retry = 0
         while not valid and retry < self.max_retries:
             retry += 1
-
             yield self.tree.update(
                 curr_idx=curr_idx,
                 child_idx=child_idx,
@@ -94,7 +86,6 @@ class EvolutionManager:
             valid, message, result = await self._run_command_and_function(
                 function, command
             )
-
             yield self.tree.update(
                 curr_idx=curr_idx,
                 child_idx=child_idx,
@@ -114,44 +105,42 @@ class EvolutionManager:
 
     async def _run_command_and_function(
         self, function: str, command: str
-    ) -> Tuple[bool, str, dict]:
+    ) -> Tuple[bool, str, Dict[str, Any]]:
         """
-        Helper function to execute the terminal command and then run and verify the function.
+        Executes the terminal command (if provided) and runs the function.
+        Returns a tuple: (valid, message, result).
         """
-        # Run the terminal command if provided.
         if command:
             valid, message = self.validate_command(command, self.language)
             if valid:
                 term_result = self.runner.terminal(command)
-                exit_code = term_result.get("exit_code", 0)
-                if exit_code != 0:
+                if term_result.get("exit_code", 0) != 0:
                     return (
                         False,
-                        f"Terminal command execution failed with exit code {exit_code}",
+                        f"Terminal command execution failed with exit code {term_result.get('exit_code')}",
                         None,
                     )
 
-        # Validate the function code.
         valid, message = self.validate_fn(function, self.language)
         if not valid:
             return False, message, None
 
-        # Run the function.
         result = self.runner.run(function)
         output = result.get("stdout")
-        exit_code = result.get("exit_code")
-        if exit_code != 0:
+        if result.get("exit_code") != 0:
             return (
                 False,
-                f"Function execution failed with exit code {exit_code}:\n{output}",
+                f"Function execution failed with exit code {result.get('exit_code')}:\n{output}",
                 result,
             )
 
-        # Verify the output.
         valid, message = self.optimizer.verify(self.test_cases, output)
         return valid, message, result
 
-    async def baseline(self):
+    async def baseline(self) -> AsyncGenerator[dict, None]:
+        """
+        Generates and verifies the baseline solution.
+        """
         child_idx = -1
         curr_idx = 0
         self.generation = 1
@@ -178,16 +167,15 @@ class EvolutionManager:
         )
 
         async for update, job in self._execute_and_verify(
-            function, command, curr_idx=curr_idx, child_idx=child_idx
+            function, command, curr_idx, child_idx
         ):
             yield job
 
-        if not update["valid"]:
+        if not update.get("valid"):
             self.tree.curr[curr_idx].fail()
             return
 
-        metrics = self.get_metrics(update["result"])
-
+        metrics = self.get_metrics(update.get("result"))
         yield self.tree.update(
             curr_idx=curr_idx,
             child_idx=child_idx,
@@ -196,10 +184,14 @@ class EvolutionManager:
             status="complete",
         )
 
-    async def evolve(self):
+    async def evolve(self) -> AsyncGenerator[dict, None]:
+        """
+        Evolves the current solutions by generating, verifying, and selecting improved approaches.
+        """
         self.generation += 1
-        if len(self.tree.curr) == 0:
+        if not self.tree.curr:
             yield False
+            return
 
         for curr_idx in range(len(self.tree.curr)):
             self.tree.add_nodes(curr_idx=curr_idx, n=self.num_approaches)
@@ -235,16 +227,15 @@ class EvolutionManager:
                 )
 
                 async for update, job in self._execute_and_verify(
-                    function, command, curr_idx=curr_idx, child_idx=child_idx
+                    function, command, curr_idx, child_idx
                 ):
                     yield job
 
-                if not update["valid"]:
+                if not update.get("valid"):
                     self.tree.get_child(curr_idx=curr_idx, child_idx=child_idx).fail()
                     continue
 
-                metrics = self.get_metrics(update["result"])
-
+                metrics = self.get_metrics(update.get("result"))
                 yield self.tree.update(
                     curr_idx=curr_idx,
                     child_idx=child_idx,
@@ -253,35 +244,27 @@ class EvolutionManager:
                     status="complete",
                 )
 
-            # Find Winner
             winners = self.tree.winners(curr_idx=curr_idx)
-            if len(winners) == 0:
+            if not winners:
                 self.tree.no_winner(curr_idx)
             else:
                 yield self.tree.update(
                     curr_idx=curr_idx,
                     child_idx=-1,
-                    message=f"winners found, evolution complete",
+                    message="winners found, evolution complete",
                     status="complete",
                 )
-
                 self.tree.move_winners_to_curr(
                     curr_idx, [winner.child_idx for winner in winners]
                 )
 
     @staticmethod
-    def get_metrics(result: dict):
+    def get_metrics(result: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Extracts metrics from the result.
+        """
         return {
             "runtime": result.get("runtime", float("inf")),
             "cpu_percent": result.get("cpu_percent", float("inf")),
             "memory_usage": result.get("memory_usage", float("inf")),
         }
-
-    @staticmethod
-    def winner(nodes: list[dict]) -> dict:
-        # Get the best node based on the metrics
-        winner = nodes[0]
-        for node in nodes:
-            if node["metrics"]["runtime"] < winner["metrics"]["runtime"]:
-                winner = node
-        return winner

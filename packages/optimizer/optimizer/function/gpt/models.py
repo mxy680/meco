@@ -13,3 +13,7 @@ class TheoreticalApproach(BaseModel):
 
 class ApproachOutput(BaseModel):
     approaches: List[TheoreticalApproach]
+
+
+class InputGenerationOutput(BaseModel):
+    input_generator_function: str
