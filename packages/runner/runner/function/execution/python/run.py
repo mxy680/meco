@@ -1,10 +1,10 @@
 from runner.utils.cpu import calculate_cpu_percent
-from .script import generate_script
+from .script import generate_script, generate_script_with_input_generator
 import json
 import uuid
 
 
-def run_code(container, function, test_code, iterations=100, timeout=10000):
+def run_code(container, function, test_code, iterations=100):
     script = generate_script(function, iterations, test_code)
     script_name = f"script-{uuid.uuid4().hex}.py"
 
@@ -48,6 +48,30 @@ def run_code(container, function, test_code, iterations=100, timeout=10000):
             "memory_usage": memory_usage,
             "exit_code": result.exit_code,
         }
+
+    except Exception as e:
+        return {"error": str(e)}
+
+
+def run_input_generator(container, function, input_generator):
+    script = generate_script_with_input_generator(function, input_generator, 100)
+    script_name = f"input-generator-{uuid.uuid4().hex}.py"
+    command = (
+        f'echo "{script}" > /tmp/{script_name} && poetry run python /tmp/{script_name}'
+    )
+
+    try:
+        result = container.exec_run(
+            cmd=["bash", "-c", command], stdout=True, stderr=True
+        )
+
+        raw_output = result.output.decode().strip()
+        print(result.exit_code)
+
+        try:
+            return {"stdout": json.loads(raw_output), "exit_code": 0}
+        except Exception as e:
+            return {"stdout": raw_output, "exit_code": 1}
 
     except Exception as e:
         return {"error": str(e)}

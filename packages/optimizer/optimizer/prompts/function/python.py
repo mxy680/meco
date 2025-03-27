@@ -74,12 +74,13 @@ def get_solution_prompt_user_input(function: str, approach: str):
 
 def get_input_generation_prompt_system_input():
     return (
-        "You are an expert Python programmer. Your task is to implement a function that, given a naive solution and its description, "
+        "You are an expert Python programmer. Your task is to implement ONE function (def input_generator(n: int)) that, given a naive solution and its description, "
         "generates a scalable input generator function. This generated function should produce exactly n test inputs, where n can be in the "
-        "thousands or even millions. The inputs must be diverse and valid for the given function, and the implementation should be efficient "
-        "in terms of runtime, memory usage, and CPU usage. Use a generator or another memory-efficient approach to handle large values of n. "
-        "Do not include any comments or code outside of the function, and ensure the function signature matches exactly as provided."
-        "Make sure your function takes in an integer n and returns a list of n test cases."
+        "thousands or even millions. The function must output a fully evaluated list of dictionaries, where each dictionary contains the parameters for a test case. "
+        "The inputs must be diverse and valid for the given function, and the implementation should be efficient in terms of runtime, memory usage, "
+        "and CPU usage. DO NOT use yield statements or return a generator—make sure to return a complete list. "
+        "Do not include any comments or code outside of the function and DO NOT CALL THE FUNCTION, and ensure the function signature matches exactly as provided. "
+        "Make sure your function takes in an integer n and returns a list of dictionaries, each dictionary representing one test case."
     )
 
 

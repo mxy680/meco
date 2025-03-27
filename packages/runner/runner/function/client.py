@@ -59,3 +59,8 @@ class Runner:
 
     def run(self, code: str):
         return self.config["run_function"](self.container, code, self.test_code)
+
+    def run_input_generator(self, function: str, input_generator: str):
+        return self.config["run_input_generator"](
+            self.container, function, input_generator
+        )

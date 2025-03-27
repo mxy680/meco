@@ -1,4 +1,6 @@
-def generate_script(code: str, iterations: int, test_code: str, timeout: int = 5000) -> str:
+def generate_script(
+    code: str, iterations: int, test_code: str, timeout: int = 100000
+) -> str:
     code = code.replace('"', "'")
     script = f"""
 import time
@@ -48,5 +50,33 @@ def run():
 
 if __name__ == '__main__':
     print(json.dumps(run(), indent=4))
+"""
+    return script
+
+
+def generate_script_with_input_generator(
+    function: str, input_generator: str, n: int
+) -> str:
+    # Replace double quotes with single quotes to avoid conflicts in the generated script.
+    input_generator = input_generator.replace('"', "'")
+    function = function.replace('"', "'")
+    script = f"""
+import json
+
+# Injected input generator function code
+{input_generator}
+
+# Injected naive function code
+{function}
+
+if __name__ == '__main__':
+    # Generate test cases using the input generator function
+    test_cases = input_generator({n})
+    results = []
+    for test_case in test_cases:
+        output = {function.split()[1].split("(")[0]}(**test_case)
+        results.append({{'input': test_case, 'output': output}})
+    # Print the results as a JSON string
+    print(json.dumps(results, indent=4))
 """
     return script

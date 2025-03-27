@@ -175,14 +175,23 @@ class EvolutionManager:
             self.tree.curr[curr_idx].fail()
             return
 
-        metrics = self.get_metrics(update.get("result"))
-        yield self.tree.update(
-            curr_idx=curr_idx,
-            child_idx=child_idx,
-            message="metrics collected, baseline optimization complete",
-            metrics=metrics,
-            status="complete",
-        )
+        # Input generator
+        response = self.optimizer.generate_inputs(function)
+        input_generator = response["input_generator_function"]
+        valid, message = self.validate_fn(function, self.language)
+        if not valid:
+            print(f"Input generator validation failed: {message}")
+            return
+
+        result = self.runner.run_input_generator(function, input_generator)
+        output = result.get("stdout")
+        if result.get("exit_code") != 0:
+            print(
+                f"Input generator execution failed with exit code {result.get('exit_code')}:\n{output}"
+            )
+            return
+
+        print(output)
 
     async def evolve(self) -> AsyncGenerator[dict, None]:
         """

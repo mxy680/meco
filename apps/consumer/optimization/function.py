@@ -47,18 +47,18 @@ async def optimize(job_id: int, request: dict):
             data[model] = json.loads(baseline_data)
             await update_job(job_id, data)
 
-        # Keep evolving until no more improvements can be made
-        proceed = True
-        while proceed:
-            async for evolution_data in evo_manager.evolve():
-                if isinstance(evolution_data, bool):
-                    if evolution_data == False:
-                        proceed = False
-                        await end_job(job_id)
-                        break
+        # # Keep evolving until no more improvements can be made
+        # proceed = True
+        # while proceed:
+        #     async for evolution_data in evo_manager.evolve():
+        #         if isinstance(evolution_data, bool):
+        #             if evolution_data == False:
+        #                 proceed = False
+        #                 await end_job(job_id)
+        #                 break
 
-                data[model] = json.loads(evolution_data)
-                await update_job(job_id, data)
+        #         data[model] = json.loads(evolution_data)
+        #         await update_job(job_id, data)
 
     print("Optimization complete")
     return {"success": True}
