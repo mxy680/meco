@@ -4,8 +4,8 @@ import json
 import uuid
 
 
-def run_code(container, function, test_code, iterations=100):
-    script = generate_script(function, iterations, test_code)
+def run_code(container, function, test_code):
+    script = generate_script(function, test_code)
     script_name = f"script-{uuid.uuid4().hex}.py"
 
     # Write the script to the container and execute it
@@ -30,7 +30,7 @@ def run_code(container, function, test_code, iterations=100):
 
         # Get the output
         raw_output = result.output.decode().strip()
-
+        
         try:
             json_output = json.loads(raw_output)
             stdout = json_output["stdout"]
@@ -53,8 +53,23 @@ def run_code(container, function, test_code, iterations=100):
         return {"error": str(e)}
 
 
-def run_input_generator(container, function, input_generator):
-    script = generate_script_with_input_generator(function, input_generator, 100)
+def run_terminal_command(container, command: str) -> dict:
+    try:
+        # Execute the command in the container using bash
+        exec_result = container.exec_run(
+            cmd=["bash", "-c", command], stdout=True, stderr=True
+        )
+        output = exec_result.output.decode("utf-8").strip()
+        return {
+            "stdout": output,
+            "exit_code": exec_result.exit_code,
+        }
+    except Exception as e:
+        return {"stdout": str(e), "exit_code": 1}
+
+
+def run_input_generator(container, function, input_generator, n: int = 1000):
+    script = generate_script_with_input_generator(function, input_generator, n)
     script_name = f"input-generator-{uuid.uuid4().hex}.py"
     command = (
         f'echo "{script}" > /tmp/{script_name} && poetry run python /tmp/{script_name}'
@@ -66,7 +81,6 @@ def run_input_generator(container, function, input_generator):
         )
 
         raw_output = result.output.decode().strip()
-        print(result.exit_code)
 
         try:
             return {"stdout": json.loads(raw_output), "exit_code": 0}

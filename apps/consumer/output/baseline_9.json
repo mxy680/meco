@@ -1,0 +1,1 @@
+{"child_idx": 0, "approach": "Naive solution", "function": "def factorial(n: int) -> int:\n    if n == 0:\n        return 1\n    result = 1\n    for i in range(2, n + 1):\n        result *= i\n    return result\n", "command": "", "status": "running", "children": [], "valid": true, "retrying": false, "result": {}, "metrics": null}

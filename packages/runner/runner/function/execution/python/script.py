@@ -1,6 +1,4 @@
-def generate_script(
-    code: str, iterations: int, test_code: str, timeout: int = 100000
-) -> str:
+def generate_script(code: str, test_code: str, timeout: int = 10) -> str:
     code = code.replace('"', "'")
     script = f"""
 import time
@@ -24,28 +22,25 @@ def run():
     gc.disable()
 
     results = {{}}
-    runtimes = []
-
-    for i in range({iterations}):
-        try:
-            # Start the alarm before running the test code
-            signal.alarm({timeout})
-            start = time.perf_counter()
-            {test_code}
-            end = time.perf_counter()
-            runtimes.append(end - start)
-        except TimeoutException:
-            # Record the timeout occurrence for this iteration
-            runtimes.append({timeout})
-        finally:
-            # Cancel the alarm after the iteration
-            signal.alarm(0)
-
+    
+    try:
+        # Start the alarm before running the test code
+        signal.alarm({timeout})
+        start = time.perf_counter()
+        {test_code}
+        end = time.perf_counter()
+        runtime = end - start
+    except TimeoutException:
+        runtime = {timeout}
+    finally:
+        # Cancel the alarm after the test code
+        signal.alarm(0)
+    
     gc.enable()
 
     return {{
         'stdout': results,
-        'runtime': sorted(runtimes)[len(runtimes) // 2]
+        'runtime': runtime
     }}
 
 if __name__ == '__main__':
@@ -75,7 +70,7 @@ if __name__ == '__main__':
     results = []
     for test_case in test_cases:
         output = {function.split()[1].split("(")[0]}(**test_case)
-        results.append({{'input': test_case, 'output': output}})
+        results.append({{'inputs': test_case, 'expected_output': output}})
     # Print the results as a JSON string
     print(json.dumps(results, indent=4))
 """

@@ -9,7 +9,6 @@ class Node:
 
         self.valid: bool = None  # Flag to indicate if the function is valid.
         self.retrying: bool = None  # Flag to indicate if the node is being retried.
-        self.message: str = None  # Message to store any additional information.
         self.result: str = None  # The output of the function execution.
 
         self.metrics: dict = None  # Performance metrics (e.g., runtime, CPU, memory).
@@ -26,9 +25,9 @@ class Node:
             raise ValueError("Node is validated, failing is not allowed.")
 
         self.metrics = {
-            "runtime": float("inf"),
-            "cpu": float("inf"),
-            "memory": float("inf"),
+            "runtime": 999999,
+            "cpu": 999999,
+            "memory": 999999,
         }
         self.status = "failed"
 
@@ -45,7 +44,6 @@ class Node:
             "children": [child.serialize() for child in self.children],
             "valid": self.valid,
             "retrying": self.retrying,
-            "message": self.message,
-            "result": self.result,
+            "result": {} if isinstance(self.result, dict) else self.result,
             "metrics": self.metrics,
         }

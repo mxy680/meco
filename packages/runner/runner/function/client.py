@@ -15,6 +15,7 @@ class Runner:
         self.client = docker.from_env()
         self.container = None
         self.test_code = test_code
+        self.start_container()
 
     def start_container(self):
         # If a container with the same name already exists, remove it.
@@ -38,27 +39,11 @@ class Runner:
         time.sleep(2)
         return self.container
 
-    def terminal(self, command: str) -> dict:
-        if self.container is None:
-            raise RuntimeError(
-                "Container is not running. Call start_container() first."
-            )
-
-        try:
-            # Execute the command in the container using bash
-            exec_result = self.container.exec_run(
-                cmd=["bash", "-c", command], stdout=True, stderr=True
-            )
-            output = exec_result.output.decode("utf-8").strip()
-            return {
-                "stdout": output,
-                "exit_code": exec_result.exit_code,
-            }
-        except Exception as e:
-            return {"stdout": str(e)}
-
-    def run(self, code: str):
+    def run_code(self, code: str):
         return self.config["run_function"](self.container, code, self.test_code)
+
+    def run_terminal(self, command: str):
+        return self.config["run_terminal_command"](self.container, command)
 
     def run_input_generator(self, function: str, input_generator: str):
         return self.config["run_input_generator"](

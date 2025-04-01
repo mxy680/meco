@@ -148,20 +148,17 @@ class OpenAIOptimizer:
         ]
 
     @staticmethod
-    def verify(test_cases: list[dict], output: dict) -> tuple[bool, str]:
+    def verify(test_cases: list[dict], output: dict, truncate: int = 100) -> None:
         for case in test_cases:
             _, args_hash = generate_args_hash(case)
             if args_hash not in output:
-                return (
-                    False,
-                    "Test case not found in output: " + json.dumps(case["inputs"]),
+                raise Exception(
+                    "Test case not found in output: " + json.dumps(case["inputs"])
                 )
             if output[args_hash] != case["expected_output"]:
-                return (
-                    False,
+                raise Exception(
                     "Test case failed: "
-                    + json.dumps(case["inputs"])
+                    + json.dumps(case["inputs"])[:truncate]
                     + " -> "
-                    + json.dumps(case["expected_output"]),
+                    + json.dumps(case["expected_output"])[:truncate]
                 )
-        return (True, "All test cases passed.")

@@ -1,64 +1,73 @@
 from runner.function.client import Runner
-from parser.validate import validate_fn, validate_signature, validate_command
-from parser.extract import extract_test_code, extract_signature
+from parser.validate import validate_signature, validate_test_cases
+from parser.extract import extract_test_cases, extract_signature
 from optimizer.function.gpt.client import OpenAIOptimizer
-from evolution.function.evo import EvolutionManager
-from database.client import fail, update_job, end_job
+from evolution.function.manager import EvolutionManager
+from database.client import update_job, end_job
 import json
-
+from operator import itemgetter
+import uuid
 
 async def optimize(job_id: int, request: dict):
-    language = request["language"]
+    language, signature, description, models, test_cases = itemgetter(
+        "language", "signature", "description", "models", "test_cases"
+    )(request)
 
     # Validate the signature
-    valid_sig, sig_message = validate_signature(request["signature"], language)
+    validate_signature(signature, language)
 
-    if not valid_sig:
-        await fail(job_id)
-        return {"error": sig_message}
+    # Extract the function properties: name, return type, and params
+    fn = extract_signature(signature, language)
+    name, params = itemgetter("name", "params")(fn)
 
-    fn = extract_signature(request["signature"], language)
+    # Validate the test cases
+    validate_test_cases(params, test_cases, language)
 
-    test_code = extract_test_code(fn, request["test_cases"], language)
-
+    # Extract the test cases into code
+    test_code = extract_test_cases(name, test_cases, language)
+    
+    # Start the runner
     runner = Runner(language, test_code)
-    runner.start_container()
 
     data = {}
-    for model in request["models"]:
-        optimizer = OpenAIOptimizer(
-            request["signature"], request["description"], language, model, test_code
-        )
+    for model in models:
+        # Start the optimizer
+        optimizer = OpenAIOptimizer(signature, description, language, model, test_code)
 
+        # Start the evolution manager
         evo_manager = EvolutionManager(
-            request["signature"],
-            request["description"],
+            signature,
+            description,
             language,
             model,
-            request["test_cases"],
-            test_code,
+            test_cases,
             optimizer,
             runner,
-            validate_fn,
-            validate_command,
         )
 
+        step = 1
         async for baseline_data in evo_manager.baseline():
             data[model] = json.loads(baseline_data)
             await update_job(job_id, data)
+            # Save the data to a json file
+            with open(f"output/baseline_{step}.json", "w") as f:
+                json.dump(data[model], f)
+                step += 1
 
-        # # Keep evolving until no more improvements can be made
-        # proceed = True
-        # while proceed:
-        #     async for evolution_data in evo_manager.evolve():
-        #         if isinstance(evolution_data, bool):
-        #             if evolution_data == False:
-        #                 proceed = False
-        #                 await end_job(job_id)
-        #                 break
+        # Keep evolving until no more improvements can be made
+        proceed = True
+        while proceed:
+            async for evolution_data in evo_manager.evolve():
+                if isinstance(evolution_data, bool):
+                    if evolution_data == False:
+                        proceed = False
+                        await end_job(job_id)
+                        break
 
-        #         data[model] = json.loads(evolution_data)
-        #         await update_job(job_id, data)
+                data[model] = json.loads(evolution_data)
+                await update_job(job_id, data)
+                with open(f"output/baseline_{step}.json", "w") as f:
+                    json.dump(data[model], f)
+                    step += 1
 
     print("Optimization complete")
-    return {"success": True}

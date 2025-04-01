@@ -1,5 +1,2 @@
-Build dockerfile: docker build -t image-name -f dockerfile-path .
-E.g.: docker build -t markshteyn1/python-runner -f Dockerfile .
-
-Run dockerfile: docker run -dit --name container-name image-name
-E.g.: docker run -dit --name python-runner markshteyn1/python-runner
+docker build -t markshteyn1/python-runner -f Dockerfile .
+docker run -dit --name python-runner markshteyn1/python-runner

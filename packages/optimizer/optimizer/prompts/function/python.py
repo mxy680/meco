@@ -8,6 +8,7 @@ def get_baseline_prompt_system_input() -> list[dict]:
         "Install only third-party libraries using Poetry (e.g., `poetry add <library-name>`) and do not include any native libraries.\n\n"
         "Instructions: Write correct, simple, and readable code that handles all edge cases using this naive approach. Do not include any comments "
         "or write code outside the function. The function signature must match exactly as provided. You may use nested functions if necessary.\n\n"
+        "Do not attempt to use approximation methods or other approaches that are extremely unlikely to work."
     )
 
 

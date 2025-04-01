@@ -1,7 +1,7 @@
 import asyncio
 import json
 from aio_pika import connect_robust, IncomingMessage
-from database.client import db
+from database.client import db, fail
 from optimization.function import optimize as optimize_function
 
 
@@ -22,7 +22,8 @@ async def on_message(message: IncomingMessage):
             print(f"Received {job_type} job {job_id}")
             await process_job(job_id, payload, job_type)
         except Exception as e:
-            print(f"Error processing job: {str(e)[:100]}")
+            print(f"Error processing job: {str(e)}")
+            await fail(job_id)
 
 
 async def start_consumer():

@@ -31,81 +31,34 @@ class Tree:
         return self.serialize()
 
     def winners(self, curr_idx: int) -> list:
-        """
-        Returns the top 50% of candidate nodes (from the baseline's children) that have a normalized cumulative score
-        close to or better than the baseline. The cumulative score is computed by first normalizing runtime, memory_usage,
-        and cpu_usage (lower is better) across all nodes (baseline plus children) and then summing the normalized values.
-        A candidate is considered acceptable if its score is within a set threshold of the baseline's score or better.
-        If no candidate node qualifies, returns an empty list.
-        """
         # Use the node at curr_idx as the baseline.
         baseline = self.curr[curr_idx]
 
-        # Only consider children, excluding the baseline itself.
+        # Only consider children (candidates), excluding the baseline itself.
         candidates = baseline.children
         if not candidates:
             return []
 
-        # Include baseline in normalization computation.
-        all_nodes = [baseline] + candidates
-        metrics = ["runtime", "memory_usage", "cpu_usage"]
+        metrics = ["runtime", "memory_usage", "cpu_percent"]
+        winners_list = []
 
-        # Compute min and max for each metric over all nodes.
-        metric_stats = {}
-        for metric in metrics:
-            values = [
-                node.metrics[metric] for node in all_nodes if metric in node.metrics
-            ]
-            if values:
-                metric_stats[metric] = (min(values), max(values))
-            else:
-                metric_stats[metric] = (0, 0)
-
-        def normalized_score(node):
-            score = 0
+        for candidate in candidates:
+            total_improvement = 0
             for metric in metrics:
-                if metric in node.metrics:
-                    min_val, max_val = metric_stats[metric]
-                    # If all values are equal, set normalized value to 0.
-                    if max_val == min_val:
-                        normalized = 0
-                    else:
-                        normalized = (node.metrics[metric] - min_val) / (
-                            max_val - min_val
-                        )
-                    score += normalized
-                else:
-                    score += 1  # Penalize missing metric.
-            return score
-
-        baseline_score = normalized_score(baseline)
-
-        # Define a threshold that allows candidates with scores close to the baseline.
-        threshold = 0.05  # Adjust this value as needed.
-
-        # Compute normalized scores for each candidate.
-        candidate_scores = []
-        for node in candidates:
-            score = normalized_score(node)
-            candidate_scores.append((node, score))
-
-        # Filter for candidates that are within the threshold of the baseline or better.
-        acceptable_candidates = [
-            (node, score)
-            for node, score in candidate_scores
-            if score <= baseline_score + threshold
-        ]
-
-        if not acceptable_candidates:
-            return []
-
-        # Sort the candidates by their cumulative score (lower is better).
-        acceptable_candidates.sort(key=lambda x: x[1])
-
-        # Return the top 50% (rounded up) of the acceptable candidates.
-        n_candidates = len(acceptable_candidates)
-        n_winners = -(-n_candidates // 2)  # Ceiling division
-        winners_list = [node for node, _ in acceptable_candidates[:n_winners]]
+                baseline_value = baseline.metrics.get(metric)
+                candidate_value = candidate.metrics.get(metric)
+                # Only compute improvement if both values are present and baseline_value is nonzero.
+                if (
+                    baseline_value is not None
+                    and candidate_value is not None
+                    and baseline_value != 0
+                ):
+                    # Improvement is positive if the candidate's metric is lower than the baseline's.
+                    improvement = (baseline_value - candidate_value) / baseline_value
+                    total_improvement += improvement
+            # If the cumulative improvement is positive, add candidate to winners.
+            if total_improvement > -10:
+                winners_list.append(candidate)
 
         return winners_list
 
@@ -114,19 +67,11 @@ class Tree:
             self.curr.append(self.curr[curr_idx].children[idx])
         self.curr.remove(self.curr[curr_idx])
 
-    def no_winner(self, curr_idx: int):
-        self.curr.remove(self.curr[curr_idx])
+    def stop(self):
+        self.curr = []
 
     def serialize(self):
         """
         Convert the entire tree (starting at the root) to a JSON string.
         """
         return json.dumps(self.root.serialize())
-
-    @staticmethod
-    def get_default_metrics():
-        return {
-            "runtime": float("inf"),
-            "cpu": float("inf"),
-            "memory": float("inf"),
-        }
