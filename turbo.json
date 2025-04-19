@@ -1,11 +1,15 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "tasks": {
     "dev:web": {
       "dependsOn": [],
       "outputs": []
     },
     "dev:api": {
+      "dependsOn": [],
+      "outputs": []
+    },
+    "test": {
       "dependsOn": [],
       "outputs": []
     }

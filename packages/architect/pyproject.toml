@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "architect"
+version = "0.1.0"
+description = "ML pipeline project architecture generator"
+authors = ["Your Name <you@example.com>"]
+packages = [{ include = "architect" }]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

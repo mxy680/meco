@@ -1,0 +1,7 @@
+{
+  "name": "architect",
+  "private": true,
+  "scripts": {
+    "test": "source .venv/bin/activate && poetry run pytest"
+  }
+}
