@@ -6,7 +6,7 @@
     {
       "label": "Test",
       "type": "shell",
-      "command": "pnpm test",
+      "command": "turbo run test --no-cache",
       "group": {
         "kind": "test",
         "isDefault": true
@@ -16,9 +16,9 @@
     {
       "label": "Install",
       "type": "shell",
-      "command": "pnpm install",
+      "command": "go mod tidy",
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}/apps/api"
       },
       "group": "build",
       "problemMatcher": []
@@ -36,7 +36,7 @@
     {
       "label": "Dev",
       "type": "shell",
-      "command": "pnpm turbo run dev --parallel",
+      "command": "go run ./cmd/api",
       "options": {
         "cwd": "${workspaceFolder}/apps/api"
       },
