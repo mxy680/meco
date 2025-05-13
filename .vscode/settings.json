@@ -1,0 +1,10 @@
+{
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/node_modules": true,
+    "**/.venv": true,
+    "**/.turbo": true,
+    "**/.pytest_cache": true,
+    "**/.next": true
+  }
+}
