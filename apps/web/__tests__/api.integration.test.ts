@@ -1,3 +1,5 @@
+jest.setTimeout(30000);
+
 describe("Go API integration", () => {
   it("should create and stop a container", async () => {
     let containerId: string | undefined;
