@@ -10,7 +10,7 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "typecheck": "tsc --noEmit",
-    "test": "jest apps/web"
+    "test": "npx jest __tests__/api.integration.test.ts --detectOpenHandles"
   },
   "dependencies": {
     "@workspace/ui": "workspace:*",
