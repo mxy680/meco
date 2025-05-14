@@ -1,19 +1,19 @@
 package handler
 
 import (
-	"encoding/json"
-	"net/http"
 	"context"
+	"crypto/rand"
+	"encoding/json"
+	"fmt"
 	"io"
 	"log"
-	"crypto/rand"
-	"fmt"
+	"net/http"
+
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 	"github.com/mxy680/meco/internal/model"
 )
-
 
 func CreateContainer(w http.ResponseWriter, r *http.Request) {
 	log.Printf("[INFO] %s %s from %s", r.Method, r.URL.Path, r.RemoteAddr)
@@ -30,7 +30,7 @@ func CreateContainer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	ctx := context.Background()
-	image := "mxy680/clip-inference:latest"
+	image := "mxy680/meco-base:latest"
 	log.Printf("[INFO] Pulling image '%s' if not present...", image)
 	reader, err := cli.ImagePull(ctx, image, types.ImagePullOptions{})
 	if err != nil {
