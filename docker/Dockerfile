@@ -5,11 +5,13 @@ WORKDIR /app
 # Create required directories and files for project skeleton
 RUN mkdir -p data scripts models figs docs config 
 
-# Install Jupyter Kernel Gateway and Python kernel
-RUN pip install --no-cache-dir jupyter_kernel_gateway ipykernel
+# Install curl and Jupyter Kernel Gateway and Python kernel
+RUN apt-get update && apt-get install -y curl \
+    && pip install --no-cache-dir jupyter_kernel_gateway ipykernel \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Expose Jupyter Kernel Gateway port
 EXPOSE 8888
 
 # Default: Run Jupyter Kernel Gateway in websocket mode
-CMD ["jupyter", "kernelgateway", "--KernelGatewayApp.api=kernel_gateway.jupyter_websocket", "--port=8888"]
+CMD ["jupyter", "kernelgateway", "--KernelGatewayApp.api=kernel_gateway.jupyter_websocket", "--port=8888", "--KernelGatewayApp.auth_token=''", "--KernelGatewayApp.list_kernels=True"]
