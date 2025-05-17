@@ -1,12 +1,13 @@
 package utils
 
 import (
+	"bytes"
 	"context"
-	"io"
 	"log"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
+	"github.com/docker/docker/pkg/stdcopy"
 )
 
 // ExecInContainer executes a command in a running Docker container and returns the output or an error.
@@ -37,11 +38,14 @@ func ExecInContainer(containerID string, cmd []string) (string, error) {
 	}
 	log.Printf("[INFO] Attached to exec instance. Reading output...")
 	defer attachResp.Close()
-	output, err := io.ReadAll(attachResp.Reader)
+
+	// Demultiplex the Docker stream to remove header bytes
+	var stdoutBuf, stderrBuf bytes.Buffer
+	_, err = stdcopy.StdCopy(&stdoutBuf, &stderrBuf, attachResp.Reader)
 	if err != nil {
-		log.Printf("[ERROR] Reading exec output failed: %v", err)
+		log.Printf("[ERROR] Demultiplexing exec output failed: %v", err)
 		return "", err
 	}
-	log.Printf("[INFO] Exec output: %s", string(output))
-	return string(output), nil
+	log.Printf("[INFO] Exec output: %s", stdoutBuf.String())
+	return stdoutBuf.String(), nil
 }
