@@ -26,9 +26,9 @@
     {
       "label": "Build",
       "type": "shell",
-      "command": "docker build -t ml-pipeline -f docker/Dockerfile docker",
+      "command": "docker build -t mxy680/meco-base:latest -f docker/Dockerfile . && docker push mxy680/meco-base:latest",
       "options": {
-        "cwd": "${workspaceFolder}/packages/architect"
+        "cwd": "${workspaceFolder}"
       },
       "group": "build",
       "problemMatcher": []

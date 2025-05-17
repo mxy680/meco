@@ -4,7 +4,9 @@ go 1.23.0
 
 toolchain go1.24.3
 
-require github.com/docker/docker v20.10.24+incompatible
+require (
+	github.com/docker/docker v20.10.24+incompatible
+)
 
 replace github.com/docker/distribution => github.com/docker/distribution v2.7.1+incompatible
 

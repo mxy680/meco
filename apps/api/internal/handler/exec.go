@@ -5,10 +5,11 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/mxy680/meco/internal/model"
 	"github.com/mxy680/meco/internal/utils"
 )
 
-// ExecContainer executes a command in a running container. Expects 'id' as a URL query param and JSON {"cmd": ["ls", "/"]} in the body.
+// ExecContainer executes a command in a running container.
 func ExecContainer(w http.ResponseWriter, r *http.Request) {
 	log.Printf("[INFO] ExecContainer called. Method: %s, URL: %s", r.Method, r.URL.String())
 	if r.Method != http.MethodPost {
@@ -22,9 +23,7 @@ func ExecContainer(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Missing container id", http.StatusBadRequest)
 		return
 	}
-	var req struct {
-		Cmd []string `json:"cmd"`
-	}
+	var req model.ExecContainerRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		log.Printf("[WARN] Invalid request body: %v", err)
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
@@ -43,7 +42,7 @@ func ExecContainer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(map[string]string{"output": output}); err != nil {
+	if err := json.NewEncoder(w).Encode(model.ExecContainerResponse{Output: output}); err != nil {
 		log.Printf("[ERROR] Writing response failed: %v", err)
 	}
 }

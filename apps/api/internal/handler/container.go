@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
@@ -15,6 +16,7 @@ import (
 	"github.com/mxy680/meco/internal/model"
 )
 
+// CreateContainer handles container creation requests.
 func CreateContainer(w http.ResponseWriter, r *http.Request) {
 	log.Printf("[INFO] %s %s from %s", r.Method, r.URL.Path, r.RemoteAddr)
 	if r.Method != http.MethodGet {
@@ -73,4 +75,33 @@ func CreateContainer(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewEncoder(w).Encode(model.CreateContainerResponse{ID: resp.ID}); err != nil {
 		log.Printf("[ERROR] Failed to encode response: %v", err)
 	}
+}
+
+// StopContainer handles container stop requests.
+func StopContainer(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	containerID := r.URL.Query().Get("id")
+	if containerID == "" {
+		http.Error(w, "Missing container id", http.StatusBadRequest)
+		return
+	}
+	cli, err := client.NewClientWithOpts(client.FromEnv)
+	if err != nil {
+		log.Printf("[ERROR] Docker client error: %v", err)
+		json.NewEncoder(w).Encode(map[string]bool{"ok": false})
+		return
+	}
+	ctx := context.Background()
+	timeout := 10 * time.Second
+	err = cli.ContainerStop(ctx, containerID, &timeout)
+	if err != nil {
+		log.Printf("[ERROR] Failed to stop container %s: %v", containerID, err)
+		json.NewEncoder(w).Encode(map[string]bool{"ok": false})
+		return
+	}
+	log.Printf("[INFO] Container %s stopped successfully", containerID)
+	json.NewEncoder(w).Encode(model.StopContainerResponse{OK: true})
 }
