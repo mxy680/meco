@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/mxy680/meco/internal/handler"
+	"github.com/mxy680/meco/apps/api/internal/handler"
 )
 
 func main() {
@@ -17,10 +17,11 @@ func main() {
 	http.HandleFunc("/api/container/script/edit", handler.EditScript)
 	http.HandleFunc("/api/container/script/read", handler.ReadScript)
 
-	http.HandleFunc("/api/kernels/info", handler.GetKernelInfo) // GET: ?id=<container_id>&kernel_id=<kernel_id>
+
 	http.HandleFunc("/api/kernels/interrupt", handler.InterruptKernel) // POST: ?id=<container_id>&kernel_id=<kernel_id>
 	http.HandleFunc("/api/kernels/restart", handler.RestartKernel) // POST: ?id=<container_id>&kernel_id=<kernel_id>
 	http.HandleFunc("/api/kernels/delete", handler.DeleteKernel) // DELETE: ?id=<container_id>&kernel_id=<kernel_id>
+	http.HandleFunc("/api/kernels/execute", handler.ExecuteCode) // POST: ?id=<container_id>&kernel_id=<kernel_id>, body: {code}
 
 	log.Println("API running on :8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))

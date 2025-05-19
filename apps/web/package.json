@@ -10,7 +10,7 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "typecheck": "tsc --noEmit",
-    "test": "npx jest __tests__/kernel.test.ts --detectOpenHandles"
+    "test": "npx jest __tests__/kernel_execute.test.ts --detectOpenHandles"
   },
   "dependencies": {
     "@workspace/ui": "workspace:*",

@@ -13,7 +13,7 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
-	"github.com/mxy680/meco/internal/model"
+	"github.com/mxy680/meco/apps/api/internal/model"
 )
 
 // CreateContainer handles container creation requests.
@@ -65,7 +65,7 @@ func CreateContainer(w http.ResponseWriter, r *http.Request) {
 	log.Printf("[INFO] Container created successfully, ID: %s", resp.ID)
 
 	// Start the container after creation
-	if err := cli.ContainerStart(ctx, resp.ID, types.ContainerStartOptions{}); err != nil {
+	if err := cli.ContainerStart(ctx, resp.ID, container.StartOptions{}); err != nil {
 		log.Printf("[ERROR] Failed to start container: %v", err)
 		http.Error(w, "failed to start container", http.StatusInternalServerError)
 		return
@@ -96,7 +96,9 @@ func StopContainer(w http.ResponseWriter, r *http.Request) {
 	}
 	ctx := context.Background()
 	timeout := 10 * time.Second
-	err = cli.ContainerStop(ctx, containerID, &timeout)
+	seconds := int(timeout.Seconds())
+	stopOptions := container.StopOptions{Timeout: &seconds}
+	err = cli.ContainerStop(ctx, containerID, stopOptions)
 	if err != nil {
 		log.Printf("[ERROR] Failed to stop container %s: %v", containerID, err)
 		json.NewEncoder(w).Encode(map[string]bool{"ok": false})

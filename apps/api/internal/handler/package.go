@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/mxy680/meco/internal/model"
-	"github.com/mxy680/meco/internal/utils"
+	"github.com/mxy680/meco/apps/api/internal/model"
+	"github.com/mxy680/meco/apps/api/internal/utils"
 )
 
 // InstallPackage installs a Python package in a running container.

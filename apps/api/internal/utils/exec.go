@@ -4,11 +4,21 @@ import (
 	"bytes"
 	"context"
 	"log"
+	"os/exec"
 
 	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/stdcopy"
 )
+
+// ExecHostCommand runs a command on the host and returns its combined output.
+func ExecHostCommand(cmd []string) ([]byte, error) {
+	if len(cmd) == 0 {
+		return nil, nil
+	}
+	return exec.Command(cmd[0], cmd[1:]...).CombinedOutput()
+}
 
 // ExecInContainer executes a command in a running Docker container and returns the output or an error.
 func ExecInContainer(containerID string, cmd []string) (string, error) {
@@ -31,7 +41,7 @@ func ExecInContainer(containerID string, cmd []string) (string, error) {
 		return "", err
 	}
 	log.Printf("[INFO] Exec instance created. ExecID: %s", execResp.ID)
-	attachResp, err := cli.ContainerExecAttach(ctx, execResp.ID, types.ExecStartCheck{})
+	attachResp, err := cli.ContainerExecAttach(ctx, execResp.ID, container.ExecStartOptions{})
 	if err != nil {
 		log.Printf("[ERROR] Exec attach failed: %v", err)
 		return "", err

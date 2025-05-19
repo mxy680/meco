@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/mxy680/meco/internal/model"
-	"github.com/mxy680/meco/internal/utils"
+	"github.com/mxy680/meco/apps/api/internal/model"
+	"github.com/mxy680/meco/apps/api/internal/utils"
 )
 
 // CreateScript creates a new script file with the given name and optional content.

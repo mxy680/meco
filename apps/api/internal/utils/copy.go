@@ -9,7 +9,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 )
 
@@ -97,5 +97,5 @@ func CopyFileToContainer(containerID, hostPath, containerPath string) error {
 	}
 	tw.Close()
 
-	return cli.CopyToContainer(ctx, containerID, filepath.Dir(containerPath), buf, types.CopyToContainerOptions{AllowOverwriteDirWithFile: true})
+	return cli.CopyToContainer(ctx, containerID, filepath.Dir(containerPath), buf, container.CopyToContainerOptions{AllowOverwriteDirWithFile: true})
 }
