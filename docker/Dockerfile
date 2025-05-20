@@ -17,7 +17,7 @@ EXPOSE 8888
 RUN pip install websocket-client
 
 # Copy WebSocket execution script
-COPY docker/ws_execute.py /usr/local/bin/ws_execute.py
+COPY docker/scripts/ws_execute.py /usr/local/bin/ws_execute.py
 
 # Default: Run Jupyter Kernel Gateway in websocket mode
 CMD ["jupyter", "kernelgateway", "--KernelGatewayApp.api=kernel_gateway.jupyter_websocket", "--port=8888", "--KernelGatewayApp.auth_token=''"]
