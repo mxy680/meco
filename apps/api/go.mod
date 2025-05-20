@@ -6,7 +6,6 @@ toolchain go1.24.3
 
 require (
 	github.com/docker/docker v28.1.1+incompatible
-	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.3
 )
 

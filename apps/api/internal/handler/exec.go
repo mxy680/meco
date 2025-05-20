@@ -6,71 +6,38 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/google/uuid"
-	"github.com/gorilla/websocket"
 	"github.com/mxy680/meco/apps/api/internal/model"
 	"github.com/mxy680/meco/apps/api/internal/utils"
 )
 
-// ExecuteCode connects to the kernel websocket and sends an execute_request message.
+// ExecuteCode executes ws_execute.py in the specified Docker container with the given kernel and code.
 func ExecuteCode(w http.ResponseWriter, r *http.Request) {
+	containerID := r.URL.Query().Get("id") // Expect container ID as query param
 	kernelID := r.URL.Query().Get("kernel_id")
-	if kernelID == "" {
-		http.Error(w, "Missing kernel id", http.StatusBadRequest)
+	if containerID == "" || kernelID == "" {
+		http.Error(w, "Missing container id or kernel id", http.StatusBadRequest)
 		return
 	}
 	var req struct {
 		Code string `json:"code"`
 	}
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || strings.TrimSpace(req.Code) == "" {
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil || req.Code == "" {
 		http.Error(w, "Missing or invalid code", http.StatusBadRequest)
 		return
 	}
 
-	wsURL := "ws://127.0.0.1:8888/api/kernels/" + kernelID + "/channels"
-	c, _, err := websocket.DefaultDialer.Dial(wsURL, nil)
+	cmd := []string{"python", "/usr/local/bin/ws_execute.py", kernelID, req.Code}
+	output, err := utils.ExecInContainer(containerID, cmd)
 	if err != nil {
-		log.Printf("[ERROR] Failed to connect to kernel websocket: %v", err)
-		http.Error(w, "Failed to connect to kernel websocket", http.StatusInternalServerError)
+		log.Printf("[ERROR] ExecInContainer failed: %v", err)
+		http.Error(w, "exec in container failed", http.StatusInternalServerError)
 		return
 	}
-	defer c.Close()
-
-	// Build execute_request message (simplified, not handling full Jupyter protocol)
-	execMsg := model.ExecuteRequestMessage{
-		Header: model.MessageHeader{
-			MsgID:    uuid.NewString(),
-			Username: "user",
-			Session:  uuid.NewString(),
-			MsgType:  "execute_request",
-			Version:  "5.3",
-		},
-		ParentHeader: map[string]interface{}{},
-		Metadata:     map[string]interface{}{},
-		Content: model.ExecuteRequestContent{
-			Code:            req.Code,
-			Silent:          false,
-			StoreHistory:    true,
-			UserExpressions: map[string]string{},
-			AllowStdin:      false,
-			StopOnError:     true,
-		},
-	}
-	if err := c.WriteJSON(execMsg); err != nil {
-		log.Printf("[ERROR] Failed to send execute_request: %v", err)
-		http.Error(w, "Failed to send execute_request", http.StatusInternalServerError)
-		return
-	}
-
-	// Read response (simplified: read just one message)
-	var resp map[string]interface{}
-	if err := c.ReadJSON(&resp); err != nil {
-		log.Printf("[ERROR] Failed to read kernel response: %v", err)
-		http.Error(w, "Failed to read kernel response", http.StatusInternalServerError)
-		return
-	}
+	trimmedOutput := strings.TrimSpace(output)
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(resp)
+	if err := json.NewEncoder(w).Encode(model.ExecContainerResponse{Output: trimmedOutput}); err != nil {
+		log.Printf("[ERROR] Writing response failed: %v", err)
+	}
 }
 
 // ExecContainer executes a command in a running container.

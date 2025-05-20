@@ -10,8 +10,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
+	imageTypes "github.com/docker/docker/api/types/image"
 	"github.com/docker/docker/client"
 	"github.com/mxy680/meco/apps/api/internal/model"
 )
@@ -25,7 +25,7 @@ func CreateContainer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Printf("[INFO] Creating Docker client...")
-	cli, err := client.NewClientWithOpts(client.FromEnv)
+	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithVersion("1.48"))
 	if err != nil {
 		log.Printf("[ERROR] Docker client error: %v", err)
 		http.Error(w, "docker client error", http.StatusInternalServerError)
@@ -34,7 +34,7 @@ func CreateContainer(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	image := "mxy680/meco-base:latest"
 	log.Printf("[INFO] Pulling image '%s' if not present...", image)
-	reader, err := cli.ImagePull(ctx, image, types.ImagePullOptions{})
+	reader, err := cli.ImagePull(ctx, image, imageTypes.PullOptions{})
 	if err != nil {
 		log.Printf("[ERROR] Failed to pull image: %v", err)
 		http.Error(w, "failed to pull image", http.StatusInternalServerError)
@@ -88,7 +88,7 @@ func StopContainer(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Missing container id", http.StatusBadRequest)
 		return
 	}
-	cli, err := client.NewClientWithOpts(client.FromEnv)
+	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithVersion("1.48"))
 	if err != nil {
 		log.Printf("[ERROR] Docker client error: %v", err)
 		json.NewEncoder(w).Encode(map[string]bool{"ok": false})

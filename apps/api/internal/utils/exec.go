@@ -6,7 +6,6 @@ import (
 	"log"
 	"os/exec"
 
-	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/stdcopy"
@@ -23,13 +22,13 @@ func ExecHostCommand(cmd []string) ([]byte, error) {
 // ExecInContainer executes a command in a running Docker container and returns the output or an error.
 func ExecInContainer(containerID string, cmd []string) (string, error) {
 	log.Printf("[INFO] ExecInContainer called. containerID: %s, cmd: %+v", containerID, cmd)
-	cli, err := client.NewClientWithOpts(client.FromEnv)
+	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithVersion("1.48"))
 	if err != nil {
 		log.Printf("[ERROR] Docker client error: %v", err)
 		return "", err
 	}
 	ctx := context.Background()
-	execConfig := types.ExecConfig{
+	execConfig := container.ExecOptions{
 		Cmd:          cmd,
 		AttachStdout: true,
 		AttachStderr: true,
@@ -56,6 +55,7 @@ func ExecInContainer(containerID string, cmd []string) (string, error) {
 		log.Printf("[ERROR] Demultiplexing exec output failed: %v", err)
 		return "", err
 	}
+
 	log.Printf("[INFO] Exec output: %s", stdoutBuf.String())
 	return stdoutBuf.String(), nil
 }

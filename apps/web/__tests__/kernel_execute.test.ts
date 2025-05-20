@@ -36,11 +36,11 @@ describe('Kernel Execute API', () => {
     kernelId = kernel.id;
   });
 
-  // afterAll(async () => {
-  //   // Clean up: delete kernel and container
-  //   await fetch(`http://localhost:8080/api/kernels/delete?id=${containerId}&kernel_id=${kernelId}`, { method: 'DELETE' });
-  //   await fetch(`http://localhost:8080/api/containers/delete?id=${containerId}`, { method: 'DELETE' });
-  // });
+  afterAll(async () => {
+    // Clean up: delete kernel and container
+    await fetch(`http://localhost:8080/api/kernels/delete?id=${containerId}&kernel_id=${kernelId}`, { method: 'DELETE' });
+    await fetch(`http://localhost:8080/api/containers/delete?id=${containerId}`, { method: 'DELETE' });
+  });
 
   it('should execute code and return the result', async () => {
     const res = await fetch(
@@ -53,7 +53,8 @@ describe('Kernel Execute API', () => {
     );
     expect(res.status).toBe(200);
     const data = await res.json();
-    expect(data.result).toContain('2');
+    console.log(data);
+    expect(data.output).toContain('2');
   });
 
   it('should return error for missing code', async () => {

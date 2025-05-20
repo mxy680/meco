@@ -15,7 +15,7 @@ import (
 
 // CopyFileFromContainer copies a file from the container to the host.
 func CopyFileFromContainer(containerID, containerPath, hostPath string) error {
-	cli, err := client.NewClientWithOpts(client.FromEnv)
+	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithVersion("1.48"))
 	if err != nil {
 		return err
 	}
@@ -62,7 +62,7 @@ func CopyFileFromContainer(containerID, containerPath, hostPath string) error {
 
 // CopyFileToContainer copies a file from the host to the container.
 func CopyFileToContainer(containerID, hostPath, containerPath string) error {
-	cli, err := client.NewClientWithOpts(client.FromEnv)
+	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithVersion("1.48"))
 	if err != nil {
 		return err
 	}
