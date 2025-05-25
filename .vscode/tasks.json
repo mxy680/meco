@@ -42,6 +42,16 @@
       },
       "group": "build",
       "problemMatcher": []
+    },
+    {
+      "label": "Migrate",
+      "type": "shell",
+      "command": "pnpm exec prisma migrate dev",
+      "options": {
+        "cwd": "${workspaceFolder}/apps/web"
+      },
+      "group": "build",
+      "problemMatcher": []
     }
   ]
 }
