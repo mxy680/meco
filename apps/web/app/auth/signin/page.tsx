@@ -1,15 +1,14 @@
-import { signIn } from "@/lib/auth"
- 
+import { signIn } from "@/lib/auth";
+
 export default function SignIn() {
   return (
     <form
-      action={async (formData) => {
-        "use server"
-        await signIn("resend", formData)
+      action={async () => {
+        "use server";
+        await signIn("bitbucket");
       }}
     >
-      <input type="text" name="email" placeholder="Email" />
-      <button type="submit">Signin with Resend</button>
+      <button type="submit">Signin with Bitbucket</button>
     </form>
-  )
+  );
 }
