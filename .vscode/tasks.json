@@ -1,6 +1,4 @@
 {
-  // See [https://go.microsoft.com/fwlink/?LinkId=733558](https://go.microsoft.com/fwlink/?LinkId=733558)
-  // for the documentation about the tasks.json format
   "version": "2.0.0",
   "tasks": [
     {
@@ -36,9 +34,9 @@
     {
       "label": "Dev",
       "type": "shell",
-      "command": "go run ./cmd/api",
+      "command": "pnpm dev",
       "options": {
-        "cwd": "${workspaceFolder}/apps/api"
+        "cwd": "${workspaceFolder}/apps/web"
       },
       "group": "build",
       "problemMatcher": []
@@ -46,11 +44,29 @@
     {
       "label": "Migrate",
       "type": "shell",
-      "command": "pnpm exec prisma migrate dev",
+      "command": "pnpm exec prisma migrate dev && pnpm exec prisma generate",
       "options": {
         "cwd": "${workspaceFolder}/apps/web"
       },
       "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Reset",
+      "type": "shell",
+      "command": "pnpm exec prisma migrate reset --force",
+      "options": {
+        "cwd": "${workspaceFolder}/apps/web"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Studio",
+      "type": "shell",
+      "command": "pnpm exec prisma studio",
+      "options": {
+        "cwd": "${workspaceFolder}/apps/web"
+      },
       "problemMatcher": []
     }
   ]
