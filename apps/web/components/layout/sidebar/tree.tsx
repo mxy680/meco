@@ -13,7 +13,7 @@ import {
   SidebarMenuSub,
 } from "@/components/ui/sidebar";
 
-import type { FileTreeItem } from "./sidebar-menu";
+import type { FileTreeItem } from "./menu";
 
 export function Tree({ item }: { item: FileTreeItem }) {
   const [name, ...items] = Array.isArray(item) ? item : [item];

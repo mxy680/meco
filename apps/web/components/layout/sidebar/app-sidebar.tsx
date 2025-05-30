@@ -10,9 +10,9 @@ import {
   SidebarHeader,
   SidebarFooter,
 } from "@/components/ui/sidebar";
-import { TeamSwitcher } from "@/components/sidebar/teams";
-import { User } from "@/components/sidebar/user";
-import { SidebarMenuSection } from "@/components/sidebar/sidebar-menu";
+import { TeamSwitcher } from "@/components/layout/sidebar/teams";
+import { User } from "@/components/layout/sidebar/user";
+import { SidebarMenuSection } from "@/components/layout/sidebar/menu";
 
 // This is sample data.
 const data = {

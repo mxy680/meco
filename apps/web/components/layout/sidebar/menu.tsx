@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { LayoutDashboard, BookText, Settings as SettingsIcon } from "lucide-react";
+import { LayoutDashboard, BookText, Settings as SettingsIcon, Database, Cpu, BarChart3 } from "lucide-react";
 
 import {
   SidebarGroup,
@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/sidebar";
 
 // Accepts changes and tree props
-import { Tree } from "@/components/sidebar/tree";
+import { Tree } from "@/components/layout/sidebar/tree";
 
 // Recursive type for file tree
 export type FileTreeItem = string | FileTreeItem[];
@@ -46,6 +46,33 @@ export function SidebarMenuSection({ tree }: SidebarMenuProps) {
               <SidebarMenuButton>
                 <SettingsIcon className="mr-2 h-4 w-4" />
                 Settings
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+
+      {/* Data/Models/Figures Tabs */}
+      <SidebarGroup>
+        <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton>
+                <Database className="mr-2 h-4 w-4" />
+                Data
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton>
+                <Cpu className="mr-2 h-4 w-4" />
+                Models
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton>
+                <BarChart3 className="mr-2 h-4 w-4" />
+                Figures
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>

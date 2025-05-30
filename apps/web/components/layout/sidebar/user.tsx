@@ -5,7 +5,6 @@ import {
   Bell,
   ChevronsUpDown,
   CreditCard,
-  LogOut,
   Sparkles,
 } from "lucide-react";
 
@@ -25,6 +24,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+
+import { SignOut } from "@/components/auth/signout-button";
 
 export function User({
   user,
@@ -98,10 +99,7 @@ export function User({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut />
-              Log out
-            </DropdownMenuItem>
+            <SignOut />
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
