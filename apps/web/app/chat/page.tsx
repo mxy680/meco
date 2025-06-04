@@ -3,7 +3,7 @@
 import { AnimatedAIChat } from "@/components/ui/animated-ai-chat";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 
-export default function DashboardPage() {
+export default function ChatPage() {
     return (
         <AuroraBackground>
             <div className="min-h-screen flex items-center justify-center p-4">

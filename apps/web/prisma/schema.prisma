@@ -16,15 +16,42 @@ model User {
     accounts      Account[]
     sessions      Session[]
     projects      Project[]
+    organizations OrganizationMember[]
+    ownedOrganizations Organization[] @relation("OwnedOrganizations")
     createdAt     DateTime  @default(now())
     updatedAt     DateTime  @updatedAt
+}
+
+model Organization {
+    id        String   @id @default(cuid())
+    name      String
+    owner     User     @relation("OwnedOrganizations", fields: [ownerId], references: [id], onDelete: Cascade)
+    ownerId   String
+    members   OrganizationMember[]
+    projects  Project[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model OrganizationMember {
+    id             String   @id @default(cuid())
+    user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId         String
+    organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+    organizationId String
+    role           String   // e.g., 'owner', 'admin', 'member'
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+    @@unique([userId, organizationId])
 }
 
 model Project {
     id        String   @id @default(cuid())
     name      String
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId    String
+    user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId    String?
+    organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+    organizationId String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
