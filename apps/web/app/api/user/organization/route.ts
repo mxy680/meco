@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 // POST /api/active-organization { email: string }
 import { auth } from "@/lib/auth";
 
-export async function POST() {
+export async function GET() {
   try {
     const session = await auth();
     const email = session?.user?.email;

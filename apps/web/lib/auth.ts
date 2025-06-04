@@ -25,10 +25,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     },
                 },
             });
+
             // Set this org as the user's active organization
             await prisma.user.update({
                 where: { id: user.id },
-                data: { activeOrganizationId: org.id },
+                data: {
+                    activeOrganization: { connect: { id: org.id } },
+                    image: user.image || null,
+                },
             });
         },
     },
