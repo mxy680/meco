@@ -8,25 +8,6 @@ const prisma = new PrismaClient()
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     adapter: PrismaAdapter(prisma),
-    session: { strategy: "jwt" },
+    session: { strategy: "jwt" }, 
     ...authConfig,
-    events: {
-        async createUser({ user }) {
-            // Create a team named "Personal"
-            const team = await prisma.team.create({
-                data: {
-                    name: `${user.name}'s Team`,
-                }
-            });
-
-            // Create a team membership for the user as admin
-            await prisma.teamMembership.create({
-                data: {
-                    userId: user.id!,
-                    teamId: team.id,
-                    role: "admin"
-                }
-            });
-        },
-    },
 })
