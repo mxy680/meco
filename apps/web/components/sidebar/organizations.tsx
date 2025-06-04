@@ -9,7 +9,24 @@ import { Blocks } from "lucide-react"
 import Link from "next/link"
 import { variants } from "./framer-props"
 
+import { useEffect, useState } from "react";
+
 export default function SidebarOrgDropdown({ isCollapsed }: { isCollapsed: boolean }) {
+    const [org, setOrg] = useState<{ id: string; name: string } | null>(null);
+
+    useEffect(() => {
+        fetch("/api/user/organization", {
+            method: "POST"
+        })
+            .then(res => res.ok ? res.json() : null)
+            .then(data => {
+                if (data && data.id && data.name) setOrg(data);
+            });
+    }, []);
+
+    const displayName = org?.name || "Organization";
+    const initials = org?.name ? org.name[0].toUpperCase() : "";
+
     return (
         <div className="flex h-[54px] w-full shrink-0 border-b p-2">
             <div className="mt-[1.5px] flex w-full">
@@ -21,12 +38,27 @@ export default function SidebarOrgDropdown({ isCollapsed }: { isCollapsed: boole
                             className="flex w-fit items-center gap-2 px-2"
                         >
                             <Avatar className="rounded size-4">
-                                <AvatarFallback>O</AvatarFallback>
+                                <AvatarFallback>
+                                    {initials ? (
+                                        <motion.span
+                                            initial={{ opacity: 0, scale: 0.8 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            transition={{ duration: 0.35, ease: 'easeIn' }}
+                                        >
+                                            {initials}
+                                        </motion.span>
+                                    ) : null}
+                                </AvatarFallback>
                             </Avatar>
                             <motion.li variants={variants} className="flex w-fit items-center gap-2">
                                 {!isCollapsed && (
                                     <>
-                                        <p className="text-sm font-medium">{"Organization"}</p>
+                                        <span
+                                            className="text-sm font-medium truncate max-w-[140px] text-left"
+                                            title={displayName}
+                                        >
+                                            {displayName}
+                                        </span>
                                         <ChevronsUpDown className="h-4 w-4 text-muted-foreground/50" />
                                     </>
                                 )}
