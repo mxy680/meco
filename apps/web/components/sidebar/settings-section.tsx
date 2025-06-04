@@ -2,7 +2,7 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { motion } from "framer-motion";
-import { Settings } from "lucide-react";
+
 import Link from "next/link";
 import type { Variants as MotionVariants } from "framer-motion";
 import { LogOut } from "lucide-react";
@@ -13,6 +13,7 @@ import { ChevronsUpDown } from "lucide-react";
 
 import { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
+import SettingsDialog from "../settings/settings-dialog";
 
 export default function SidebarSettingsSection({ isCollapsed, variants }: { isCollapsed: boolean; variants: MotionVariants }) {
     const [user, setUser] = useState<{ name: string; email: string; image?: string } | null>(null);
@@ -24,19 +25,12 @@ export default function SidebarSettingsSection({ isCollapsed, variants }: { isCo
             });
     }, []);
 
+    const [isOpen, setIsOpen] = useState(false);
+
     return (
         <div className="flex flex-col p-2">
-            <Link
-                href="/settings/integrations"
-                className="mt-auto flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5   transition hover:bg-muted hover:text-primary"
-            >
-                <Settings className="h-4 w-4 shrink-0" />{" "}
-                <motion.li variants={variants}>
-                    {!isCollapsed && (
-                        <p className="ml-2 text-sm font-medium"> Settings</p>
-                    )}
-                </motion.li>
-            </Link>
+            <SettingsDialog open={isOpen} setOpen={setIsOpen} />
+
             <div>
                 <DropdownMenu modal={false}>
                     <DropdownMenuTrigger className="w-full">
