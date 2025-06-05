@@ -1,5 +1,6 @@
 'use client'
 import React from 'react';
+import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 
@@ -248,26 +249,14 @@ export function SignInCard() {
               }}
             />
 
-            {/* Logo and header */}
             <div className="text-center space-y-1 mb-7">
-              <motion.div
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: "spring", duration: 0.8 }}
-                className="mx-auto w-10 h-10 rounded-full border border-white/10 flex items-center justify-center relative overflow-hidden"
-              >
-                {/* Logo placeholder - would be an SVG in practice */}
-                {/* <!-- SVG_LOGO --> */}
-                <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">S</span>
-                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-50" />
-              </motion.div>
               <motion.h1
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
                 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80"
               >
-                Welcome Back
+                Model with M.E.C.O
               </motion.h1>
               <motion.p
                 initial={{ opacity: 0 }}
@@ -279,14 +268,13 @@ export function SignInCard() {
               </motion.p>
             </div>
 
-            {/* OAuth Buttons */}
             <div className="space-y-4">
-              {/* GitHub primary button */}
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 type="button"
                 className="w-full relative group/github"
+                onClick={() => signIn('github', { callbackUrl: '/chat' })}
               >
                 <div className="absolute inset-0 bg-white/5 rounded-lg blur opacity-0 group-hover/github:opacity-70 transition-opacity duration-300" />
 
@@ -312,7 +300,6 @@ export function SignInCard() {
                 </div>
               </motion.button>
 
-              {/* Divider */}
               <div className="flex items-center">
                 <div className="flex-grow border-t border-white/10"></div>
                 <span className="mx-3 text-xs text-white/40">or continue with</span>
@@ -325,6 +312,7 @@ export function SignInCard() {
                 whileTap={{ scale: 0.98 }}
                 type="button"
                 className="w-full relative group/bitbucket"
+                onClick={() => signIn('bitbucket', { callbackUrl: '/chat' })}
               >
                 <div className="absolute inset-0 bg-white/5 rounded-lg blur opacity-0 group-hover/bitbucket:opacity-70 transition-opacity duration-300" />
                 <div className="relative overflow-hidden bg-white/5 text-white font-medium h-10 rounded-lg border border-white/10 hover:border-white/20 transition-all duration-300 flex items-center justify-center gap-2">
@@ -345,6 +333,7 @@ export function SignInCard() {
                 whileTap={{ scale: 0.98 }}
                 type="button"
                 className="w-full relative group/gitlab"
+                onClick={() => signIn('gitlab', { callbackUrl: '/chat' })}
               >
                 <div className="absolute inset-0 bg-white/5 rounded-lg blur opacity-0 group-hover/gitlab:opacity-70 transition-opacity duration-300" />
                 <div className="relative overflow-hidden bg-white/5 text-white font-medium h-10 rounded-lg border border-white/10 hover:border-white/20 transition-all duration-300 flex items-center justify-center gap-2">
@@ -365,6 +354,7 @@ export function SignInCard() {
                 whileTap={{ scale: 0.98 }}
                 type="button"
                 className="w-full relative group/huggingface"
+                onClick={() => signIn('huggingface', { callbackUrl: '/chat' })}
               >
                 <div className="absolute inset-0 bg-white/5 rounded-lg blur opacity-0 group-hover/huggingface:opacity-70 transition-opacity duration-300" />
                 <div className="relative overflow-hidden bg-white/5 text-white font-medium h-10 rounded-lg border border-white/10 hover:border-white/20 transition-all duration-300 flex items-center justify-center gap-2">
