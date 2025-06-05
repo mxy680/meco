@@ -11,12 +11,12 @@ import {
     Paperclip,
     SendIcon,
     XIcon,
-    LoaderIcon,
     HelpCircle,
     Settings,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import * as React from "react"
+import SettingsDialog from "@/components/settings/settings-dialog";
 
 interface UseAutoResizeTextareaProps {
     minHeight: number;
@@ -131,11 +131,27 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 )
 Textarea.displayName = "Textarea"
 
-export function AnimatedAIChat() {
+export function Chat() {
     const [value, setValue] = useState("");
     const [attachments, setAttachments] = useState<string[]>([]);
-    const [isTyping, setIsTyping] = useState(false);
-    // const [isPending, startTransition] = useTransition(); // Unused, safe to remove
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    // Trigger file input dialog
+    const handleAttachClick = () => {
+        fileInputRef.current?.click();
+    };
+    // Handle file selection
+    const handleFilesSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files || []);
+        setAttachments((prev) => [...prev, ...files.map(f => f.name)]);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+    };
+    // Remove attachment by index
+    const handleRemoveAttachment = (index: number) => {
+        setAttachments((prev) => prev.filter((_, i) => i !== index));
+    };
+
+
     // Project suggestions to show at the bottom
     const projectSuggestions: CommandSuggestion[] = [
         {
@@ -195,9 +211,6 @@ export function AnimatedAIChat() {
 
 
     // Removed unused commandSuggestions array
-
-
-
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
             setMousePosition({ x: e.clientX, y: e.clientY });
@@ -209,15 +222,11 @@ export function AnimatedAIChat() {
         };
     }, []);
 
-
-
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
         }
     };
-
-
 
     return (
         <div className="min-h-screen flex flex-col w-full items-center justify-center bg-transparent text-white p-6 relative overflow-hidden">
@@ -331,8 +340,9 @@ export function AnimatedAIChat() {
                                         >
                                             <span>{file}</span>
                                             <button
-                                                onClick={() => { }}
+                                                onClick={() => handleRemoveAttachment(index)}
                                                 className="text-white/40 hover:text-white transition-colors"
+                                                aria-label={`Remove attachment ${file}`}
                                             >
                                                 <XIcon className="w-3 h-3" />
                                             </button>
@@ -344,33 +354,48 @@ export function AnimatedAIChat() {
 
                         <div className="p-4 border-t border-white/[0.05] flex items-center justify-between gap-4">
                             <div className="flex items-center">
+                                {/* File attachment button */}
                                 <motion.button
                                     type="button"
-                                    onClick={() => { }}
+                                    onClick={handleAttachClick}
                                     whileTap={{ scale: 0.94 }}
                                     className="p-2 text-white/40 hover:text-white/90 rounded-lg transition-colors relative group"
+                                    aria-label="Attach files"
                                 >
                                     <Paperclip className="w-4 h-4" />
                                 </motion.button>
+                                {/* Hidden file input */}
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    multiple
+                                    className="hidden"
+                                    onChange={handleFilesSelected}
+                                    aria-label="File attachment input"
+                                />
+                                <SettingsDialog>
+                                    <motion.button
+                                        type="button"
+                                        tabIndex={-1}
+                                        whileTap={{ scale: 0.94 }}
+                                        className={cn(
+                                            "p-2 text-white/40 hover:text-white/90 rounded-lg transition-colors relative group"
+                                        )}
+                                    >
+                                        <Settings className="w-4 h-4" />
+                                    </motion.button>
+                                </SettingsDialog>
                                 <motion.button
                                     type="button"
                                     tabIndex={-1}
-                                    onClick={() => { }}
+                                    onClick={() => {
+                                        window.location.href = '/docs';
+                                    }}
                                     whileTap={{ scale: 0.94 }}
                                     className={cn(
                                         "p-2 text-white/40 hover:text-white/90 rounded-lg transition-colors relative group"
                                     )}
-                                >
-                                    <Settings className="w-4 h-4" />
-                                </motion.button>
-                                <motion.button
-                                    type="button"
-                                    tabIndex={-1}
-                                    onClick={() => { }}
-                                    whileTap={{ scale: 0.94 }}
-                                    className={cn(
-                                        "p-2 text-white/40 hover:text-white/90 rounded-lg transition-colors relative group"
-                                    )}
+                                    aria-label="Open documentation"
                                 >
                                     <HelpCircle className="w-4 h-4" />
                                 </motion.button>
@@ -390,11 +415,7 @@ export function AnimatedAIChat() {
                                         : "bg-white/[0.05] text-white/40"
                                 )}
                             >
-                                {isTyping ? (
-                                    <LoaderIcon className="w-4 h-4 animate-[spin_2s_linear_infinite]" />
-                                ) : (
-                                    <SendIcon className="w-4 h-4" />
-                                )}
+                                <SendIcon className="w-4 h-4" />
                                 <span>Send</span>
                             </motion.button>
                         </div>
@@ -432,51 +453,6 @@ export function AnimatedAIChat() {
                 />
             )}
         </div>
-    );
-}
-
-
-interface ActionButtonProps {
-    icon: React.ReactNode;
-    label: string;
-}
-
-function ActionButton({ icon, label }: ActionButtonProps) {
-    const [isHovered, setIsHovered] = useState(false);
-
-    return (
-        <motion.button
-            type="button"
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.97 }}
-            onHoverStart={() => setIsHovered(true)}
-            onHoverEnd={() => setIsHovered(false)}
-            className="flex items-center gap-2 px-4 py-2 bg-neutral-900 hover:bg-neutral-800 rounded-full border border-neutral-800 text-neutral-400 hover:text-white transition-all relative overflow-hidden group"
-        >
-            <div className="relative z-10 flex items-center gap-2">
-                {icon}
-                <span className="text-xs relative z-10">{label}</span>
-            </div>
-
-            <AnimatePresence>
-                {isHovered && (
-                    <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-violet-500/10 to-indigo-500/10"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                    />
-                )}
-            </AnimatePresence>
-
-            <motion.span
-                className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-violet-500 to-indigo-500"
-                initial={{ width: 0 }}
-                whileHover={{ width: "100%" }}
-                transition={{ duration: 0.3 }}
-            />
-        </motion.button>
     );
 }
 

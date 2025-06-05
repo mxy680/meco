@@ -2,7 +2,6 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { motion } from "framer-motion"
-import { variants } from "@/components/sidebar/framer-props";
 import GeneralSettings from "./sections/general"
 import NotificationsSettings from "./sections/notifications"
 import PersonalizationSettings from "./sections/personalization"
@@ -27,8 +26,9 @@ const settingsItems = [
     { id: "subscription", label: "Subscription", icon: CreditCard },
 ]
 
-export default function SettingsDialog({ open, setOpen, section }: { open: boolean; setOpen: (open: boolean) => void; section?: string }) {
+export default function SettingsDialog({ section, children }: { section?: string; children: React.ReactNode }) {
     const [activeSection, setActiveSection] = useState(section || "general");
+    const [open, setOpen] = useState(false);
 
     // When dialog is opened, update URL hash to #settings
     useEffect(() => {
@@ -41,18 +41,7 @@ export default function SettingsDialog({ open, setOpen, section }: { open: boole
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                <button
-                    className="mt-auto flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted hover:text-primary"
-                    onClick={() => setOpen(true)}
-                    type="button"
-                >
-                    <Settings className="h-4 w-4 shrink-0" />{" "}
-                    <motion.li variants={variants}>
-                        <p className="ml-2 text-sm font-medium"> Settings</p>
-                    </motion.li>
-                </button>
-            </DialogTrigger>
+            <DialogTrigger asChild>{children}</DialogTrigger>
             <DialogContent className="bg-transparent border-transparent text-foreground p-1 !max-w-5xl !w-[900px] min-w-[700px] [&_.group.absolute]:hidden">
                 <motion.div
                     initial={{ opacity: 0 }}

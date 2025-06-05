@@ -5,8 +5,7 @@ import { motion } from "framer-motion";
 
 import Link from "next/link";
 import type { Variants as MotionVariants } from "framer-motion";
-import { LogOut } from "lucide-react";
-import { UserCircle } from "lucide-react";
+import { LogOut, UserCircle, Settings } from "lucide-react";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { ChevronsUpDown } from "lucide-react";
 
@@ -25,11 +24,19 @@ export default function SidebarSettingsSection({ isCollapsed, variants }: { isCo
             });
     }, []);
 
-    const [isOpen, setIsOpen] = useState(false);
-
     return (
         <div className="flex flex-col p-2">
-            <SettingsDialog open={isOpen} setOpen={setIsOpen} />
+            <SettingsDialog>
+                <button
+                    className="mt-auto flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted hover:text-primary"
+                    type="button"
+                >
+                    <Settings className="h-4 w-4 shrink-0" />{" "}
+                    <motion.li variants={variants}>
+                        <p className="ml-2 text-sm font-medium"> Settings</p>
+                    </motion.li>
+                </button>
+            </SettingsDialog>
 
             <div>
                 <DropdownMenu modal={false}>

@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatedAIChat } from "@/components/ui/animated-ai-chat";
+import { Chat } from "@/components/ui/chat";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 
 export default function ChatPage() {
@@ -8,7 +8,7 @@ export default function ChatPage() {
         <AuroraBackground>
             <div className="min-h-screen flex items-center justify-center p-4">
                 <div className="w-full max-w-3xl">
-                    <AnimatedAIChat />
+                    <Chat />
                 </div>
             </div>
         </AuroraBackground>
