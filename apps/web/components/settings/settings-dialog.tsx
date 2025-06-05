@@ -12,7 +12,7 @@ import BuilderProfileSettings from "./sections/builder-profile"
 import ConnectedAppsSettings from "./sections/connected-apps"
 import SecuritySettings from "./sections/security"
 import SubscriptionSettings from "./sections/subscription"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Bell, CreditCard, Database, Lock, Mic, Palette, Settings, User, Wrench } from "lucide-react"
 
 const settingsItems = [
@@ -27,8 +27,17 @@ const settingsItems = [
     { id: "subscription", label: "Subscription", icon: CreditCard },
 ]
 
-export default function SettingsDialog({ open, setOpen }: { open: boolean; setOpen: (open: boolean) => void }) {
-    const [activeSection, setActiveSection] = useState("general");
+export default function SettingsDialog({ open, setOpen, section }: { open: boolean; setOpen: (open: boolean) => void; section?: string }) {
+    const [activeSection, setActiveSection] = useState(section || "general");
+
+    // When dialog is opened, update URL hash to #settings
+    useEffect(() => {
+        if (open) {
+            window.location.hash = '#settings';
+        } else if (window.location.hash === '#settings') {
+            history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+    }, [open]);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -44,10 +53,17 @@ export default function SettingsDialog({ open, setOpen }: { open: boolean; setOp
                     </motion.li>
                 </button>
             </DialogTrigger>
-            <DialogContent className="bg-background text-foreground rounded-2xl shadow-xl p-4 !max-w-5xl !w-[900px] min-w-[700px] [&_.group.absolute]:hidden">
-                <div className="flex h-full">
+            <DialogContent className="bg-transparent border-transparent text-foreground p-1 !max-w-5xl !w-[900px] min-w-[700px] [&_.group.absolute]:hidden">
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.18, ease: "easeInOut" }}
+                    className="flex h-full rounded-2xl border border-white/15 backdrop-blur-2xl"
+                    style={{ background: "rgba(36,37,46,0.38)" }}
+                >
                     {/* Left Sidebar */}
-                    <div className="w-64 bg-background border-r border-muted p-6 overflow-y-auto flex flex-col">
+                    <div className="w-64 border-r border-white/10 p-6 overflow-y-auto flex flex-col">
                         <DialogHeader className="mb-6">
                             <DialogTitle className="text-lg font-bold mb-4 text-foreground">Settings</DialogTitle>
                         </DialogHeader>
@@ -84,7 +100,7 @@ export default function SettingsDialog({ open, setOpen }: { open: boolean; setOp
                         {activeSection === "security" && <SecuritySettings />}
                         {activeSection === "subscription" && <SubscriptionSettings />}
                     </div>
-                </div>
+                </motion.div>
             </DialogContent>
         </Dialog>
     )

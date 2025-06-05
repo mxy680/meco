@@ -2,9 +2,9 @@
 
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import * as React from "react";
-
 import { cn } from "@/lib/utils";
 import { Cross2Icon } from "@radix-ui/react-icons";
+import { motion } from "framer-motion";
 
 const Dialog = DialogPrimitive.Root;
 
@@ -18,14 +18,19 @@ const DialogOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
-  <DialogPrimitive.Overlay
-    ref={ref}
-    className={cn(
-      "fixed inset-0 z-[101] bg-black/40 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-      className,
-    )}
-    {...props}
-  />
+  <DialogPrimitive.Overlay asChild {...props}>
+    <motion.div
+      ref={ref}
+      className={cn(
+        "fixed inset-0 z-[101] bg-black/40",
+        className,
+      )}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.18, ease: "easeIn" }}
+    />
+  </DialogPrimitive.Overlay>
 ));
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
@@ -35,24 +40,28 @@ const DialogContent = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <DialogPortal>
     <DialogOverlay />
-    <DialogPrimitive.Content
-      ref={ref}
-      className={cn(
-        "fixed left-1/2 top-1/2 z-[101] grid max-h-[calc(100%-4rem)] w-full -translate-x-1/2 -translate-y-1/2 gap-4 overflow-y-auto border bg-background p-6 shadow-lg shadow-black/5 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:max-w-[400px] sm:rounded-xl",
-        className,
-      )}
-      {...props}
-    >
-      {children}
-      <DialogPrimitive.Close className="group absolute right-3 top-3 flex size-7 items-center justify-center rounded-lg outline-offset-2 transition-colors focus-visible:outline focus-visible:outline-ring/70 disabled:pointer-events-none">
-        <Cross2Icon
-          width={16}
-          height={16}
-          strokeWidth={2}
-          className="opacity-60 transition-opacity group-hover:opacity-100"
-        />
-        <span className="sr-only">Close</span>
-      </DialogPrimitive.Close>
+    <DialogPrimitive.Content {...props} ref={ref} className="contents">
+      <motion.div
+        className={cn(
+          "fixed left-1/2 top-1/2 z-[102] grid w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-2xl",
+          className
+        )}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.18, ease: "easeIn" }}
+      >
+        {children}
+        <DialogPrimitive.Close className="group absolute right-3 top-3 flex size-7 items-center justify-center rounded-lg outline-offset-2 transition-colors focus-visible:outline focus-visible:outline-ring/70 disabled:pointer-events-none">
+          <Cross2Icon
+            width={16}
+            height={16}
+            strokeWidth={2}
+            className="opacity-60 transition-opacity group-hover:opacity-100"
+          />
+          <span className="sr-only">Close</span>
+        </DialogPrimitive.Close>
+      </motion.div>
     </DialogPrimitive.Content>
   </DialogPortal>
 ));

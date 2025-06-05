@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SidebarSettingsSection from "./settings-section";
 import SidebarNavSection from "./nav-section";
 import SidebarOrgDropdown from "./organizations";
@@ -28,6 +28,21 @@ export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const pathname = usePathname();
 
+  // Collapse sidebar if #settings is in the URL
+  // Listen for hash changes and update collapsed state
+  // Only collapse, never auto-expand
+  useEffect(() => {
+    function handleHashChange() {
+      if (window.location.hash === '#settings') {
+        setIsCollapsed(true);
+      }
+    }
+    // Check on mount
+    handleHashChange();
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
   return (
     <motion.div
       className={cn(
@@ -37,7 +52,9 @@ export function Sidebar() {
       animate={isCollapsed ? "closed" : "open"}
       variants={sidebarVariants}
       transition={transitionProps}
-      onMouseEnter={() => setIsCollapsed(false)}
+      onMouseEnter={() => {
+        if (window.location.hash !== '#settings') setIsCollapsed(false);
+      }}
       onMouseLeave={() => setIsCollapsed(true)}
     >
       <motion.div
