@@ -1,6 +1,6 @@
 "use client";
 
-import { Chat } from "@/components/ui/chat";
+import { Chat } from "@/components/chat/landing/landing-chat";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 
 export default function ChatPage() {
