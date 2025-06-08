@@ -20,6 +20,7 @@ model User {
     ownedOrganizations   Organization[]       @relation("OwnedOrganizations")
     activeOrganizationId String? // FK to Organization
     activeOrganization   Organization?        @relation("ActiveOrganization", fields: [activeOrganizationId], references: [id])
+    chats                Chat[]
     createdAt            DateTime             @default(now())
     updatedAt            DateTime             @updatedAt
 
@@ -58,8 +59,32 @@ model Project {
     userId         String?
     organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
     organizationId String
+    chats          Chat[]
     createdAt      DateTime     @default(now())
     updatedAt      DateTime     @updatedAt
+}
+
+model Chat {
+    id          String       @id @default(cuid())
+    project     Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+    projectId   String
+    user        User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId      String?
+    content     String
+    attachments Attachment[]
+    createdAt   DateTime     @default(now())
+    updatedAt   DateTime     @updatedAt
+}
+
+model Attachment {
+    id        String   @id @default(cuid())
+    chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+    chatId    String
+    url       String // MinIO/S3 object URL or path
+    name      String // Original filename
+    type      String // MIME type
+    size      Int // File size in bytes
+    createdAt DateTime @default(now())
 }
 
 model Account {

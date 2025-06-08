@@ -21,6 +21,58 @@ export function Chat() {
     });
     const [inputFocused, setInputFocused] = useState(false);
 
+    // --- Create Project & Chat Handler ---
+    const handleCreateProjectAndChat = async () => {
+        try {
+            // 1. Get user profile
+            const profileRes = await fetch("/api/user/profile");
+            if (!profileRes.ok) throw new Error("Failed to fetch user profile");
+            const profile = await profileRes.json();
+            const userId = profile.id;
+            if (!userId) throw new Error("User ID not found in profile response");
+
+            // 2. Get organization
+            const orgRes = await fetch("/api/user/organization");
+            if (!orgRes.ok) throw new Error("Failed to fetch organization");
+            const org = await orgRes.json();
+            const organizationId = org.id;
+            if (!organizationId) throw new Error("Organization ID not found in organization response");
+
+            // 3. Create project
+            const projectName = "Untitled Project";
+            const projectRes = await fetch("/api/user/project", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: projectName,
+                    organizationId,
+                    userId,
+                }),
+            });
+            if (!projectRes.ok) throw new Error("Failed to create project");
+            const project = await projectRes.json();
+
+            // 4. Create chat for the project
+            const chatRes = await fetch("/api/user/project/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    projectId: project.id,
+                    userId,
+                    content: value,
+                    files: attachments,
+                }),
+            });
+            if (!chatRes.ok) throw new Error("Failed to create chat");
+            // Optionally, handle chat response here
+            setValue("");
+            setAttachments([]);
+        } catch (err) {
+            // Optionally, show error to user
+            console.error(err);
+        }
+    };
+
     // Animated cycling placeholder logic
     const examplePrompts = useMemo(() => [
         "Train a regression model on my dataset of house prices...",
@@ -141,7 +193,7 @@ export function Chat() {
                             setValue={setValue}
                             attachments={attachments}
                             setAttachments={setAttachments}
-                            onSend={() => { }}
+                            onSend={handleCreateProjectAndChat}
                             inputFocused={inputFocused}
                             setInputFocused={setInputFocused}
                             textareaRef={textareaRef as React.RefObject<HTMLTextAreaElement>}
@@ -152,8 +204,6 @@ export function Chat() {
                     <ChatSuggestions />
                 </motion.div>
             </div>
-
-
 
             {inputFocused && (
                 <motion.div
