@@ -256,7 +256,7 @@ export function SignInCard() {
                 transition={{ delay: 0.2 }}
                 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80"
               >
-                Model with M.E.C.O
+                Model with Orca
               </motion.h1>
               <motion.p
                 initial={{ opacity: 0 }}

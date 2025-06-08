@@ -24,7 +24,7 @@
     {
       "label": "Build",
       "type": "shell",
-      "command": "docker build -t mxy680/meco-base:latest -f jupyter/Dockerfile . && docker push mxy680/meco-base:latest",
+      "command": "docker build -t mxy680/orca-base:latest -f jupyter/Dockerfile . && docker push mxy680/meco-base:latest",
       "options": {
         "cwd": "${workspaceFolder}/docker"
       },

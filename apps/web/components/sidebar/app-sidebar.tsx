@@ -26,6 +26,23 @@ declare global {
 // Main Sidebar composed from smaller components
 export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(true);
+
+  // Set CSS variable for sidebar width (used by layout)
+  useEffect(() => {
+    function setSidebarWidthVar() {
+      const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+      if (!isDesktop) {
+        document.body.style.setProperty("--sidebar-width", "0px");
+        return;
+      }
+      // Collapsed: 64px - 10px = 54px, Expanded: 256px - 10px = 246px
+      const width = isCollapsed ? "50px" : "240px";
+      document.body.style.setProperty("--sidebar-width", width);
+    }
+    setSidebarWidthVar();
+    window.addEventListener("resize", setSidebarWidthVar);
+    return () => window.removeEventListener("resize", setSidebarWidthVar);
+  }, [isCollapsed]);
   const pathname = usePathname();
 
   // Collapse sidebar if #settings is in the URL

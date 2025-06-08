@@ -20,7 +20,10 @@ export type AttachmentInput = {
     size: number;
 };
 
+import { useRouter } from "next/navigation";
+
 export function Chat() {
+    const router = useRouter();
     const [value, setValue] = useState("");
     const [attachments, setAttachments] = useState<AttachmentInput[]>([]);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -51,6 +54,9 @@ export function Chat() {
                 userId,
             });
             if (!project || !project.id) throw new Error("Failed to create project");
+
+            // Redirect to the new chat page for this project
+            router.push(`/chat/${project.id}`);
 
             // 4. Create chat for the project
             const chat = await createChat({
