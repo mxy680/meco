@@ -5,11 +5,13 @@ import { Paperclip, SendIcon, XIcon, HelpCircle, Settings } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SettingsDialog from "@/components/settings/settings-dialog";
 
+import type { AttachmentInput } from "./landing-chat";
+
 interface ChatInputProps {
   value: string;
   setValue: (v: string) => void;
-  attachments: string[];
-  setAttachments: (v: string[]) => void;
+  attachments: AttachmentInput[];
+  setAttachments: React.Dispatch<React.SetStateAction<AttachmentInput[]>>;
   onSend: () => void;
   inputFocused: boolean;
   setInputFocused: (v: boolean) => void;
@@ -33,7 +35,15 @@ export function ChatInput({
   const handleAttachClick = () => fileInputRef.current?.click();
   const handleFilesSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    setAttachments([...attachments, ...files.map(f => f.name)]);
+    setAttachments([
+      ...attachments,
+      ...files.map(f => ({
+        url: "", // You will populate this after upload
+        name: f.name,
+        type: f.type,
+        size: f.size,
+      }))
+    ]);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
   const handleRemoveAttachment = (index: number) => {
@@ -123,11 +133,11 @@ export function ChatInput({
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
               >
-                <span>{file}</span>
+                <span>{file.name}</span>
                 <button
                   onClick={() => handleRemoveAttachment(index)}
                   className="text-white/40 hover:text-white transition-colors"
-                  aria-label={`Remove attachment ${file}`}
+                  aria-label={`Remove attachment ${file.name}`}
                 >
                   <XIcon className="w-3 h-3" />
                 </button>

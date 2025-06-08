@@ -9,11 +9,20 @@ import { ChatBackground } from "./chat-background";
 import { useAutoResizeTextarea } from "./use-auto-resize-text-area";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { getUserProfile } from "@/lib/user/profile";
+import { getOrganization } from "@/lib/user/organization";
+import { getOrCreateProject, createChat } from "@/lib/user/project";
 
+export type AttachmentInput = {
+    url: string;
+    name: string;
+    type: string;
+    size: number;
+};
 
 export function Chat() {
     const [value, setValue] = useState("");
-    const [attachments, setAttachments] = useState<string[]>([]);
+    const [attachments, setAttachments] = useState<AttachmentInput[]>([]);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const { textareaRef, adjustHeight } = useAutoResizeTextarea({
         minHeight: 60,
@@ -25,45 +34,32 @@ export function Chat() {
     const handleCreateProjectAndChat = async () => {
         try {
             // 1. Get user profile
-            const profileRes = await fetch("/api/user/profile");
-            if (!profileRes.ok) throw new Error("Failed to fetch user profile");
-            const profile = await profileRes.json();
+            const profile = await getUserProfile();
+            if (!profile || !profile.id) throw new Error("User ID not found in profile response");
             const userId = profile.id;
-            if (!userId) throw new Error("User ID not found in profile response");
 
             // 2. Get organization
-            const orgRes = await fetch("/api/user/organization");
-            if (!orgRes.ok) throw new Error("Failed to fetch organization");
-            const org = await orgRes.json();
+            const org = await getOrganization();
+            if (!org || !org.id) throw new Error("Organization ID not found in organization response");
             const organizationId = org.id;
-            if (!organizationId) throw new Error("Organization ID not found in organization response");
 
             // 3. Create project
             const projectName = "Untitled Project";
-            const projectRes = await fetch("/api/user/project", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name: projectName,
-                    organizationId,
-                    userId,
-                }),
+            const project = await getOrCreateProject({
+                name: projectName,
+                organizationId,
+                userId,
             });
-            if (!projectRes.ok) throw new Error("Failed to create project");
-            const project = await projectRes.json();
+            if (!project || !project.id) throw new Error("Failed to create project");
 
             // 4. Create chat for the project
-            const chatRes = await fetch("/api/user/project/chat", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    projectId: project.id,
-                    userId,
-                    content: value,
-                    files: attachments,
-                }),
+            const chat = await createChat({
+                projectId: project.id,
+                userId,
+                content: value,
+                attachments,
             });
-            if (!chatRes.ok) throw new Error("Failed to create chat");
+            if (!chat || !chat.id) throw new Error("Failed to create chat");
             // Optionally, handle chat response here
             setValue("");
             setAttachments([]);
@@ -158,8 +154,6 @@ export function Chat() {
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.1 }}
                     >
-
-
                         <div className="p-4">
                             <div className="relative w-full">
                                 <ChatTextarea
@@ -199,6 +193,7 @@ export function Chat() {
                             textareaRef={textareaRef as React.RefObject<HTMLTextAreaElement>}
                             adjustHeight={adjustHeight}
                         />
+
                     </motion.div>
 
                     <ChatSuggestions />
