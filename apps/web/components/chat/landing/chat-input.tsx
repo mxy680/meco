@@ -38,7 +38,7 @@ export function ChatInput({
     setAttachments([
       ...attachments,
       ...files.map(f => ({
-        url: "", // You will populate this after upload
+        url: "https://example.com/attachment", // You will populate this after upload
         name: f.name,
         type: f.type,
         size: f.size,

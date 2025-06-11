@@ -13,11 +13,15 @@ export default function SidebarOrgDropdown({ isCollapsed }: { isCollapsed: boole
     const [org, setOrg] = useState<{ id: string; name: string } | null>(null);
 
     useEffect(() => {
-        fetch("/api/user/organization")
-            .then(res => res.ok ? res.json() : null)
-            .then(data => {
-                if (data && data.id && data.name) setOrg(data);
-            });
+        // TODO: Replace with actual org id from context/session
+        const orgId = "organization-id-placeholder";
+        import("@/lib/utils/organization").then(({ getOrganization }) => {
+            getOrganization(orgId)
+                .then(data => {
+                    if (data && data.id && data.name) setOrg(data);
+                })
+                .catch(() => {});
+        });
     }, []);
 
     const displayName = org?.name || "Organization";

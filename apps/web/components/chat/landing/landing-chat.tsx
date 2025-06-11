@@ -9,16 +9,11 @@ import { ChatBackground } from "./chat-background";
 import { useAutoResizeTextarea } from "./use-auto-resize-text-area";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { getUserProfile } from "@/lib/user/profile";
-import { getOrganization } from "@/lib/user/organization";
-import { getOrCreateProject, createChat } from "@/lib/user/project";
-
-export type AttachmentInput = {
-    url: string;
-    name: string;
-    type: string;
-    size: number;
-};
+import { getCurrentUser } from "@/lib/utils/profile";
+import { getActiveOrganization } from "@/lib/utils/organization";
+import { createProject } from "@/lib/utils/project";
+import { createChat } from "@/lib/utils/chat";
+import { AttachmentInput } from "@/lib/utils/chat";
 
 import { useRouter } from "next/navigation";
 
@@ -36,35 +31,35 @@ export function Chat() {
     // --- Create Project & Chat Handler ---
     const handleCreateProjectAndChat = async () => {
         try {
-            // 1. Get user profile
-            const profile = await getUserProfile();
-            if (!profile || !profile.id) throw new Error("User ID not found in profile response");
-            const userId = profile.id;
+            // 1. Get the current user from session
+            const user = await getCurrentUser();
+            if (!user || !user.id) throw new Error("User ID not found in user response");
 
-            // 2. Get organization
-            const org = await getOrganization();
-            if (!org || !org.id) throw new Error("Organization ID not found in organization response");
-            const organizationId = org.id;
+            // 2. Get the user's active organization
+            const org = await getActiveOrganization();
+            if (!org || !org.id) throw new Error("Active organization not found in response");
 
             // 3. Create project
             const projectName = "Untitled Project";
-            const project = await getOrCreateProject({
+            const project = await createProject({
                 name: projectName,
-                organizationId,
-                userId,
+                organizationId: org.id,
+                userId: user.id,
             });
             if (!project || !project.id) throw new Error("Failed to create project");
 
             // Redirect to the new chat page for this project
-            router.push(`/chat/${project.id}`);
+            router.push(`/projects/${project.id}`);
 
-            // 4. Create chat for the project
-            const chat = await createChat({
-                projectId: project.id,
-                userId,
-                content: value,
-                attachments,
-            });
+            // 4. Create chat for the project (with attachments)
+            const chat = await createChat(
+                {
+                    projectId: project.id,
+                    userId: user.id,
+                    content: value,
+                },
+                attachments // Pass attachments array
+            );
             if (!chat || !chat.id) throw new Error("Failed to create chat");
             // Optionally, handle chat response here
             setValue("");
@@ -74,6 +69,7 @@ export function Chat() {
             console.error(err);
         }
     };
+
 
     // Animated cycling placeholder logic
     const examplePrompts = useMemo(() => [
