@@ -5,6 +5,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
+import { getRandomColor } from "@/lib/utils/color";
 
 /**
  * GET /api/user/project?userId=...
@@ -15,14 +16,24 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const userId = searchParams.get("userId");
-    if (!userId) {
-      return NextResponse.json({ error: "Missing userId" }, { status: 400 });
+    const id = searchParams.get("id");
+    if (id) {
+      // Fetch project by id
+      const project = await prisma.project.findUnique({ where: { id } });
+      if (!project) {
+        return NextResponse.json({ error: "Project not found" }, { status: 404 });
+      }
+      return NextResponse.json(project);
+    } else if (userId) {
+      // Fetch all projects for user
+      const projects = await prisma.project.findMany({ where: { userId } });
+      return NextResponse.json(projects);
+    } else {
+      return NextResponse.json({ error: "Missing id or userId" }, { status: 400 });
     }
-    const projects = await prisma.project.findMany({ where: { userId } });
-    return NextResponse.json(projects);
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: "Failed to fetch projects" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to fetch project(s)" }, { status: 500 });
   }
 }
 
@@ -39,12 +50,15 @@ export async function POST(req: Request) {
     if (!name || !userId || !organizationId) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
+
+    const color = getRandomColor();
     // 1. Create the project to get createdAt
     const createdProject = await prisma.project.create({
       data: {
         name,
         userId,
         organizationId,
+        color,
       },
     });
     // 2. Generate deterministic project ID

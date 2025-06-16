@@ -9,11 +9,11 @@ import { ChatBackground } from "./chat-background";
 import { useAutoResizeTextarea } from "./use-auto-resize-text-area";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { getCurrentUser } from "@/lib/utils/profile";
-import { getActiveOrganization } from "@/lib/utils/organization";
-import { createProject } from "@/lib/utils/project";
-import { createChat } from "@/lib/utils/chat";
-import { AttachmentInput } from "@/lib/utils/chat";
+import { getCurrentUser } from "@/lib/db/profile";
+import { getActiveOrganization } from "@/lib/db/organization";
+import { createProject } from "@/lib/db/project";
+import { createChat } from "@/lib/db/chat";
+import { AttachmentInput } from "@/lib/db/chat";
 
 import { useRouter } from "next/navigation";
 
@@ -62,8 +62,7 @@ export function Chat() {
             );
             if (!chat || !chat.id) throw new Error("Failed to create chat");
             // Optionally, handle chat response here
-            setValue("");
-            setAttachments([]);
+            // Do not clear value or attachments before redirecting
         } catch (err) {
             // Optionally, show error to user
             console.error(err);

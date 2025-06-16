@@ -5,8 +5,8 @@ import { Sidebar } from "@/components/sidebar/app-sidebar";
 import { useEffect, useState } from "react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  // Responsive fallback for SSR: default to expanded
-  const [sidebarWidth, setSidebarWidth] = useState("16rem");
+  // Responsive fallback for SSR: default to collapsed
+  const [sidebarWidth, setSidebarWidth] = useState("4rem");
 
   useEffect(() => {
     // Listen for sidebar width changes via CSS variable

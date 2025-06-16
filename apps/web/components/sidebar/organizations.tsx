@@ -8,20 +8,27 @@ import { UserCog, Users } from "lucide-react"
 import Link from "next/link"
 import { variants } from "./framer-props"
 import { useEffect, useState } from "react";
+import { getCurrentUser } from "@/lib/db/profile";
+import { getActiveOrganization, getOrganization } from "@/lib/db/organization";
 
 export default function SidebarOrgDropdown({ isCollapsed }: { isCollapsed: boolean }) {
     const [org, setOrg] = useState<{ id: string; name: string } | null>(null);
 
+    async function fetchOrg() {
+        try {
+            const user = await getCurrentUser();
+            if (!user || !user.id) return;
+            const activeOrg = await getActiveOrganization();
+            if (!activeOrg || !activeOrg.id) return;
+            const orgData = await getOrganization(activeOrg.id);
+            if (orgData && orgData.id && orgData.name) setOrg(orgData);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
     useEffect(() => {
-        // TODO: Replace with actual org id from context/session
-        const orgId = "organization-id-placeholder";
-        import("@/lib/utils/organization").then(({ getOrganization }) => {
-            getOrganization(orgId)
-                .then(data => {
-                    if (data && data.id && data.name) setOrg(data);
-                })
-                .catch(() => {});
-        });
+        fetchOrg();
     }, []);
 
     const displayName = org?.name || "Organization";
@@ -73,13 +80,13 @@ export default function SidebarOrgDropdown({ isCollapsed }: { isCollapsed: boole
                         </DropdownMenuItem>
 
                         <DropdownMenuItem asChild>
-                            <Link href="/settings/create-org" className="flex items-center gap-2">
+                            <Link href="/settings/organizations/create" className="flex items-center gap-2">
                                 <Plus className="h-4 w-4" />
                                 Create organization
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                            <Link href="/settings/join-org" className="flex items-center gap-2">
+                            <Link href="/settings/organizations/join" className="flex items-center gap-2">
                                 <Users className="h-4 w-4" />
                                 Join organization
                             </Link>

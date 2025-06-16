@@ -21,7 +21,7 @@ export async function getProject(id: string): Promise<Project> {
 /**
  * Create a new project.
  */
-export async function createProject(data: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>): Promise<Project> {
+export async function createProject(data: Omit<Project, 'id' | 'color' | 'createdAt' | 'updatedAt'>): Promise<Project> {
   const res = await fetch('/api/user/project', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

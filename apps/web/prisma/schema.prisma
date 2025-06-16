@@ -55,6 +55,7 @@ model OrganizationMember {
 model Project {
     id             String       @id @default(cuid())
     name           String
+    color          String
     user           User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId         String?
     organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)

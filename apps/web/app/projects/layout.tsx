@@ -1,6 +1,6 @@
 "use client";
 
-import DevConsoleNavbar from "@/components/chat/project/navbar";
+import DevConsoleNavbar from "@/components/chat/project/nav/navbar";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 
 export default function ProjectsLayout({ children }: { children: React.ReactNode }) {
@@ -8,7 +8,9 @@ export default function ProjectsLayout({ children }: { children: React.ReactNode
         <AuroraBackground>
             <div className="flex flex-col h-screen w-screen">
                 <DevConsoleNavbar />
-                <main className="flex-1">{children}</main>
+                <div className="flex flex-1">
+                    {children}
+                </div>
             </div>
         </AuroraBackground>
     );
