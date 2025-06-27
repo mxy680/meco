@@ -1,19 +1,12 @@
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent } from "@/components/ui/dropdown-menu";
+import ProjectMenuDropdownContent from "./project-menu-dropdown-content";
 import { Project } from "./navbar";
-
-function ProjectMenuPopoverContent() {
-    return (
-        <PopoverContent>
-            
-        </PopoverContent>
-    );
-}
 
 export default function ProjectMenuSection({ project }: { project: Project | null }) {
     return (
         <div className="flex items-center gap-3">
-            <Popover>
-                <PopoverTrigger asChild>
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
                     <div className="flex items-center gap-2 cursor-pointer select-none">
                         <div
                             className={
@@ -33,9 +26,11 @@ export default function ProjectMenuSection({ project }: { project: Project | nul
                             <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 8L10 12L14 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                         </span>
                     </div>
-                </PopoverTrigger>
-                <ProjectMenuPopoverContent />
-            </Popover>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" sideOffset={16} className="w-64 min-w-[16rem] bg-white/10 backdrop-blur border border-white/10 shadow-xl rounded-xl p-2">
+                    <ProjectMenuDropdownContent />
+                </DropdownMenuContent>
+            </DropdownMenu>
         </div>
     );
 }

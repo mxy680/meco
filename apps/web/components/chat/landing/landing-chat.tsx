@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ChatInput } from "./chat-input";
+import { ChatInput } from "../../ui/chat-input";
 import { ChatTextarea } from "./chat-text-area";
 import { ChatPlaceholder } from "./chat-placeholder";
 import { ChatSuggestions } from "./chat-suggestions";

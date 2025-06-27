@@ -1,4 +1,6 @@
-import { Search, Slash, Code2, Zap, Github } from "lucide-react";
+import { Search, SquareTerminal, Settings, ClockFading, GitBranch } from "lucide-react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 export default function ActionsSection() {
@@ -17,11 +19,11 @@ export default function ActionsSection() {
                     size="sm"
                     className="h-8 w-8 p-0 text-gray-400 transition-colors duration-150 hover:bg-white/5 hover:text-gray-200"
                 >
-                    <Slash className="h-4 w-4" />
+                    <SquareTerminal className="h-4 w-4" />
                 </Button>
             </div>
 
-            <div className="w-px h-6 bg-gray-700 mx-1"></div>
+            <div className="w-px h-6 bg-white/15 mx-1"></div>
 
             <div className="flex items-center gap-1">
                 <Button
@@ -29,21 +31,21 @@ export default function ActionsSection() {
                     size="sm"
                     className="h-8 w-8 p-0 text-gray-400 transition-colors duration-150 hover:bg-white/5 hover:text-gray-200"
                 >
-                    <Code2 className="h-4 w-4" />
+                    <Settings className="h-4 w-4" />
                 </Button>
                 <Button
                     variant="ghost"
                     size="sm"
                     className="h-8 w-8 p-0 text-gray-400 transition-colors duration-150 hover:bg-white/5 hover:text-gray-200"
                 >
-                    <Zap className="h-4 w-4" />
+                    <ClockFading className="h-4 w-4" />
                 </Button>
                 <Button
                     variant="ghost"
                     size="sm"
                     className="h-8 w-8 p-0 text-gray-400 transition-colors duration-150 hover:bg-white/5 hover:text-gray-200"
                 >
-                    <Github className="h-4 w-4" />
+                    <GitBranch className="h-4 w-4" />
                 </Button>
             </div>
 
@@ -55,12 +57,18 @@ export default function ActionsSection() {
                 >
                     Invite
                 </Button>
-                <Button
-                    size="sm"
-                    className="bg-blue-600 text-white px-4 h-8 transition duration-150 hover:bg-blue-700 hover:brightness-105 hover:shadow-md"
-                >
-                    Publish
-                </Button>
+                <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={cn(
+                      "px-4 py-2 rounded-lg text-sm font-medium transition-all",
+                      "flex items-center gap-2 h-8",
+                      "bg-blue-600 text-white shadow-lg shadow-blue-500/10 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    )}
+                  >
+                    <span>Publish</span>
+                  </motion.button>
             </div>
         </div>
     );

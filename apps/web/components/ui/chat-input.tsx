@@ -5,7 +5,7 @@ import { Paperclip, SendIcon, XIcon, HelpCircle, Settings } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SettingsDialog from "@/components/settings/settings-dialog";
 
-import type { AttachmentInput } from "./landing-chat";
+import type { AttachmentInput } from "../chat/landing/landing-chat";
 
 interface ChatInputProps {
   value: string;
