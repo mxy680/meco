@@ -63,7 +63,7 @@ export function Sidebar() {
   return (
     <motion.div
       className={cn(
-        "sidebar left-0 z-40 h-full shrink-0 border-r fixed",
+        "sidebar left-0 z-40 h-full shrink-0 border-r fixed bg-transparent",
       )}
       initial={isCollapsed ? "closed" : "open"}
       animate={isCollapsed ? "closed" : "open"}
@@ -76,8 +76,7 @@ export function Sidebar() {
     >
       <motion.div
         className={cn(
-          "relative z-40 flex text-muted-foreground h-full shrink-0 flex-col transition-all",
-          isCollapsed ? "bg-background" : "bg-background dark:bg-background"
+          "relative z-40 flex text-muted-foreground h-full shrink-0 flex-col transition-all bg-transparent",
         )}
         variants={contentVariants}
       >

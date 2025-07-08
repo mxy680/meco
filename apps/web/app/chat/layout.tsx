@@ -1,7 +1,7 @@
 "use client";
 
 import { Sidebar } from "@/components/sidebar/app-sidebar";
-
+import { AuroraBackground } from "@/components/ui/aurora-background";
 import { useEffect, useState } from "react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -22,7 +22,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <>
+    <AuroraBackground>
       <Sidebar />
       <main
         className="min-h-screen transition-all duration-300"
@@ -30,7 +30,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       >
         {children}
       </main>
-    </>
+    </AuroraBackground>
   );
 }
 
