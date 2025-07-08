@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export default function ProjectsLayout({ children }: { children: React.ReactNode }) {
     return (
-        <div className="flex flex-col h-screen w-screen bg-background">
+        <div className="flex flex-col h-screen w-screen bg-background dark:bg-foreground/10">
             <DevConsoleNavbar />
             <motion.div
                 initial={{ opacity: 0 }}

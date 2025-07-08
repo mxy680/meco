@@ -10,7 +10,7 @@ export default function ProjectMenuSection({ project }: { project: Project | nul
                     <div className="flex items-center gap-2 cursor-pointer select-none">
                         <div
                             className={
-                                `w-6 h-6 rounded-sm flex items-center justify-center ` +
+                                `w-6 h-6 rounded-sm flex items-center justify-center border border-border shadow-sm ` +
                                 (project?.color
                                     ? (project.color.startsWith('#')
                                         ? ''
@@ -19,15 +19,15 @@ export default function ProjectMenuSection({ project }: { project: Project | nul
                             }
                             style={project?.color && project.color.startsWith('#') ? { background: project.color } : undefined}
                         >
-                            <div className="w-3 h-3 bg-background rounded-sm opacity-90"></div>
+                            <div className="w-3 h-3 bg-white rounded-sm"></div>
                         </div>
-                        <span className="px-1 py-0.5 text-gray-200 hover:text-gray-300 text-sm font-medium rounded flex items-center gap-1">
+                        <span className="px-1 py-0.5 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium rounded flex items-center gap-1">
                             {project?.name || "Untitled Project"}
                             <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 8L10 12L14 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                         </span>
                     </div>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" sideOffset={16} className="w-64 min-w-[16rem] bg-background backdrop-blur border border-white/10 shadow-xl rounded-xl p-2">
+                <DropdownMenuContent align="start" sideOffset={16} className="w-64 min-w-[16rem] bg-background backdrop-blur border border-border shadow-xl rounded-xl p-2">
                     <ProjectMenuDropdownContent />
                 </DropdownMenuContent>
             </DropdownMenu>

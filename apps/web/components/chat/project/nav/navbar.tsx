@@ -43,7 +43,7 @@ export default function DevConsoleNavbar() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
-      className="bg-transparent backdrop-blur-sm border-b border-white/20 shadow-md"
+      className="backdrop-blur-sm border-b border-white/20 shadow-md"
     >
       <div className="flex items-center justify-between px-4 py-2 h-12">
         <ProjectMenuSection project={project} />

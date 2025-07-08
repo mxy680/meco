@@ -33,7 +33,7 @@ const ModelSelectorDropdown: React.FC<{
             <Button
                 variant="ghost"
                 size="sm"
-                className="h-9 px-2.5 text-sm font-medium text-white hover:bg-background"
+                className="h-9 px-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted"
                 onClick={() => setIsOpen(!isOpen)}
             >
                 <span className="truncate max-w-[150px] sm:max-w-[200px]">
@@ -41,19 +41,20 @@ const ModelSelectorDropdown: React.FC<{
                 </span>
                 <ChevronDown
                     className={cn(
-                        "ml-1 h-4 w-4 transition-transform",
+                        "ml-1 h-4 w-4 transition-transform text-muted-foreground group-hover:text-foreground",
                         isOpen && "rotate-180"
                     )}
                 />
             </Button>
 
             {isOpen && (
-                <div className="absolute bottom-full right-0 mb-2 w-72 bg-black/20 border border-white/20 rounded-lg shadow-xl z-20 p-2">
+                <div className="absolute bottom-full right-0 mb-2 w-72 bg-background/90 border border-border rounded-lg shadow-xl z-20 p-2">
                     {models.map((model) => (
                         <button
                             key={model.id}
                             className={cn(
-                                "w-full text-left p-2.5 rounded-md hover:bg-black/10 transition-colors flex items-center justify-between",
+                                "w-full text-left p-2.5 rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors flex items-center justify-between",
+                                model.id === selectedModel && "bg-muted/70"
                             )}
                             onClick={() => {
                                 onModelChange(model.id);
@@ -62,21 +63,21 @@ const ModelSelectorDropdown: React.FC<{
                         >
                             <div>
                                 <div className="flex items-center gap-2">
-                                    <span className="font-medium text-white">
+                                    <span className="font-medium text-foreground">
                                         {model.name}
                                     </span>
                                     {model.badge && (
-                                        <span className="px-1.5 py-0.5 text-xs bg-blue-500/20 text-blue-300 rounded">
+                                        <span className="px-1.5 py-0.5 text-xs bg-blue-600/10 text-blue-600/80 rounded">
                                             {model.badge}
                                         </span>
                                     )}
                                 </div>
-                                <p className="text-xs text-white mt-0.5">
+                                <p className="text-xs text-muted-foreground mt-0.5">
                                     {model.description}
                                 </p>
                             </div>
                             {model.id === selectedModel && (
-                                <Check className="h-4 w-4 text-blue-400 flex-shrink-0" />
+                                <Check className="h-4 w-4 text-primary flex-shrink-0" />
                             )}
                         </button>
                     ))}

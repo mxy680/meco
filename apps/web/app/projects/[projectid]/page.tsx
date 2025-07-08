@@ -17,7 +17,7 @@ export default function ChatProjectPage() {
                 <ChatBox />
             </div>
             {/* Right Side (60%) */}
-            <div className="w-[60%] p-4 border-l border-white/20 rounded-l-xl">
+            <div className="w-[60%] p-4 border-l border-foreground/10 rounded-l-xl">
                 {/* Right content here */}
             </div>
         </div>

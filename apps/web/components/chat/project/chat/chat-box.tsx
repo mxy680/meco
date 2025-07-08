@@ -311,7 +311,7 @@ export const ChatBox: React.FC<ChatInputProps> = ({
                 </div>
             )}
 
-            <div className="bg-background backdrop-blur-md border border-white/20 rounded-xl shadow-lg items-end gap-2 min-h-[150px] flex flex-col">
+            <div className="bg-background/90 backdrop-blur-md border border-border rounded-xl shadow-lg items-end gap-2 min-h-[150px] flex flex-col">
                 <textarea
                     ref={textareaRef}
                     value={message}
@@ -320,7 +320,7 @@ export const ChatBox: React.FC<ChatInputProps> = ({
                     onKeyDown={handleKeyDown}
                     placeholder={placeholder}
                     disabled={disabled}
-                    className="flex-1 min-h-[100px] w-full p-4 focus-within:border-none focus:outline-none focus:border-none border-none outline-none focus-within:ring-0 focus-within:ring-offset-0 focus-within:outline-none max-h-[120px] resize-none border-0 bg-transparent text-zinc-100 shadow-none focus-visible:ring-0 placeholder:text-white/60 text-sm sm:text-base custom-scrollbar"
+                    className="flex-1 min-h-[100px] w-full p-4 focus-within:border-none focus:outline-none focus:border-none border-none outline-none focus-within:ring-0 focus-within:ring-offset-0 focus-within:outline-none max-h-[120px] resize-none border-0 bg-transparent text-foreground shadow-none focus-visible:ring-0 placeholder:text-muted-foreground text-sm sm:text-base custom-scrollbar"
                     rows={1}
                 />
                 <div className="flex items-center gap-2 justify-between w-full px-3 pb-1.5">
@@ -328,7 +328,7 @@ export const ChatBox: React.FC<ChatInputProps> = ({
                         <Button
                             size="icon"
                             variant="ghost"
-                            className="h-9 w-9 p-0 text-zinc-400 hover:text-white hover:bg-background flex-shrink-0"
+                            className="h-9 w-9 p-0 text-muted-foreground hover:text-foreground hover:bg-muted flex-shrink-0"
                             onClick={() => fileInputRef.current?.click()}
                             disabled={disabled || files.length >= maxFiles}
                             title={
@@ -342,7 +342,7 @@ export const ChatBox: React.FC<ChatInputProps> = ({
                         <Button
                             size="icon"
                             variant="ghost"
-                            className="h-9 w-9 p-0 text-zinc-400 hover:text-white hover:bg-background flex-shrink-0"
+                            className="h-9 w-9 p-0 text-muted-foreground hover:text-foreground hover:bg-muted flex-shrink-0"
                             disabled={disabled}
                             title="Options (Not implemented)"
                         >
@@ -363,8 +363,8 @@ export const ChatBox: React.FC<ChatInputProps> = ({
                             className={cn(
                                 "h-9 w-9 p-0 flex-shrink-0 rounded-md transition-colors",
                                 canSend
-                                    ? "bg-blue-600 hover:bg-blue-700 text-white"
-                                    : "bg-transparent text-white border-none shadow-none cursor-not-allowed"
+                                    ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                                    : "bg-muted text-muted-foreground border-none shadow-none cursor-not-allowed"
                             )}
                             onClick={handleSend}
                             disabled={!canSend}
@@ -374,8 +374,9 @@ export const ChatBox: React.FC<ChatInputProps> = ({
                         </Button>
                     </div>
                 </div>
+                
                 {(files.length > 0 || pastedContent.length > 0) && (
-                    <div className="overflow-x-auto backdrop-blur-md border border-white/20 rounded-xl shadow-lg p-3 w-full hide-scroll-bar">
+                    <div className="overflow-x-auto bg-muted/70 border border-border rounded-xl shadow-lg p-3 w-full hide-scroll-bar">
                         <div className="flex gap-3">
                             {pastedContent.map((content) => (
                                 <PastedContentCard key={content.id} content={content} onRemove={removePastedContent} />
@@ -387,6 +388,10 @@ export const ChatBox: React.FC<ChatInputProps> = ({
                     </div>
                 )}
             </div>
+            {/*
+                NOTE: Please update ModelSelectorDropdown, FilePreviewCard, and PastedContentCard
+                to use theme-adaptive colors and styles as shown here for full consistency.
+            */}
 
             <input
                 ref={fileInputRef}
