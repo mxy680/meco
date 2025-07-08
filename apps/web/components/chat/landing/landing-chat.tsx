@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ChatInput } from "../../ui/chat-input";
+import { ChatInput } from "./chat-input";
 import { ChatTextarea } from "./chat-text-area";
 import { ChatPlaceholder } from "./chat-placeholder";
 import { ChatSuggestions } from "./chat-suggestions";
-import { ChatBackground } from "./chat-background";
 import { useAutoResizeTextarea } from "./use-auto-resize-text-area";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -113,8 +112,7 @@ export function Chat() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col w-full items-center justify-center bg-transparent text-white p-6 relative overflow-hidden">
-            <ChatBackground />
+        <div className="min-h-screen flex flex-col w-full items-center justify-center bg-transparent text-foreground p-6 relative overflow-hidden">
             <div className="w-full max-w-2xl mx-auto relative">
                 <motion.div
                     className="relative z-10 space-y-12"
@@ -129,18 +127,18 @@ export function Chat() {
                             transition={{ delay: 0.2, duration: 0.5 }}
                             className="inline-block"
                         >
-                            <h1 className="text-3xl font-medium tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white/90 to-white/40 pb-1">
+                            <h1 className="text-3xl font-medium tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground/90 to-foreground/40 pb-1">
                                 How can I help today?
                             </h1>
                             <motion.div
-                                className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                                className="h-px bg-gradient-to-r from-transparent via-foreground/20 to-transparent"
                                 initial={{ width: 0, opacity: 0 }}
                                 animate={{ width: "100%", opacity: 1 }}
                                 transition={{ delay: 0.5, duration: 0.8 }}
                             />
                         </motion.div>
                         <motion.p
-                            className="text-sm text-white/40"
+                            className="text-sm text-muted-foreground"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.3 }}
@@ -150,7 +148,7 @@ export function Chat() {
                     </div>
 
                     <motion.div
-                        className="relative backdrop-blur-2xl bg-background/[0.02] rounded-2xl border border-white/[0.05] shadow-2xl"
+                        className="relative backdrop-blur-2xl bg-white/70 dark:bg-transparent rounded-2xl border border-zinc-200 dark:border-0 shadow-lg"
                         initial={{ scale: 0.98 }}
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.1 }}
@@ -173,7 +171,7 @@ export function Chat() {
                                         "resize-none",
                                         "bg-transparent",
                                         "border-none",
-                                        "text-white/90 text-sm",
+                                        "text-foreground text-sm",
                                         "focus:outline-none",
                                         "min-h-[60px]"
                                     )}

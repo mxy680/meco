@@ -5,7 +5,7 @@ import { Paperclip, SendIcon, XIcon, HelpCircle, Settings } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SettingsDialog from "@/components/settings/settings-dialog";
 
-import type { AttachmentInput } from "../chat/landing/landing-chat";
+import type { AttachmentInput } from "./landing-chat";
 
 interface ChatInputProps {
   value: string;
@@ -51,17 +51,17 @@ export function ChatInput({
   };
   return (
     <>
-      <div className="p-4 border-t border-white/[0.05] flex items-center justify-between gap-4">
-        <div className="flex items-center">
+      <div className="p-4 border-t border-foreground/5 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-2">
           {/* File attachment button */}
           <motion.button
             type="button"
             onClick={handleAttachClick}
             whileTap={{ scale: 0.94 }}
-            className="p-2 text-white/40 hover:text-white/90 rounded-lg transition-colors relative group"
+            className="p-2 rounded-lg transition-colors relative group"
             aria-label="Attach files"
           >
-            <Paperclip className="w-4 h-4" />
+            <Paperclip className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
           </motion.button>
           {/* Hidden file input */}
           <input
@@ -78,10 +78,10 @@ export function ChatInput({
               tabIndex={-1}
               whileTap={{ scale: 0.94 }}
               className={cn(
-                "p-2 text-white/40 hover:text-white/90 rounded-lg transition-colors relative group"
+                "p-2 rounded-lg transition-colors relative group"
               )}
             >
-              <Settings className="w-4 h-4" />
+              <Settings className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
             </motion.button>
           </SettingsDialog>
           <motion.button
@@ -92,11 +92,11 @@ export function ChatInput({
             }}
             whileTap={{ scale: 0.94 }}
             className={cn(
-              "p-2 text-white/40 hover:text-white/90 rounded-lg transition-colors relative group"
+              "p-2 rounded-lg transition-colors relative group"
             )}
             aria-label="Open documentation"
           >
-            <HelpCircle className="w-4 h-4" />
+            <HelpCircle className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
           </motion.button>
         </div>
         <motion.button
@@ -108,13 +108,27 @@ export function ChatInput({
           className={cn(
             "px-4 py-2 rounded-lg text-sm font-medium transition-all",
             "flex items-center gap-2",
+            "border border-zinc-200 dark:border-zinc-700",
             value.trim()
-              ? "bg-background/80 text-neutral-900 shadow-lg shadow-white/10"
-              : "bg-background/[0.05] text-white/40"
+              ? "dark:bg-foreground/10 text-background shadow-md"
+              : "text-muted-foreground bg-background/[0.05] dark:bg-white/10"
           )}
         >
-          <SendIcon className="w-4 h-4" />
-          <span>Send</span>
+          <motion.span
+            initial={false}
+            animate={{ color: value.trim() ? 'var(--foreground)' : 'var(--muted-foreground)' }}
+            transition={{ duration: 0.22 }}
+            className="flex items-center gap-2"
+          >
+            <SendIcon className="w-4 h-4" />
+            <motion.span
+              initial={false}
+              animate={{ color: value.trim() ? 'var(--foreground)' : 'var(--muted-foreground)' }}
+              transition={{ duration: 0.22 }}
+            >
+              Send
+            </motion.span>
+          </motion.span>
         </motion.button>
       </div>
       <AnimatePresence>
@@ -128,18 +142,18 @@ export function ChatInput({
             {attachments.map((file, index) => (
               <motion.div
                 key={index}
-                className="flex items-center gap-2 text-xs bg-background/[0.03] py-1.5 px-3 rounded-lg text-white/70"
+                className="group flex items-center gap-1 text-xs bg-foreground/2.5 py-1.5 px-3 rounded-lg text-foreground"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
               >
-                <span>{file.name}</span>
+                <span className="transition-colors text-foreground">{file.name}</span>
                 <button
                   onClick={() => handleRemoveAttachment(index)}
-                  className="text-white/40 hover:text-white transition-colors"
+                  className="ml-1 p-0 bg-transparent border-none shadow-none rounded-none text-muted-foreground transition-colors group-hover:text-foreground disabled:text-muted-foreground disabled:opacity-60"
                   aria-label={`Remove attachment ${file.name}`}
                 >
-                  <XIcon className="w-3 h-3" />
+                  <XIcon className="w-3 h-3 text-muted-foreground hover:text-foreground transition-colors" />
                 </button>
               </motion.div>
             ))}

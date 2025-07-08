@@ -12,7 +12,7 @@ export function ChatPlaceholder({ value, placeholder }: ChatPlaceholderProps) {
       {!value && (
         <motion.span
           key={placeholder}
-          className="absolute left-4 top-3 select-none pointer-events-none text-white/20 text-sm"
+          className="absolute left-4 top-3 select-none pointer-events-none text-muted-foreground text-sm"
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -6 }}

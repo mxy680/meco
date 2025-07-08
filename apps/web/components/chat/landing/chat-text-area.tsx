@@ -30,7 +30,7 @@ export const ChatTextarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>
                 />
                 {showRing && isFocused && (
                     <motion.span
-                        className="absolute inset-0 rounded-md pointer-events-none ring-2 ring-offset-0 ring-violet-500/30"
+                        className="absolute left-4 top-3 select-none pointer-events-none text-muted-foreground text-sm"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
