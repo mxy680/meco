@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 import Link from "next/link";
 import type { Variants as MotionVariants } from "framer-motion";
-import { LogOut, UserCircle, Settings } from "lucide-react";
+import { LogOut, UserCircle, Settings, Sun, Moon } from "lucide-react";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { ChevronsUpDown } from "lucide-react";
 
@@ -13,6 +13,7 @@ import { ChevronsUpDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
 import SettingsDialog from "../settings/settings-dialog";
+import { useTheme } from "next-themes";
 
 export default function SidebarSettingsSection({ isCollapsed, variants }: { isCollapsed: boolean; variants: MotionVariants }) {
     const [user, setUser] = useState<{ name: string; email: string; image?: string } | null>(null);
@@ -24,8 +25,22 @@ export default function SidebarSettingsSection({ isCollapsed, variants }: { isCo
             });
     }, []);
 
+    const { theme, setTheme } = useTheme();
+    const isDark = theme === "dark";
+
     return (
         <div className="flex flex-col p-2">
+            <button
+                className="mt-auto flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted hover:text-primary"
+                type="button"
+                onClick={() => setTheme(isDark ? "light" : "dark")}
+            >
+                <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                <motion.li variants={variants}>
+                    <p className="ml-2 text-sm font-medium">Theme</p>
+                </motion.li>
+            </button>
             <SettingsDialog>
                 <button
                     className="mt-auto flex h-8 w-full flex-row items-center rounded-md px-2 py-1.5 transition hover:bg-muted hover:text-primary"

@@ -183,14 +183,9 @@ export function Chat() {
                         </div>
                         <ChatInput
                             value={value}
-                            setValue={setValue}
                             attachments={attachments}
                             setAttachments={setAttachments}
                             onSend={handleCreateProjectAndChat}
-                            inputFocused={inputFocused}
-                            setInputFocused={setInputFocused}
-                            textareaRef={textareaRef as React.RefObject<HTMLTextAreaElement>}
-                            adjustHeight={adjustHeight}
                         />
 
                     </motion.div>

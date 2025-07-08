@@ -1,34 +1,23 @@
 "use client";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Paperclip, SendIcon, XIcon, HelpCircle, Settings } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SettingsDialog from "@/components/settings/settings-dialog";
-
-import type { AttachmentInput } from "./landing-chat";
+import { AttachmentInput } from "@/lib/db/chat";
 
 interface ChatInputProps {
   value: string;
-  setValue: (v: string) => void;
   attachments: AttachmentInput[];
   setAttachments: React.Dispatch<React.SetStateAction<AttachmentInput[]>>;
   onSend: () => void;
-  inputFocused: boolean;
-  setInputFocused: (v: boolean) => void;
-  textareaRef: React.RefObject<HTMLTextAreaElement>;
-  adjustHeight: () => void;
 }
 
 export function ChatInput({
   value,
-  setValue,
   attachments,
   setAttachments,
-  onSend,
-  inputFocused,
-  setInputFocused,
-  textareaRef,
-  adjustHeight
+  onSend
 }: ChatInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   // File attachment
@@ -102,7 +91,7 @@ export function ChatInput({
         <motion.button
           type="button"
           onClick={onSend}
-          whileHover={{ scale: 1.01 }}
+          {...(value.trim() ? { whileHover: { scale: 1.02 } } : {})}
           whileTap={{ scale: 0.98 }}
           disabled={!value.trim()}
           className={cn(
