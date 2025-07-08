@@ -1,6 +1,7 @@
 "use client";
 
 import { AuroraBackground } from "@/components/ui/aurora-background";
+import { ModeToggle } from "@/components/ui/mode-toggle";
 import { SignInCard } from "@/components/auth/signin-card";
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
@@ -23,6 +24,10 @@ export default function Component() {
 
   return (
     <>
+      {/* Mode toggle in top right corner */}
+      <div className="fixed top-4 right-4 z-50">
+        <ModeToggle />
+      </div>
       <AuroraBackground>
         <SignInCard />
         <Toaster />

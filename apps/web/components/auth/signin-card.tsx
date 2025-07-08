@@ -188,7 +188,7 @@ export function SignInCard() {
 
             {/* Subtle corner glow spots - reduced opacity */}
             <motion.div
-              className="absolute top-0 left-0 h-[5px] w-[5px] rounded-full bg-white/40 blur-[1px]"
+              className="absolute top-0 left-0 h-[5px] w-[5px] rounded-full bg-muted blur-[1px]"
               animate={{
                 opacity: [0.2, 0.4, 0.2]
               }}
@@ -199,7 +199,7 @@ export function SignInCard() {
               }}
             />
             <motion.div
-              className="absolute top-0 right-0 h-[8px] w-[8px] rounded-full bg-white/60 blur-[2px]"
+              className="absolute top-0 right-0 h-[8px] w-[8px] rounded-full bg-muted blur-[2px]"
               animate={{
                 opacity: [0.2, 0.4, 0.2]
               }}
@@ -211,7 +211,7 @@ export function SignInCard() {
               }}
             />
             <motion.div
-              className="absolute bottom-0 right-0 h-[8px] w-[8px] rounded-full bg-white/60 blur-[2px]"
+              className="absolute bottom-0 right-0 h-[8px] w-[8px] rounded-full bg-muted blur-[2px]"
               animate={{
                 opacity: [0.2, 0.4, 0.2]
               }}
@@ -223,7 +223,7 @@ export function SignInCard() {
               }}
             />
             <motion.div
-              className="absolute bottom-0 left-0 h-[5px] w-[5px] rounded-full bg-white/40 blur-[1px]"
+              className="absolute bottom-0 left-0 h-[5px] w-[5px] rounded-full bg-muted blur-[1px]"
               animate={{
                 opacity: [0.2, 0.4, 0.2]
               }}
@@ -237,10 +237,10 @@ export function SignInCard() {
           </div>
 
           {/* Card border glow - reduced opacity */}
-          <div className="absolute -inset-[0.5px] rounded-2xl bg-gradient-to-r from-white/3 via-white/7 to-white/3 opacity-0 group-hover:opacity-70 transition-opacity duration-500" />
+          <div className="absolute -inset-[0.5px] rounded-2xl bg-gradient-to-r from-white/3 via-white/7 to-white/3 dark:from-zinc-700/3 dark:via-zinc-700/7 dark:to-zinc-700/3 opacity-0 group-hover:opacity-70 transition-opacity duration-500" />
 
           {/* Glass card background */}
-          <div className="relative bg-black/40 backdrop-blur-xl rounded-2xl p-6 border border-white/[0.05] shadow-2xl overflow-hidden">
+          <div className="relative bg-card backdrop-blur-xl rounded-2xl p-6 border shadow-xl overflow-hidden">
             {/* Subtle card inner patterns */}
             <div className="absolute inset-0 opacity-[0.03]"
               style={{
@@ -254,7 +254,7 @@ export function SignInCard() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-white/80"
+                className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-foreground/90 to-foreground/70"
               >
                 Model with Orca
               </motion.h1>
@@ -262,7 +262,7 @@ export function SignInCard() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="text-white/60 text-xs"
+                className="text-muted-foreground text-xs"
               >
                 Sign in with your Git provider
               </motion.p>
@@ -276,14 +276,14 @@ export function SignInCard() {
                 className="w-full relative group/github"
                 onClick={() => signIn('github', { callbackUrl: '/chat' })}
               >
-                <div className="absolute inset-0 bg-white/5 rounded-lg blur opacity-0 group-hover/github:opacity-70 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-muted rounded-lg blur opacity-0 transition-opacity duration-300" />
 
-                <div className="relative overflow-hidden bg-white/5 text-white font-medium h-10 rounded-lg border border-white/10 hover:border-white/20 transition-all duration-300 flex items-center justify-center gap-2">
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <div className="relative overflow-hidden bg-muted text-foreground font-medium h-10 rounded-lg border hover:border-foreground hover:bg-accent hover:text-accent-foreground transition-all duration-300 flex items-center justify-center gap-2">
+                  <svg className="w-4 h-4 text-foreground" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
                   </svg>
 
-                  <span className="text-white/80 group-hover/github:text-white transition-colors text-xs">
+                  <span className="text-foreground group-hover:text-accent-foreground transition-colors text-xs">
                     Sign in with GitHub
                   </span>
 
@@ -301,9 +301,9 @@ export function SignInCard() {
               </motion.button>
 
               <div className="flex items-center">
-                <div className="flex-grow border-t border-white/10"></div>
-                <span className="mx-3 text-xs text-white/40">or continue with</span>
-                <div className="flex-grow border-t border-white/10"></div>
+                <div className="flex-grow border-t border"></div>
+                <span className="mx-3 text-xs text-muted-foreground">or continue with</span>
+                <div className="flex-grow border-t border"></div>
               </div>
 
               {/* Secondary OAuth buttons */}
@@ -314,14 +314,14 @@ export function SignInCard() {
                 className="w-full relative group/bitbucket"
                 onClick={() => signIn('bitbucket', { callbackUrl: '/chat' })}
               >
-                <div className="absolute inset-0 bg-white/5 rounded-lg blur opacity-0 group-hover/bitbucket:opacity-70 transition-opacity duration-300" />
-                <div className="relative overflow-hidden bg-white/5 text-white font-medium h-10 rounded-lg border border-white/10 hover:border-white/20 transition-all duration-300 flex items-center justify-center gap-2">
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="#0052CC">
+                <div className="absolute inset-0 bg-muted rounded-lg blur opacity-0 transition-opacity duration-300" />
+                <div className="relative overflow-hidden bg-muted text-foreground font-medium h-10 rounded-lg border hover:border-foreground hover:bg-accent hover:text-accent-foreground transition-all duration-300 flex items-center justify-center gap-2">
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="#2684FF">
                     <path d="M.778 1.213a.768.768 0 00-.768.892l3.263 19.81c.084.5.515.868 1.022.873H19.95a.772.772 0 00.77-.646l3.27-20.03a.768.768 0 00-.768-.891zM14.52 15.53H9.522L8.17 8.466h7.704z" />
                   </svg>
-                  <span className="text-white/80 group-hover/bitbucket:text-white transition-colors text-xs">Sign in with Bitbucket</span>
+                  <span className="text-foreground group-hover:text-accent-foreground transition-colors text-xs">Sign in with Bitbucket</span>
                   <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0"
+                    className="absolute inset-0 bg-gradient-to-r from-background/0 via-background/5 to-background/0"
                     initial={{ x: '-100%' }}
                     whileHover={{ x: '100%' }}
                     transition={{ duration: 1, ease: "easeInOut" }}
@@ -335,12 +335,12 @@ export function SignInCard() {
                 className="w-full relative group/gitlab"
                 onClick={() => signIn('gitlab', { callbackUrl: '/chat' })}
               >
-                <div className="absolute inset-0 bg-white/5 rounded-lg blur opacity-0 group-hover/gitlab:opacity-70 transition-opacity duration-300" />
-                <div className="relative overflow-hidden bg-white/5 text-white font-medium h-10 rounded-lg border border-white/10 hover:border-white/20 transition-all duration-300 flex items-center justify-center gap-2">
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="#FC6D26">
+                <div className="absolute inset-0 bg-muted rounded-lg blur opacity-0 transition-opacity duration-300" />
+                <div className="relative overflow-hidden bg-muted text-foreground font-medium h-10 rounded-lg border hover:border-foreground hover:bg-accent hover:text-accent-foreground transition-all duration-300 flex items-center justify-center gap-2">
+                  <svg className="w-4 h-4 text-foreground" viewBox="0 0 24 24" fill="#FC6D26">
                     <path d="M23.955 13.587l-1.342-4.135-2.664-8.189c-.135-.423-.73-.423-.867 0L16.418 9.45H7.582L4.919 1.263c-.135-.423-.73-.423-.867 0L1.388 9.452-.955 13.587a.849.849 0 00.308 1.005L12 23.054l10.647-8.462a.849.849 0 00.308-1.005" />
                   </svg>
-                  <span className="text-white/80 group-hover/gitlab:text-white transition-colors text-xs">Sign in with GitLab</span>
+                  <span className="text-foreground group-hover:text-accent-foreground transition-colors text-xs">Sign in with GitLab</span>
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0"
                     initial={{ x: '-100%' }}
@@ -356,10 +356,10 @@ export function SignInCard() {
                 className="w-full relative group/huggingface"
                 onClick={() => signIn('huggingface', { callbackUrl: '/chat' })}
               >
-                <div className="absolute inset-0 bg-white/5 rounded-lg blur opacity-0 group-hover/huggingface:opacity-70 transition-opacity duration-300" />
-                <div className="relative overflow-hidden bg-white/5 text-white font-medium h-10 rounded-lg border border-white/10 hover:border-white/20 transition-all duration-300 flex items-center justify-center gap-2">
+                <div className="absolute inset-0 bg-muted rounded-lg blur opacity-0 transition-opacity duration-300" />
+                <div className="relative overflow-hidden bg-muted text-foreground font-medium h-10 rounded-lg border hover:border-foreground hover:bg-accent hover:text-accent-foreground transition-all duration-300 flex items-center justify-center gap-2">
                   <span className="text-md">🤗</span>
-                  <span className="text-white/80 group-hover/huggingface:text-white transition-colors text-xs">Sign in with HuggingFace</span>
+                  <span className="text-foreground group-hover:text-accent-foreground transition-colors text-xs">Sign in with HuggingFace</span>
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0"
                     initial={{ x: '-100%' }}
@@ -372,15 +372,15 @@ export function SignInCard() {
 
             {/* Sign up link */}
             <motion.p
-              className="text-center text-xs text-white/60 mt-4 flex flex-col gap-1"
+              className="text-center text-xs text-muted-foreground mt-4 flex flex-col gap-1"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
             >
               <span>
-                <Link href="/terms" className="underline hover:text-white/80 transition-colors duration-200">Terms and Conditions</Link>
+                <Link href="/terms" className="underline hover:text-foreground transition-colors duration-200">Terms and Conditions</Link>
                 <span className="mx-2">·</span>
-                <Link href="/privacy" className="underline hover:text-white/80 transition-colors duration-200">Privacy Policy</Link>
+                <Link href="/privacy" className="underline hover:text-foreground transition-colors duration-200">Privacy Policy</Link>
               </span>
             </motion.p>
           </div>

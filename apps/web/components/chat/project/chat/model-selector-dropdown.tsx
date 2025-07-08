@@ -33,7 +33,7 @@ const ModelSelectorDropdown: React.FC<{
             <Button
                 variant="ghost"
                 size="sm"
-                className="h-9 px-2.5 text-sm font-medium text-white hover:text-zinc-100 hover:bg-zinc-100"
+                className="h-9 px-2.5 text-sm font-medium text-white hover:bg-background"
                 onClick={() => setIsOpen(!isOpen)}
             >
                 <span className="truncate max-w-[150px] sm:max-w-[200px]">
@@ -48,13 +48,12 @@ const ModelSelectorDropdown: React.FC<{
             </Button>
 
             {isOpen && (
-                <div className="absolute bottom-full right-0 mb-2 w-72 bg-gray border border-white/20 rounded-lg shadow-xl z-20 p-2">
+                <div className="absolute bottom-full right-0 mb-2 w-72 bg-black/20 border border-white/20 rounded-lg shadow-xl z-20 p-2">
                     {models.map((model) => (
                         <button
                             key={model.id}
                             className={cn(
-                                "w-full text-left p-2.5 rounded-md hover:bg-white/20 transition-colors flex items-center justify-between",
-                                model.id === selectedModel && "bg-white/20"
+                                "w-full text-left p-2.5 rounded-md hover:bg-black/10 transition-colors flex items-center justify-between",
                             )}
                             onClick={() => {
                                 onModelChange(model.id);

@@ -109,8 +109,8 @@ export function ChatInput({
             "px-4 py-2 rounded-lg text-sm font-medium transition-all",
             "flex items-center gap-2",
             value.trim()
-              ? "bg-white/80 text-neutral-900 shadow-lg shadow-white/10"
-              : "bg-white/[0.05] text-white/40"
+              ? "bg-background/80 text-neutral-900 shadow-lg shadow-white/10"
+              : "bg-background/[0.05] text-white/40"
           )}
         >
           <SendIcon className="w-4 h-4" />
@@ -128,7 +128,7 @@ export function ChatInput({
             {attachments.map((file, index) => (
               <motion.div
                 key={index}
-                className="flex items-center gap-2 text-xs bg-white/[0.03] py-1.5 px-3 rounded-lg text-white/70"
+                className="flex items-center gap-2 text-xs bg-background/[0.03] py-1.5 px-3 rounded-lg text-white/70"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}

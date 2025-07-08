@@ -10,40 +10,40 @@ export default function ActionsSection() {
                 <Button
                     variant="ghost"
                     size="sm"
-                    className="h-8 w-8 p-0 text-gray-400 transition-colors duration-150 hover:bg-white/5 hover:text-gray-200"
+                    className="h-8 w-8 p-0 text-gray-400 transition-colors duration-150 hover:bg-background hover:text-gray-200"
                 >
                     <Search className="h-4 w-4" />
                 </Button>
                 <Button
                     variant="ghost"
                     size="sm"
-                    className="h-8 w-8 p-0 text-gray-400 transition-colors duration-150 hover:bg-white/5 hover:text-gray-200"
+                    className="h-8 w-8 p-0 text-gray-400 transition-colors duration-150 hover:bg-background hover:text-gray-200"
                 >
                     <SquareTerminal className="h-4 w-4" />
                 </Button>
             </div>
 
-            <div className="w-px h-6 bg-white/15 mx-1"></div>
+            <div className="w-px h-6 bg-background mx-1"></div>
 
             <div className="flex items-center gap-1">
                 <Button
                     variant="ghost"
                     size="sm"
-                    className="h-8 w-8 p-0 text-gray-400 transition-colors duration-150 hover:bg-white/5 hover:text-gray-200"
+                    className="h-8 w-8 p-0 text-gray-400 transition-colors duration-150 hover:bg-background hover:text-gray-200"
                 >
                     <Settings className="h-4 w-4" />
                 </Button>
                 <Button
                     variant="ghost"
                     size="sm"
-                    className="h-8 w-8 p-0 text-gray-400 transition-colors duration-150 hover:bg-white/5 hover:text-gray-200"
+                    className="h-8 w-8 p-0 text-gray-400 transition-colors duration-150 hover:bg-background hover:text-gray-200"
                 >
                     <ClockFading className="h-4 w-4" />
                 </Button>
                 <Button
                     variant="ghost"
                     size="sm"
-                    className="h-8 w-8 p-0 text-gray-400 transition-colors duration-150 hover:bg-white/5 hover:text-gray-200"
+                    className="h-8 w-8 p-0 text-gray-400 transition-colors duration-150 hover:bg-whit   e/5 hover:text-gray-200"
                 >
                     <GitBranch className="h-4 w-4" />
                 </Button>
@@ -53,7 +53,7 @@ export default function ActionsSection() {
                 <Button
                     variant="ghost"
                     size="sm"
-                    className="text-gray-300 px-3 h-8 transition-colors duration-150 hover:bg-white/10 hover:text-gray-100"
+                    className="text-gray-300 px-3 h-8 transition-colors duration-150 hover:bg-background hover:text-gray-100"
                 >
                     Invite
                 </Button>

@@ -153,7 +153,7 @@ const Sparkles = () => {
             borderRadius: "50%",
             zIndex: 1,
           }}
-          className="inline-block bg-black dark:bg-white"
+          className="inline-block bg-black dark:bg-background"
         ></motion.span>
       ))}
     </div>

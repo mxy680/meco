@@ -22,13 +22,13 @@ const FilePreviewCard: React.FC<{
     return (
         <div
             className={cn(
-                "relative group bg-white/10 border w-fit border-white/20 rounded-lg p-3 size-[125px] shadow-md flex-shrink-0 overflow-hidden",
+                "relative group bg-background border w-fit border-white/20 rounded-lg p-3 size-[125px] shadow-md flex-shrink-0 overflow-hidden",
                 isImage ? "p-0" : "p-3"
             )}
         >
             <div className="flex items-start gap-3 size-[125px] overflow-hidden">
                 {isImage && file.preview ? (
-                    <div className="relative size-full rounded-md overflow-hidden bg-white/10">
+                    <div className="relative size-full rounded-md overflow-hidden bg-background">
                         <Image
                             src={file.preview || "/placeholder.svg"}
                             alt={file.file.name}

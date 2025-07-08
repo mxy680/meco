@@ -150,7 +150,7 @@ export function Chat() {
                     </div>
 
                     <motion.div
-                        className="relative backdrop-blur-2xl bg-white/[0.02] rounded-2xl border border-white/[0.05] shadow-2xl"
+                        className="relative backdrop-blur-2xl bg-background/[0.02] rounded-2xl border border-white/[0.05] shadow-2xl"
                         initial={{ scale: 0.98 }}
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.1 }}

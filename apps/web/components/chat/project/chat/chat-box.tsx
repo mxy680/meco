@@ -303,7 +303,7 @@ export const ChatBox: React.FC<ChatInputProps> = ({
             onDrop={handleDrop}
         >
             {isDragging && (
-                <div className="absolute inset-0 z-50 bg-white/10 border-2 border-dashed border-blue-500 rounded-xl flex flex-col items-center justify-center pointer-events-none">
+                <div className="absolute inset-0 z-50 bg-background border-2 border-dashed border-blue-500 rounded-xl flex flex-col items-center justify-center pointer-events-none">
                     <p className="text-sm text-blue-500 flex items-center gap-2">
                         <ImageIcon className="size-4 opacity-50" />
                         Drop files here to add to chat
@@ -311,7 +311,7 @@ export const ChatBox: React.FC<ChatInputProps> = ({
                 </div>
             )}
 
-            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-lg items-end gap-2 min-h-[150px] flex flex-col">
+            <div className="bg-background backdrop-blur-md border border-white/20 rounded-xl shadow-lg items-end gap-2 min-h-[150px] flex flex-col">
                 <textarea
                     ref={textareaRef}
                     value={message}
@@ -328,7 +328,7 @@ export const ChatBox: React.FC<ChatInputProps> = ({
                         <Button
                             size="icon"
                             variant="ghost"
-                            className="h-9 w-9 p-0 text-zinc-400 hover:text-white hover:bg-white/20 flex-shrink-0"
+                            className="h-9 w-9 p-0 text-zinc-400 hover:text-white hover:bg-background flex-shrink-0"
                             onClick={() => fileInputRef.current?.click()}
                             disabled={disabled || files.length >= maxFiles}
                             title={
@@ -342,7 +342,7 @@ export const ChatBox: React.FC<ChatInputProps> = ({
                         <Button
                             size="icon"
                             variant="ghost"
-                            className="h-9 w-9 p-0 text-zinc-400 hover:text-white hover:bg-white/20 flex-shrink-0"
+                            className="h-9 w-9 p-0 text-zinc-400 hover:text-white hover:bg-background flex-shrink-0"
                             disabled={disabled}
                             title="Options (Not implemented)"
                         >

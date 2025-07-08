@@ -41,7 +41,7 @@ export function ChatSuggestions() {
             {suggestions.map((suggestion) => (
                 <div
                     key={suggestion.prefix}
-                    className="flex items-center gap-2 px-4 py-2 bg-white/[0.03] rounded-lg text-sm text-white/80 border border-white/[0.05] shadow-sm"
+                    className="flex items-center gap-2 px-4 py-2 bg-background rounded-lg text-sm text-white/80 border border-white/[0.05] shadow-sm"
                 >
                     {suggestion.icon}
                     <span>{suggestion.label}</span>

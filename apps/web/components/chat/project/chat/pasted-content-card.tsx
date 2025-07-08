@@ -12,7 +12,7 @@ const PastedContentCard: React.FC<{
     const needsTruncation = content.content.length > 150;
 
     return (
-        <div className="bg-white/10 border border-white/20 relative rounded-lg p-3 size-[125px] shadow-md flex-shrink-0 overflow-hidden">
+        <div className="bg-background border border-white/20 relative rounded-lg p-3 size-[125px] shadow-md flex-shrink-0 overflow-hidden">
             <div className="text-[8px] text-zinc-300 whitespace-pre-wrap break-words max-h-24 overflow-y-auto custom-scrollbar">
                 {isExpanded || !needsTruncation ? content.content : previewText}
                 {!isExpanded && needsTruncation && "..."}

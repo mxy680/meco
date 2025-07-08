@@ -77,7 +77,7 @@ export function Sidebar() {
       <motion.div
         className={cn(
           "relative z-40 flex text-muted-foreground h-full shrink-0 flex-col transition-all",
-          isCollapsed ? "bg-background" : "bg-white dark:bg-background"
+          isCollapsed ? "bg-background" : "bg-background dark:bg-background"
         )}
         variants={contentVariants}
       >

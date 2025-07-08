@@ -19,7 +19,7 @@ export default function ProjectMenuSection({ project }: { project: Project | nul
                             }
                             style={project?.color && project.color.startsWith('#') ? { background: project.color } : undefined}
                         >
-                            <div className="w-3 h-3 bg-white rounded-sm opacity-90"></div>
+                            <div className="w-3 h-3 bg-background rounded-sm opacity-90"></div>
                         </div>
                         <span className="px-1 py-0.5 text-gray-200 hover:text-gray-300 text-sm font-medium rounded flex items-center gap-1">
                             {project?.name || "Untitled Project"}
@@ -27,7 +27,7 @@ export default function ProjectMenuSection({ project }: { project: Project | nul
                         </span>
                     </div>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" sideOffset={16} className="w-64 min-w-[16rem] bg-white/10 backdrop-blur border border-white/10 shadow-xl rounded-xl p-2">
+                <DropdownMenuContent align="start" sideOffset={16} className="w-64 min-w-[16rem] bg-background backdrop-blur border border-white/10 shadow-xl rounded-xl p-2">
                     <ProjectMenuDropdownContent />
                 </DropdownMenuContent>
             </DropdownMenu>
