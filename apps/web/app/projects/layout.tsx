@@ -1,6 +1,6 @@
 "use client";
 
-import DevConsoleNavbar from "@/components/chat/project/nav/navbar";
+import DevConsoleNavbar from "@/components/project-nav/navbar";
 import { motion } from "framer-motion";
 
 export default function ProjectsLayout({ children }: { children: React.ReactNode }) {

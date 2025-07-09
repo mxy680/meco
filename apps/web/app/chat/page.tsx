@@ -1,6 +1,6 @@
 "use client";
 
-import { Chat } from "@/components/chat/landing/landing-chat";
+import { Chat } from "@/components/landing-chat/chat";
 
 export default function ChatPage() {
     return (

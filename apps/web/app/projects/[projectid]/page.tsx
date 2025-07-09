@@ -1,7 +1,8 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import Chat from "@/components/chat/project/chat/chat";
+import Chat from "@/components/project-chat/chat";
+import Notebook from "@/components/project-notebook/notebook";
 
 export default function ChatProjectPage() {
 
@@ -14,9 +15,7 @@ export default function ChatProjectPage() {
             <Chat />
             
             {/* Right Side (60%) */}
-            <div className="w-[60%] p-4 border-l border-foreground/10 rounded-l-xl">
-                {/* Right content here */}
-            </div>
+            <Notebook />
         </div>
     );
 }
