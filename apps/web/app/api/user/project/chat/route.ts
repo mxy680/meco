@@ -41,7 +41,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { projectId, userId, content } = body;
+    const { projectId, userId, content, role } = body;
     if (!projectId || !content) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
@@ -51,6 +51,7 @@ export async function POST(req: Request) {
         projectId,
         userId,
         content,
+        role: role ?? "user",
       },
     });
     return NextResponse.json(chat, { status: 201 });

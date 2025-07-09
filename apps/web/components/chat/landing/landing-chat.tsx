@@ -56,6 +56,7 @@ export function Chat() {
                     projectId: project.id,
                     userId: user.id,
                     content: value,
+                    role: "user",
                 },
                 attachments // Pass attachments array
             );

@@ -71,6 +71,7 @@ model Chat {
     projectId   String
     user        User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId      String?
+    role        String       // e.g., 'user', 'assistant', etc.
     content     String
     attachments Attachment[]
     createdAt   DateTime     @default(now())

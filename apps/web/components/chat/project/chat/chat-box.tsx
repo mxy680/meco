@@ -311,7 +311,7 @@ export const ChatBox: React.FC<ChatInputProps> = ({
                 </div>
             )}
 
-            <div className="bg-background/90 backdrop-blur-md border border-border rounded-xl shadow-lg items-end gap-2 min-h-[150px] flex flex-col">
+            <div className="bg-foreground/5 backdrop-blur-md border border-border rounded-xl shadow-lg items-end gap-2 min-h-[150px] flex flex-col">
                 <textarea
                     ref={textareaRef}
                     value={message}
@@ -370,7 +370,7 @@ export const ChatBox: React.FC<ChatInputProps> = ({
                             disabled={!canSend}
                             title="Send message"
                         >
-                            <ArrowUp className="h-5 w-5" />
+                            <ArrowUp className={cn("h-5 w-5", canSend ? "text-white" : "text-muted-foreground")} />
                         </Button>
                     </div>
                 </div>
