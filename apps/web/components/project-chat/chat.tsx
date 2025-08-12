@@ -1,12 +1,8 @@
 
 import { useParams } from "next/navigation";
-import { useRef, useEffect } from "react";
 import { ChatBox } from "@/components/project-chat/chat-box";
-import ChatMessage from "@/components/project-chat/chat-message";
-import Typewriter from "@/components/project-chat/typewriter";
-import DotsTypewriter from "@/components/project-chat/dots-typewriter";
 import { useLLMAssistant } from "@/lib/hooks/useAssistant";
-import { createChat } from "@/lib/db/chat";
+import ChatMessage from "@/components/project-chat/chat-message";
 
 // Import Chat type from db/chat or define it here if not exported
 import type { Chat } from "@prisma/client";
@@ -28,62 +24,59 @@ export default function Chat() {
     // Handler to add a new user message
     const handleSendMessage = async (message: string) => {
         if (!message.trim() || !projectId) return;
-        try {
-            const chatWithAttachments = await createChat({
+        setChats((prev) => [
+            ...prev,
+            {
+                id: crypto.randomUUID(),
                 projectId,
-                userId: null, // set userId if needed
-                content: message,
+                userId: null,
                 role: "user",
-            });
-            setChats((prev) => [...prev, chatWithAttachments]);
-        } catch (e) {
-            // Optionally: show error to user
-            console.error("Failed to send message", e);
-        }
+                content: message,
+                attachments: [],
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            },
+        ]);
     };
-
-    // 1. Ref for the end of messages
-    const messagesEndRef = useRef<HTMLDivElement | null>(null);
-
-    // 2. Scroll to bottom when chats or LLM state changes
-    useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [chats, llmLoading, llmResponse]);
 
     return (
         <div className="w-[40%] h-[calc(100vh-4rem)] flex flex-col px-4 pt-4 pb-0">
             <div className="grow basis-[80%] min-h-0 overflow-y-auto pb-4">
-                {loading && <div className="text-muted-foreground text-sm">Loading chats...</div>}
-                {error && <div className="text-red-500 text-sm">{error}</div>}
-                {!loading && !error && chats.length === 0 && (
-                    <div className="text-muted-foreground text-sm">No chats yet.</div>
-                )}
-                {!loading && !error && chats.length > 0 && (
-                    <div className="flex flex-col gap-3">
-                        {chats.map((chat) => {
-                            const isUser = chat.role === "user";
-                            return (
-                                <ChatMessage key={chat.id} chat={chat} isUser={isUser} />
-                            );
-                        })}
-                        {/* If last message is from user, show LLM loading or response */}
-                        {chats[chats.length - 1]?.role === "user" && (
-                            llmLoading ? (
-                                <div className="text-foreground whitespace-pre-line text-sm mr-auto max-w-[75%] flex items-center gap-1">
-                                    <Typewriter text="Orca is thinking" />
-                                    <DotsTypewriter />
-                                </div>
-                            ) : llmError ? (
-                                <div className="text-red-500 whitespace-pre-line text-sm mr-auto max-w-[75%]">{llmError}</div>
-                            ) : llmResponse ? (
-                                <div className="text-foreground whitespace-pre-line text-sm mr-auto max-w-[75%]">
-                                    <Typewriter text={llmResponse} />
-                                </div>
-                            ) : null
+                {loading ? (
+                    <div className="text-gray-400 text-center mt-4">Loading chat...</div>
+                ) : error ? (
+                    <div className="text-red-500 text-center mt-4">{error}</div>
+                ) : (
+                    <>
+                        {chats.map((chat) => (
+                            <div
+                                key={chat.id}
+                                className={`mb-2 flex ${chat.role === "user" ? "justify-end" : "justify-start"}`}
+                            >
+                                <ChatMessage chat={chat} isUser={chat.role === "user"} />
+                            </div>
+                        ))}
+                        {llmLoading && (
+                            <div className="mb-2 flex justify-start">
+                                <ChatMessage chat={{
+                                    id: "streaming-assistant",
+                                    projectId: projectId,
+                                    userId: null,
+                                    role: "assistant",
+                                    content: llmResponse || "",
+                                    attachments: [],
+                                    createdAt: new Date(),
+                                    updatedAt: new Date(),
+                                }} isUser={false} />
+                                {llmResponse === "" && (
+                                    <span className="italic text-gray-400 ml-2">Thinking...</span>
+                                )}
+                            </div>
                         )}
-                        {/* Dummy div for auto-scroll */}
-                        <div ref={messagesEndRef} />
-                    </div>
+                        {llmError && (
+                            <div className="text-red-500 text-xs text-left px-2">{llmError}</div>
+                        )}
+                    </>
                 )}
             </div>
             <div className="basis-[20%] flex flex-col justify-end">
