@@ -1,5 +1,5 @@
-import { FileWithPreview } from "./types";
-import { isTextualFile, getFileTypeLabel, formatFileSize } from "./utils";
+import { FileWithPreview } from "./chat";
+import { isTextualFile, getFileTypeLabel, formatFileSize } from "@/lib/utils/chat";
 import TextualFilePreviewCard from "./textual-file-preview-card";
 import { Button } from "@/components/ui/button";
 import { X, AlertCircle, Loader2 } from "lucide-react";

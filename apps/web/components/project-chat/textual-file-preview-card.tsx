@@ -1,5 +1,5 @@
-import { FileWithPreview } from "./types";
-import { getFileExtension } from "./utils";
+import { FileWithPreview } from "./chat";
+import { getFileExtension } from "@/lib/utils/chat";
 import { Loader2, X, Copy, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 

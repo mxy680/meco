@@ -12,9 +12,9 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { MAX_FILES, MAX_FILE_SIZE, DEFAULT_MODELS_INTERNAL, PASTE_THRESHOLD } from "./const";
-import { ChatInputProps, FileWithPreview, PastedContent } from "./types";
-import { readFileAsText, isTextualFile, formatFileSize } from "./utils";
+import { MAX_FILES, MAX_FILE_SIZE, DEFAULT_MODELS_INTERNAL, PASTE_THRESHOLD } from "@/lib/const/chat";
+import { ChatInputProps, FileWithPreview, PastedContent } from "@/lib/types/chat";
+import { readFileAsText, isTextualFile, formatFileSize } from "@/lib/utils/chat";
 import ModelSelectorDropdown from "./model-selector-dropdown";
 import PastedContentCard from "./pasted-content-card";
 import FilePreviewCard from "./file-preview-card";

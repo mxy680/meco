@@ -5,7 +5,7 @@ import { ChatBox } from "@/components/project-chat/chat-box";
 import ChatMessage from "@/components/project-chat/chat-message";
 import Typewriter from "@/components/project-chat/typewriter";
 import DotsTypewriter from "@/components/project-chat/dots-typewriter";
-import { useLLMAssistant } from "@/components/project-chat/useAssistant";
+import { useLLMAssistant } from "@/lib/hooks/useAssistant";
 import { createChat } from "@/lib/db/chat";
 
 // Import Chat type from db/chat or define it here if not exported

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ModelOption } from "./types";
+import { ModelOption } from "./chat";
 import { Check, ChevronDown } from "lucide-react";
 
 // Model Selector Component

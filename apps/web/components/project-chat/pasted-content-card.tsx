@@ -1,4 +1,4 @@
-import { PastedContent } from "./types";
+import { PastedContent } from "./chat";
 import { Button } from "@/components/ui/button";
 import { X, Copy } from "lucide-react";
 

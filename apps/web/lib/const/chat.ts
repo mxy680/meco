@@ -1,4 +1,4 @@
-import { ModelOption } from "./types";
+import { ModelOption } from "@/lib/types/chat";
 
 // Constants
 export const MAX_FILES = 10;

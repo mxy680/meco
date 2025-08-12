@@ -5,7 +5,7 @@ import { ChatInput } from "./chat-input";
 import { ChatTextarea } from "./chat-text-area";
 import { ChatPlaceholder } from "./chat-placeholder";
 import { ChatSuggestions } from "./chat-suggestions";
-import { useAutoResizeTextarea } from "./use-auto-resize-text-area";
+import { useAutoResizeTextarea } from "../../lib/utils/use-auto-resize-text-area";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { getCurrentUser } from "@/lib/db/profile";
