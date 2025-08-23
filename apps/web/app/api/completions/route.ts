@@ -1,9 +1,21 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
+import type {
+    ChatCompletionMessageParam,
+    ChatCompletionAssistantMessageParam,
+    ChatCompletionUserMessageParam,
+} from "openai/resources/chat/completions";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export const runtime = "nodejs"; // or "edge" if you want edge runtime
+
+// Incoming message type from client; may include attachments which we do not send to OpenAI
+type IncomingMessage = {
+    role: "user" | "assistant";
+    content: string;
+    attachments?: unknown[];
+};
 
 export async function POST(req: Request) {
     try {
@@ -11,6 +23,17 @@ export async function POST(req: Request) {
         if (!Array.isArray(messages)) {
             return NextResponse.json({ error: "Missing or invalid messages array" }, { status: 400 });
         }
+        const incoming: IncomingMessage[] = messages as IncomingMessage[];
+        // Debug: log any attachments present in incoming messages
+        try {
+            const attachments = incoming
+                .map((m) => m.attachments)
+                .filter((a): a is unknown[] => Array.isArray(a) && a.length > 0);
+            if (attachments.length > 0) {
+                console.log("[Completions API] Received attachments:", attachments);
+            }
+        } catch { }
+
         const systemPrompt = `
 You are Orca, an expert AI assistant for automating machine learning workflows and code execution. 
 Your primary goal is to help users build, debug, and deploy ML projects efficiently. 
@@ -20,31 +43,28 @@ If code execution is required, explain the steps and highlight any Docker or env
 Respond concisely and with expertise.
 `;
 
-        // Create a streaming completion
-        const stream = await openai.chat.completions.create({
+        // Strip any non-OpenAI fields (e.g., attachments) and build a typed message array
+        const messagesForOpenAI: ChatCompletionMessageParam[] = [
+            { role: "system", content: systemPrompt },
+            ...incoming.map((m): ChatCompletionUserMessageParam | ChatCompletionAssistantMessageParam =>
+                m.role === "user"
+                    ? { role: "user", content: m.content }
+                    : { role: "assistant", content: m.content }
+            ),
+        ];
+
+        // Create a non-streaming completion and return full content once
+        const completion = await openai.chat.completions.create({
             model: "gpt-4.1",
-            messages: [
-                { role: "system", content: systemPrompt },
-                ...messages,
-            ],
-            stream: true,
+            messages: messagesForOpenAI
         });
 
-        // Create a ReadableStream to yield tokens as they arrive
-        const encoder = new TextEncoder();
-        const readableStream = new ReadableStream({
-            async start(controller) {
-                for await (const chunk of stream) {
-                    const token = chunk.choices[0]?.delta?.content || "";
-                    if (token) {
-                        controller.enqueue(encoder.encode(token));
-                    }
-                }
-                controller.close();
-            }
-        });
+        const content = completion.choices?.[0]?.message?.content ?? "";
+        if (!content) {
+            return NextResponse.json({ error: "Empty completion from model" }, { status: 502 });
+        }
 
-        return new Response(readableStream, {
+        return new Response(content, {
             headers: {
                 "Content-Type": "text/plain; charset=utf-8",
                 "Cache-Control": "no-cache",

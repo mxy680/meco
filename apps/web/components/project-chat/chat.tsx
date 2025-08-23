@@ -59,7 +59,7 @@ export default function Chat() {
                         {llmLoading && (
                             <div className="mb-2 flex justify-start">
                                 <ChatMessage chat={{
-                                    id: "streaming-assistant",
+                                    id: "pending-assistant",
                                     projectId: projectId,
                                     userId: null,
                                     role: "assistant",

@@ -30,6 +30,15 @@ export async function getChat(id: string): Promise<Chat> {
 }
 
 /**
+ * Fetch attachments for a given chat by chatId.
+ */
+export async function getAttachmentsByChatId(chatId: string): Promise<Attachment[]> {
+    const res = await fetch(`/api/user/project/chat/attachment?chatId=${encodeURIComponent(chatId)}`);
+    if (!res.ok) throw new Error('Failed to fetch attachments');
+    return res.json();
+}
+
+/**
  * Create a new chat, optionally with attachments.
  * @param data Chat fields (projectId, userId, content)
  * @param attachments Optional array of attachment objects
